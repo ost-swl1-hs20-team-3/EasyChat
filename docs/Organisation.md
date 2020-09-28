@@ -1,7 +1,6 @@
 # Organisation
 
 ## Scrum
-
 Dieses Projekt wird nach dem agilen Vorgehensmodell Scrum entwickelt. 
 
 In regelmässigen Abständen werden folgende Meetings durchgeführt: 
@@ -14,7 +13,6 @@ In regelmässigen Abständen werden folgende Meetings durchgeführt:
 | Sprint Retrospective | 15 min |
 
 ### Daily Scrum
-
 Auf das Daily Scrum wird im Rahmen dieses Projektes bewusst verzichtet, da nicht täglich und teilweise zeitversetzt entwickelt wird. Zudem ist die Sprint-Dauer sehr knapp bemessen, d.h. Planning-, Review- und Retrospective-Meeting fallen in kurzen Zeitabständen an.
 
 ### Sprint Planning
@@ -29,7 +27,6 @@ Im Sprint Retrospective lässt das Team die Zusammenarbeit während des vergange
 ## Rollen
 
 ### Definitionen
-
 Der **Product Owner** vertritt den Kunden und ist verantworlich dafür, dass die vom Kunden gewünschten Anforderung ausgearbeitet und eingeplant werden. 
 
 Der **UI-Designer** ist für die Faktoren Ästethik und User-Experience des Endproduktes zuständig.
@@ -40,9 +37,7 @@ Der **Scrum-Master** stellt sicher, dass der aglie Entwicklungsprozess eingehalt
 
 Der **Entwickler** implementiert die eingeplanten Tasks in das Endprodukt.
 
-
 ### Zuteilung
-
 #### Phase 1: Ab 21.09.20
 | Name  | Product Owner | UI-Designer | QA-Verantwortung | Scrum-Master | Entwicklung |
 | ----- | :-----------: | :---------: | :--------------: | :----------: | :---------: |
