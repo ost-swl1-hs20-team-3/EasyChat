@@ -14,4 +14,4 @@ Entwicklung einer Chat-App mit dem Namen EasyChat.
   
 - Sprints
   - [Sprint 0](docs/sprints/sprint-0.md)
-  - [Sprint 1](docs/sprints/sprint-1.md)
+  - [Sprint 1](docs/sprints/sprint-1/sprint-1.md)

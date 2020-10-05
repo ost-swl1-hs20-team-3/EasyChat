@@ -1,5 +1,9 @@
-# Sprint X - [VON] - [BIS]
+# Sprint 1 - [VON] - [BIS]
 
-## PB-Meeting - [DATUM]
+## Product Backlog-Meeting - [DATUM]
 
-## SP-Meeting - [DATUM]
+## Sprint Planning-Meeting - [DATUM]
+
+## Sprint Review-Meeting - [DATUM]
+
+## Retrospective - [DATUM]
