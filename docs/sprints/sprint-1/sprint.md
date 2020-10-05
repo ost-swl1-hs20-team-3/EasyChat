@@ -2,8 +2,15 @@
 
 ## Product Backlog-Meeting - 28.09.20
 
+
+
 ## Sprint Planning-Meeting - 05.10.20
+
+
 
 ## Sprint Review-Meeting - [DATUM]
 
+
+
 ## Retrospective - [DATUM]
+
