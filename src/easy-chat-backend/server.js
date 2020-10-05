@@ -9,12 +9,12 @@ http.listen(3000, () => {
 });
 
 
-// 
+// SOCKET.io
 io.on('connection', (socket) => {
     console.log('new connection...');
 
-    socket.on('message', (msg) => {
-        console.log(`new message: `, msg);
-        socket.broadcast.emit('message-broadcast', msg);
+    socket.on('message', (theMessage) => {
+        console.log(`new message: `, theMessage);
+        socket.broadcast.emit('message-broadcast', theMessage);
     });
 });
