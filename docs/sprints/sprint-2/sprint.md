@@ -1,10 +1,21 @@
-# Sprint 2 - 19.10.20 - [DATUM]
+# Sprint 2 - 19.10.20 - 25.10.20
 
 ## Product Backlog-Meeting - 19.10.20
 
-## Sprint Planning-Meeting - [DATUM]
+### Story 3
 
-## Sprint Review-Meeting - [DATUM]
+Fragen: 
+
+Zusätzlich:
+
+
+## Sprint Planning-Meeting - [Datum]
+
+
+
+## Sprint Review-Meeting - [Datum]
 [Review](sprint-review.md)
 
+
 ## Retrospective - [DATUM]
+[Retrospective](sprint-retro.md)

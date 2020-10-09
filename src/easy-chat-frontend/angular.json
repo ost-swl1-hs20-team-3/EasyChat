@@ -125,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "easy-chat-frontend"
+  "defaultProject": "easy-chat-frontend",
+  "cli": {
+    "analytics": false
+  }
 }

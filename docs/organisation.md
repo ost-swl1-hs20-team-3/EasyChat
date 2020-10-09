@@ -8,12 +8,16 @@ In regelmässigen Abständen werden folgende Meetings durchgeführt:
 | Meeting              | Dauer  |
 | -------------------- | ------ |
 | Daily Scrum          | -      |
-| Sprint Planning      | 30 min |
-| Sprint Review        | 30 min |
+| Backlog Refinement   | 15 min |
+| Sprint Planning      | 10 min |
+| Sprint Review        | 10 min |
 | Sprint Retrospective | 15 min |
 
 ### Daily Scrum
 Auf das Daily Scrum wird im Rahmen dieses Projektes bewusst verzichtet, da nicht täglich und teilweise zeitversetzt entwickelt wird. Zudem ist die Sprint-Dauer sehr knapp bemessen, d.h. Planning-, Review- und Retrospective-Meeting fallen in kurzen Zeitabständen an.
+
+### Backlog Refinement
+Im Backlog Refinement Meeting werden die Stories und Tasks aus dem Backlog besprochen. Die Backlog-Items werden kategorisiert und priorisiert. Dieses Meeting stellt sicher, dass das ganze Scrum-Team vor der Planung auf demselben Informationsstand ist.
 
 ### Sprint Planning
 In der Planungssitzung werden die Tasks für den kommenden Sprint geschätzt. Basierend auf der Schätzung wird entschieden, ob der Taks in das Sprint-Backlog aufgenommen wird oder nicht. Der Zeitrahmen der Planungssitzung beträgt 30 Minuten.
