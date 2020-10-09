@@ -2,10 +2,10 @@
 
 ## Vision
 Entwicklung einer Chat-App mit dem Namen EasyChat.
-- Chat’ensupereinfach, superschlicht: Es gibt einen einzigen Nachrichtenstrom, über den sich beliebig viele Chat’eranonym austauschen können.
-- Ausgetauscht werden ausschliesslich Textnachrichten. Die Beiträge eines Chat’erswerden im Nachrichtenstrom unter dem selbstgewählten «Nick Name» dargestellt.
-- Der Chat’erpartizipiert über einen Webbrowser, Installationen auf seinem Endgerät sind nicht notwendig.
-- Die Benutzeroberfläche der Webbrowser-basierten Chat Anwendung ist schlicht, aber ansprechend. Gechattet wird in Echtzeit, d.h. eingegebene Nachrichten werden ohne wesentliche Verzögerung allen teilnehmenden Chat’erngezeigt.
+- Chat’en supereinfach, superschlicht: Es gibt einen einzigen Nachrichtenstrom, über den sich beliebig viele Chat’er anonym austauschen können.
+- Ausgetauscht werden ausschliesslich Textnachrichten. Die Beiträge eines Chat’ers werden im Nachrichtenstrom unter dem selbstgewählten «Nick Name» dargestellt.
+- Der Chat’er partizipiert über einen Webbrowser, Installationen auf seinem Endgerät sind nicht notwendig.
+- Die Benutzeroberfläche der Webbrowser-basierten Chat Anwendung ist schlicht, aber ansprechend. Gechattet wird in Echtzeit, d.h. eingegebene Nachrichten werden ohne wesentliche Verzögerung allen teilnehmenden Chat’ern gezeigt.
 - Die Chat Anwendung läuft sehr stabil.
 
 ## Links
