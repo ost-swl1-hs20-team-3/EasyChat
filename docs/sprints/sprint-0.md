@@ -1,4 +1,4 @@
-# Sprint 0
+# Sprint 0 (initiale Übernahme der ersten US --> kein Sprint im klassischen Sinne)
 
 ## PB-Meeting - 28.09.20
 - Stories vom Kunden erhalten
