@@ -13,9 +13,3 @@
 - bessere Verantwortlichkeiten definieren (wer setzt was um?) und sich auch daran halten
 - Pull Requests erst freigeben, wenn das Testing in der Story oder im Subtask durchgeführt wurde (Board beachten!)
 
-## Ergebnis des 1. Inkrements
-- Alle Storys und Tasks, die in diesem Sprint eingeplant wurden, sind umgesetzt
-- Es tauchten bei der Umsetzug keine Probleme auf
-
-![Ergebnis 1. Sprint](.attachments/20201010_Inkrement_Sprint1.png)
-
