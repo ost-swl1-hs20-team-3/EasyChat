@@ -34,7 +34,7 @@ jobs:
       run: |
           cd src/easy-chat-frontend
           npm ci
-          npm run ng build --prod --baseHref='https://ost-swl1-hs20-team-3.github.io/EasyChat'
+          npm run build-prod
           
     - name: Deploy
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
