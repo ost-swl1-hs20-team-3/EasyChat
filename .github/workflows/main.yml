@@ -31,10 +31,10 @@ jobs:
           npm install
       working-directory: ${{env.working-directory}}
     
-    - name: Build Prod
-      run: |
-          npm run build-prod
-      working-directory: ${{env.working-directory}}
+    #- name: Build Prod
+    #  run: |
+    #      npm run build-prod
+    #  working-directory: ${{env.working-directory}}
           
     - name: Deploy
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
@@ -44,4 +44,4 @@ jobs:
         build_configuration: production
         base_href: /EasyChat/
         deploy_branch: gh-pages
-        angular_dist_build_folder: dist/easy-chat-frontend
+        angular_dist_build_folder: ${{env.working-directory}}/dist/easy-chat-frontend
