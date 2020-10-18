@@ -30,11 +30,6 @@ jobs:
       run: |
           npm install
       working-directory: ${{env.working-directory}}
-    
-    #- name: Build Prod
-    #  run: |
-    #      npm run build-prod
-    #  working-directory: ${{env.working-directory}}
           
     - name: Deploy
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
