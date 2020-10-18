@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+defaults:
+  run:
+    working-directory: src/easy-chat-frontend
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,9 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
-    - name: Change to easy-chat-frontend
-      run: cd src/easy-chat-frontend
       
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
