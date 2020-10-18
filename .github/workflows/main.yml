@@ -7,21 +7,29 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-and-deploy-frontend:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout 🛎️
+        uses: actions/checkout@v1
+        
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Build and Deploy
+      
+      # - name: Install and Build 🔧
+      #   run: |
+      #     cd src/easy-chat-frontend
+      #     npm install
+      #     npm run build
+          
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@master
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BASE_BRANCH: master # The branch the action should deploy from.
-          BRANCH: gh-pages # The branch the action should deploy to.
+          BASE_BRANCH: master
+          BRANCH: gh-pages
           FOLDER: src/easy-chat-frontend/dist # The folder the action should deploy.
-          BUILD_SCRIPT: cd src/easy-chat-frontend && npm install && npm run-script build # The build script the action should run prior to deploying.
+          BUILD_SCRIPT: cd src/easy-chat-frontend && npm install && ng build --prod --baseHref='https://ost-swl1-hs20-team-3.github.io//EasyChat"
