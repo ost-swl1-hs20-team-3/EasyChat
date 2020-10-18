@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
     "build-prod": "ng build --prod --baseHref='https://ost-swl1-hs20-team-3.github.io/EasyChat'"
   },
   "private": true,
