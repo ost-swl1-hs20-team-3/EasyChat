@@ -17,22 +17,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
+    - name: Change to easy-chat-frontend
+      run: cd src/easy-chat-frontend
+      
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
             
     - name: Prod Build
       run: |
-          cd src/easy-chat-frontend
           npm ci
           npm run build-prod
           
@@ -43,4 +37,4 @@ jobs:
         build_configuration: production
         base_href: /EasyChat/
         deploy_branch: gh-pages
-        angular_dist_build_folder: src/easy-chat-frontend/dist
+        angular_dist_build_folder: /dist/easy-chat-frontend
