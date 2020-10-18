@@ -14,4 +14,5 @@
 - bessere Verantwortlichkeiten definieren (wer setzt was um?) und sich auch daran halten
 - Pull Requests erst freigeben, wenn das Testing in der Story oder im Subtask durchgeführt wurde (Board beachten!)
 - Zukünftige Teststrategie erarbeiten für komplexere Funktionalitäten
+- Einbezug von GitHub Actions für die nächsten Sprints: Automatisches Deployment der kompletten Seite --> lohnt es sich?
 
