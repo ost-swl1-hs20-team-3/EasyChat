@@ -6,13 +6,13 @@ on:
   pull_request:
     branches: [ master ]
 
-defaults:
-  run:
-    working-directory: src/easy-chat-frontend
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
+  
+    env:
+      working-directory: src/easy-chat-frontend
 
     strategy:
       matrix:
@@ -28,16 +28,19 @@ jobs:
     
     - name: Install NPM dependencies
       run: |
-          npm install   
+          npm install
+      working-directory: ${{env.working-directory}}
     
     - name: Build Prod
       run: |
           npm run build-prod
+      working-directory: ${{env.working-directory}}
           
     - name: Deploy
       uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
       with:
         github_access_token: ${{ secrets.ACCESS_TOKEN }}
+        angular_project_dir: ${{env.working-directory}}
         build_configuration: production
         base_href: /EasyChat/
         deploy_branch: gh-pages
