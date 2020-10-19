@@ -11,4 +11,7 @@ export class ChatBarComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  public sendMessage(): void {
+  }
 }
