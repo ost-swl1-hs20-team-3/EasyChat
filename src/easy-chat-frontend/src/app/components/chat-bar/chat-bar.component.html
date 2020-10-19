@@ -1,5 +1,5 @@
 <div class="input-group">
-  <input type="text" class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message"
+  <input type="text" class="form-control" placeholder="Nachricht eingeben" autofocus [(ngModel)]="message"
     (keyup.enter)="sendMessage()" (ngModelChange)="typeMessage($event)" />
   <span class="input-group-btn">
     <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="sendMessage()">
