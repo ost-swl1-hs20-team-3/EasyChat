@@ -1,8 +1,8 @@
 <div class="input-group">
   <input type="text" class="form-control" rows="2" style="resize:none" placeholder="Nachricht eingeben"
-    (keyup.enter)="sendMessage()" />
+    (keyup.enter)="sendMessage()" (ngModelChange)="typeMessage($event)" [(ngModel)]="message" />
   <span class="input-group-btn">
-    <button type="submit" class="btn btn-primary h-100" (click)="sendMessage()">
+    <button type="submit" class="btn btn-primary h-100" [disabled]="(message.length == 0)" (click)="sendMessage()">
       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-square-fill" fill="currentColor"
         xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd"

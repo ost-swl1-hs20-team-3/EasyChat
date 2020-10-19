@@ -7,6 +7,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { ChatBarComponent } from './components/chat-bar/chat-bar.component';
+import { CurrentlyTypingBarComponent } from './components/currently-typing-bar/currently-typing-bar.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ChatBarComponent } from './components/chat-bar/chat-bar.component';
     HeaderComponent,
     FooterComponent,
     ContentComponent,
-    ChatBarComponent
+    ChatBarComponent,
+    CurrentlyTypingBarComponent
   ],
   imports: [
     BrowserModule,
