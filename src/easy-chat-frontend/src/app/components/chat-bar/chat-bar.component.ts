@@ -9,6 +9,7 @@ import { ChatService } from '../../services/chat.service';
 export class ChatBarComponent implements OnInit {
 
   public message = '';
+  public get isValidToSend(): boolean { return this.message.length > 0; }
 
   constructor(private chatService: ChatService) { }
 
@@ -20,8 +21,10 @@ export class ChatBarComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    this.chatService.sendMessage();
-    this.resetMessage();
+    if (this.isValidToSend) {
+      this.chatService.sendMessage();
+      this.resetMessage();
+    }
   }
 
   private resetMessage(): void {
