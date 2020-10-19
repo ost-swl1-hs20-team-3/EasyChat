@@ -13,5 +13,6 @@ export class ChatBarComponent implements OnInit {
   }
 
   public sendMessage(): void {
+    alert('Abgeschickt!');
   }
 }
