@@ -16,13 +16,13 @@ export class ChatBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public typeMessage(message: string): void {
-    this.chatService.typeMessage(message);
+  public typeMessage(): void {
+    this.chatService.typeMessage(this.message);
   }
 
   public sendMessage(): void {
     if (this.isValidToSend) {
-      this.chatService.sendMessage();
+      this.chatService.sendMessage(this.message);
       this.resetMessage();
     }
   }
