@@ -14,6 +14,8 @@ import { CurrentlyTypingBarComponent } from './components/currently-typing-bar/c
 const APP_LOCALE_ID = 'de-CH';
 
 import locale_de_ch from '@angular/common/locales/de-CH';
+import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
+import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -24,7 +26,9 @@ registerLocaleData(locale_de_ch);
     FooterComponent,
     ContentComponent,
     ChatBarComponent,
-    CurrentlyTypingBarComponent
+    CurrentlyTypingBarComponent,
+    ChatHistoryComponent,
+    ChatBubbleComponent
   ],
   imports: [
     BrowserModule,
