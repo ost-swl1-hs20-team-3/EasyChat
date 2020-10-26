@@ -2,7 +2,7 @@
 <ng-container *ngIf="isSentByMe()">
     <div class="row msg">
         <div class="col-12 d-flex justify-content-end">
-            <span class="msg-content msg-content-sender">{{chatMessage.content}}</span>
+            <span class="msg-content msg-content-sender bg-primary text-white">{{chatMessage.content}}</span>
         </div>
         <div class="col-12 d-flex justify-content-end">
             <span class="msg-metadata">{{chatMessage.sender}} - {{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
@@ -14,9 +14,9 @@
 <ng-container *ngIf="!isSentByMe()">
     <div class="row msg">
         <div class="col-12 d-flex justify-content-start">
-            <span class="msg-content msg-content-receiver">{{chatMessage.content}}</span>
+            <span class="msg-content msg-content-receiver bg-secondary text-white">{{chatMessage.content}}</span>
         </div>
-        <div class="msg col-12 d-flex justify-content-start">
+        <div class="col-12 d-flex justify-content-start">
             <span class="msg-metadata">{{chatMessage.sender}} - {{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
         </div>
     </div>
