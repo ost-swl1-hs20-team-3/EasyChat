@@ -1,0 +1,30 @@
+.msg {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.msg-content {
+    max-width: 75%;
+    display: block;
+    position: relative;
+    overflow-wrap: break-word;
+}
+
+.msg-content-sender {
+    background: #42a5f5;
+    color: #fff !important;
+    border-radius: 20px 20px 3px 20px;
+    padding: 7px 13px 7px 13px;
+}
+
+.msg-content-receiver {
+    background: #f1f1f1;
+    color: #000 !important;
+    border-radius: 20px 20px 20px 3px;
+    padding: 7px 13px 7px 13px;
+}
+
+.msg-metadata {
+    color: rgba(84, 110, 122,1.0);
+    font-size: .750rem;
+}

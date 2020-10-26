@@ -11,7 +11,31 @@ export class ChatService {
   public currentMessage = this.messageSource.asObservable();
   public messageList: Array<ChatMessage> = new Array<ChatMessage>();
 
-  constructor() { }
+  constructor() {
+    let msgA: ChatMessage = new ChatMessage()
+    msgA.sender = "ME"
+    msgA.content = "Ich habe das geschrieben";
+    msgA.timestamp = new Date().toISOString();
+    this.messageList.push(msgA);
+
+    let msgB: ChatMessage = new ChatMessage()
+    msgB.sender = "OTHER"
+    msgB.content = "Jemand anderes hat das geschrieben";
+    msgB.timestamp = new Date().toISOString();
+    this.messageList.push(msgB);
+
+    let msgC: ChatMessage = new ChatMessage()
+    msgC.sender = "ME"
+    msgC.content = "Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text habe ich geschrieben.";
+    msgC.timestamp = new Date().toISOString();
+    this.messageList.push(msgC);
+
+    let msgD: ChatMessage = new ChatMessage()
+    msgD.sender = "OTHER"
+    msgD.content = "Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text hat jemand anderes geschrieben.";
+    msgD.timestamp = new Date().toISOString();
+    this.messageList.push(msgD);
+  }
 
   public sendMessage(message: string): void {
     message = this.cleanInput(message);

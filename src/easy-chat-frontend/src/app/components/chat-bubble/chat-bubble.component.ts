@@ -16,4 +16,8 @@ export class ChatBubbleComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public isSentByMe(): boolean {
+   return (this.chatMessage.sender === 'ME') ?  true :  false;
+  }
+
 }
