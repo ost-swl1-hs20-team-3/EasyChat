@@ -1,0 +1,13 @@
+ec-header {
+    min-height: 80px;
+    max-height: 12vh;
+}
+
+ec-content {
+    overflow: scroll;
+}
+
+ec-footer {
+    min-height: 25px;
+    max-height: 5vh;
+}
