@@ -25,8 +25,6 @@ export class ChatService {
 
     this.messageSource.next(message);
     this.messageList.push(newMessage);
-
-    alert(this.messageSource.value);
   }
 
   public typeMessage(message: string): void {
