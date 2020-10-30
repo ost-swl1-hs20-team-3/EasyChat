@@ -12,7 +12,7 @@ export class ChatService {
   public messageList: Array<ChatMessage> = new Array<ChatMessage>();
 
   constructor() {
-    this.setUpTestMessages(); // TEMP
+    // this.setUpTestMessages(); // TEMP
   }
 
   public sendMessage(message: string): void {
