@@ -17,7 +17,3 @@ Entwicklung einer Chat-App mit dem Namen EasyChat.
 ## Dokumente
 - [Organisation](docs/organisation.md)
 - [Konventionen](docs/konventionen.md)
-  
-## Sprints
-  - [Sprint 1](docs/sprints/sprint-1/sprint.md) | [Review](docs/sprints/sprint-1/sprint-review.md) | [Retro](docs/sprints/sprint-1/sprint-retro.md) | 05.10.20 - 18.10.20
-  - [Sprint 2](docs/sprints/sprint-2/sprint.md) | [Review](docs/sprints/sprint-2/sprint-review.md) | [Retro](docs/sprints/sprint-2/sprint-retro.md) | 19.10.20 - 25.10.20
