@@ -1,3 +1,9 @@
+ec-chat-history {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch
+}
+
 ec-chat-bar {
   margin-bottom: 0.5rem;
 }

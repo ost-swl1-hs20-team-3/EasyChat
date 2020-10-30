@@ -1,0 +1,14 @@
+ec-header {
+  min-height: 80px;
+  max-height: 12vh;
+}
+
+ec-content {
+  height: 83vh;
+  overflow: hidden;
+}
+
+ec-footer {
+  min-height: 25px;
+  max-height: 5vh;
+}
