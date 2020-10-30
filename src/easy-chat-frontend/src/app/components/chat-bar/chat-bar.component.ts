@@ -9,7 +9,7 @@ import { ChatService } from '../../services/chat.service';
 export class ChatBarComponent implements OnInit {
 
   public message = '';
-  public get isValidToSend(): boolean { return this.message.length > 0; }
+  public get isValidToSend(): boolean { return this.message.trim().length > 0; }
 
   constructor(private chatService: ChatService) { }
 

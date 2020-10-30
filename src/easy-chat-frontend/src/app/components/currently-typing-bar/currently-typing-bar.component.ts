@@ -14,6 +14,7 @@ export class CurrentlyTypingBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatService.currentMessage.subscribe((message) => {
+      message = message.trim()
       this.typingMessage = (message.length > 0) ? message + '...' : '';
     });
   }
