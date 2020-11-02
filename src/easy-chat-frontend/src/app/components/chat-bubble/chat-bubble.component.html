@@ -1,23 +1,29 @@
 <!-- Message Bubble sent by User -->
 <ng-container *ngIf="isSentByMe()">
-    <div class="row msg">
-        <div class="col-12 d-flex justify-content-end">
-            <span class="msg-content msg-content-sender bg-primary text-white">{{chatMessage.content}}</span>
-        </div>
-        <div class="col-12 d-flex justify-content-end">
-            <span class="msg-metadata">{{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
-        </div>
+  <div class="row msg">
+    <div class="col-12 d-flex justify-content-end">
+      <div class="msg-content msg-content-sender bg-primary text-white">
+        <div class="msg-content-username">{{chatMessage.sender}}</div>
+        <div class="">{{chatMessage.content}}</div>
+      </div>
     </div>
+    <div class="col-12 d-flex justify-content-end">
+      <span class="msg-metadata">{{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
+    </div>
+  </div>
 </ng-container>
 
 <!-- Message Bubble sent by others -->
 <ng-container *ngIf="!isSentByMe()">
-    <div class="row msg">
-        <div class="col-12 d-flex justify-content-start">
-            <span class="msg-content msg-content-receiver bg-secondary text-white">{{chatMessage.content}}</span>
-        </div>
-        <div class="col-12 d-flex justify-content-start">
-            <span class="msg-metadata">{{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
-        </div>
+  <div class="row msg">
+    <div class="col-12 d-flex justify-content-start">
+      <div class="msg-content msg-content-receiver bg-secondary text-white">
+        <div class="msg-content-username">{{chatMessage.sender}}</div>
+        <div class="">{{chatMessage.content}}</div>
+      </div>
     </div>
+    <div class="col-12 d-flex justify-content-start">
+      <span class="msg-metadata">{{chatMessage.timestamp | date:'EEEE, dd.MM.yyyy HH:mm'}}</span>
+    </div>
+  </div>
 </ng-container>
