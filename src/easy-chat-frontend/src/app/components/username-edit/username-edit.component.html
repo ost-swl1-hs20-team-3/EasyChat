@@ -1,11 +1,20 @@
-<h1>{{this.titleText}}</h1>
-<p>{{this.descriptionText}}</p>
+<button type="button" #openButton class="btn btn-primary" data-toggle="modal" data-target="#userNameModal" aria-hidden="true" hidden="true"></button>
+<button type="button" #closeButton class="btn btn-primary" data-toggle="modal" data-target="#userNameModal" aria-hidden="true" hidden="true"></button>
 
-<div class="input-group">
-    <input type="text" class="form-control" placeholder="Benutzername" autofocus [(ngModel)]="username"
-      (keyup.enter)="saveUsername()"/>
-    <span class="input-group-btn">
-      <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="saveUsername()">➜</button>
-    </span>
+<div class="modal fade" id="userNameModal" data-backdrop="static" data-keyboard="false" tabindex="-1" hidden="true" aria-labelledby="staticBackdropLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{this.titleText}}</h5>
+      </div>
+      <div class="modal-body">
+        <p>{{this.descriptionText}}</p>
+        <input type="text" class="form-control" placeholder="Benutzername" autofocus [(ngModel)]="username" (keyup.enter)="saveUsername()" />
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="saveUsername()">{{this.buttonText}}</button>
+      </div>
+    </div>
+  </div>
+
 </div>
-  

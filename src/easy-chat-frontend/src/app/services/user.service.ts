@@ -19,6 +19,6 @@ export class UserService {
   }
 
   public isLoggedIn(): boolean {
-    return this.username.length > 0;
+    return this.username.trim().length > 0;
   }
 }

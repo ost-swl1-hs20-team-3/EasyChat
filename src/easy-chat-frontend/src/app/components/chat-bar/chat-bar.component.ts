@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 
 @Component({
@@ -9,9 +10,14 @@ import { ChatService } from '../../services/chat.service';
 export class ChatBarComponent implements OnInit {
 
   public message = '';
-  public get isValidToSend(): boolean { return this.message.trim().length > 0; }
+  public get isValidToSend(): boolean { 
+    return this.userService.isLoggedIn() && this.message.trim().length > 0; 
+  }
 
-  constructor(private chatService: ChatService) { }
+  constructor(
+    private chatService: ChatService,
+    private userService: UserService
+    ) { }
 
   ngOnInit(): void {
   }

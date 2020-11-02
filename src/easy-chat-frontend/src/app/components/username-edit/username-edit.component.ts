@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -7,19 +7,12 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./username-edit.component.css']
 })
 export class UsernameEditComponent implements OnInit {
-  
+  @ViewChild('openButton') openButton;
+  @ViewChild('closeButton') closeButton;
+
   public username: string = '';
   public get isValidToSend(): boolean { return this.username.trim().length > 0 };
-  
 
-  constructor(private userService: UserService) {
-    this.username = userService.getUserName();
-  }
-
-  public ngOnInit(): void {
-    
-  }
-  
   public get hasUserName(): boolean {
     return this.userService.isLoggedIn();
   }
@@ -28,12 +21,32 @@ export class UsernameEditComponent implements OnInit {
     return 'Benutzername';
   }
 
+  public get buttonText(): string {
+    return 'Eintreten';
+  }
+
   public get descriptionText(): string {
     return 'desc';
   }
 
-  public saveUsername() {
+  constructor(private userService: UserService) {
+    this.username = userService.getUserName();
+  }
+
+  public ngOnInit(): void {
+  }
+
+  public openModal(): void {
+    this.openButton.nativeElement.click();
+  }
+
+  public closeModal(): void {
+    this.closeButton.nativeElement.click();
+  }
+
+  public saveUsername(): void {
     this.userService.setUsername(this.username);
+    this.closeModal();
   }
 
 }
