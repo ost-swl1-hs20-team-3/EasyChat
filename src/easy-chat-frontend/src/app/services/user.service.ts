@@ -11,12 +11,12 @@ export class UserService {
   constructor(private factoryResolver: ComponentFactoryResolver) { }
 
   private validateUsername(username: string): boolean {
-    return /^[+a-zA-Z]{1}\S*$/.test(username);
+    return /^[+a-zA-Z]{1}\S{0,29}$/.test(username);
   }
 
   public setUsername(username: string): string {
     if (!this.validateUsername(username)) {
-      return 'Benutzername muss mit einem Buchstaben beginnen und darf danach keine Leerraumzeichen enthalten!';
+      return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
     } else {
       this.username = username;
       return '';
