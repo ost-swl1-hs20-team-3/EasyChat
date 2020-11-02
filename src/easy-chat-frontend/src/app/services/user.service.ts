@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { fromEventPattern } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +11,21 @@ export class UserService {
 
   constructor() { }
 
-  public setUsername(username: string): boolean {
-    this.username = username;
-    return true;
+  private validateUsername(username: string): boolean {
+    return /^[+a-zA-Z]{1}\S*$/.test(username);
+  }
+
+  public setUsername(username: string): string {
+    if (!this.validateUsername(username)) {
+      return 'Benutzername muss mit einem Buchstaben beginnen und darf danach keine Leerraumzeichen enthalten!';
+    } else {
+      this.username = username;
+      return '';
+    }
   }
 
   public getUserName(): string {
-    return this.username;
+    return this.username;    
   }
 
   public isLoggedIn(): boolean {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -6,34 +6,33 @@ import { UserService } from '../../services/user.service';
   templateUrl: './username-edit.component.html',
   styleUrls: ['./username-edit.component.css']
 })
-export class UsernameEditComponent implements OnInit {
+export class UsernameEditComponent implements OnInit, AfterViewInit {
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
 
   public username: string = '';
+  public title: string = '';
+  public description: string = '';
+  public buttonText: string = '';
+  public errorMsg: string = '';
+
   public get isValidToSend(): boolean { return this.username.trim().length > 0 };
-
-  public get hasUserName(): boolean {
-    return this.userService.isLoggedIn();
-  }
-
-  public get titleText(): string {
-    return 'Benutzername';
-  }
-
-  public get buttonText(): string {
-    return 'Eintreten';
-  }
-
-  public get descriptionText(): string {
-    return 'desc';
-  }
 
   constructor(private userService: UserService) {
     this.username = userService.getUserName();
   }
 
   public ngOnInit(): void {
+  }
+
+  public ngAfterViewInit (): void {
+    // Wird aufgerufen, wenn User sich das erste Mal anmeldet
+    if(!this.userService.isLoggedIn()) {
+      this.title = 'Willkommen!';
+      this.description = 'Bitte geben Sie einen Benutzernamen ein:';
+      this.buttonText = 'Eintreten';
+      this.openModal();
+    }
   }
 
   public openModal(): void {
@@ -45,8 +44,10 @@ export class UsernameEditComponent implements OnInit {
   }
 
   public saveUsername(): void {
-    this.userService.setUsername(this.username);
-    this.closeModal();
+    this.errorMsg = this.userService.setUsername(this.username);
+    if(this.errorMsg.length == 0) {
+      this.closeModal();
+    }
   }
 
 }
