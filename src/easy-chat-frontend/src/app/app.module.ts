@@ -8,7 +8,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { ChatBarComponent } from './components/chat-bar/chat-bar.component';
-import { CurrentlyTypingBarComponent } from './components/currently-typing-bar/currently-typing-bar.component';
 
 
 const APP_LOCALE_ID = 'de-CH';
@@ -26,7 +25,6 @@ registerLocaleData(locale_de_ch);
     FooterComponent,
     ContentComponent,
     ChatBarComponent,
-    CurrentlyTypingBarComponent,
     ChatHistoryComponent,
     ChatBubbleComponent
   ],
