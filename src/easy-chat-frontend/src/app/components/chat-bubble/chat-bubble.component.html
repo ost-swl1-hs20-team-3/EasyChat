@@ -2,8 +2,7 @@
 <ng-container *ngIf="isSentByMe()">
   <div class="row msg">
     <div class="col-12 d-flex justify-content-end">
-      <div class="msg-content msg-content-sender bg-primary text-white">
-        <div class="msg-content-username">{{chatMessage.sender}}</div>
+      <div class="msg-content msg-content-mine bg-primary text-white">
         <div class="">{{chatMessage.content}}</div>
       </div>
     </div>
@@ -17,7 +16,7 @@
 <ng-container *ngIf="!isSentByMe()">
   <div class="row msg">
     <div class="col-12 d-flex justify-content-start">
-      <div class="msg-content msg-content-receiver bg-secondary text-white">
+      <div class="msg-content msg-content-other bg-secondary text-white">
         <div class="msg-content-username">{{chatMessage.sender}}</div>
         <div class="">{{chatMessage.content}}</div>
       </div>
