@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -8,9 +8,16 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public userService: UserService) { }
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    public userService: UserService,
+    ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  }
+
+  public changeUsername() {
+    this.userService.openUserEditModal(this.viewContainerRef);
   }
 
 }

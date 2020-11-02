@@ -8,14 +8,14 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { ChatBarComponent } from './components/chat-bar/chat-bar.component';
+import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
+import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
+import { UsernameEditComponent } from './components/username-edit/username-edit.component';
 
 
 const APP_LOCALE_ID = 'de-CH';
 
 import locale_de_ch from '@angular/common/locales/de-CH';
-import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
-import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
-import { UsernameEditComponent } from './components/username-edit/username-edit.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -39,6 +39,7 @@ registerLocaleData(locale_de_ch);
       provide: LOCALE_ID, useValue: APP_LOCALE_ID
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UsernameEditComponent]
 })
 export class AppModule { }

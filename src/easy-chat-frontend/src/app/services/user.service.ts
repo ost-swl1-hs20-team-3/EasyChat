@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { fromEventPattern } from 'rxjs';
+import { ComponentFactoryResolver, Injectable, OnInit, ViewContainerRef } from '@angular/core';
+import { UsernameEditComponent } from '../components/username-edit/username-edit.component';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ export class UserService {
 
   private username: string = '';
 
-  constructor() { }
+  constructor(private factoryResolver: ComponentFactoryResolver) { }
 
   private validateUsername(username: string): boolean {
     return /^[+a-zA-Z]{1}\S*$/.test(username);
@@ -30,5 +29,14 @@ export class UserService {
 
   public isLoggedIn(): boolean {
     return this.username.trim().length > 0;
+  }
+
+  public openUserEditModal(viewContainerRef: ViewContainerRef) {
+    const factory = this.factoryResolver.resolveComponentFactory(UsernameEditComponent);
+    const component = factory.create(viewContainerRef.injector);
+    
+    component.instance.close.subscribe(() => component.destroy());
+
+    viewContainerRef.insert(component.hostView);
   }
 }

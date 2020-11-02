@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./username-edit.component.css']
 })
 export class UsernameEditComponent implements OnInit, AfterViewInit {
+  @Output() close: EventEmitter<any> = new EventEmitter<any>();
+
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
 
@@ -31,8 +33,12 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
       this.title = 'Willkommen!';
       this.description = 'Bitte geben Sie einen Benutzernamen ein:';
       this.buttonText = 'Eintreten';
-      this.openModal();
+    } else {
+      this.title = 'Benutzernamen ändern?';
+      this.description = 'Bitte geben Sie den neuen Benutzernamen ein:';
+      this.buttonText = 'Ändern';
     }
+    this.openModal();
   }
 
   public openModal(): void {
@@ -41,6 +47,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
 
   public closeModal(): void {
     this.closeButton.nativeElement.click();
+    this.close.emit();
   }
 
   public saveUsername(): void {
