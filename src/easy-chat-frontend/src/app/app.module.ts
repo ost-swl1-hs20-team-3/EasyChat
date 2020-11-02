@@ -15,6 +15,7 @@ const APP_LOCALE_ID = 'de-CH';
 import locale_de_ch from '@angular/common/locales/de-CH';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
+import { UsernameEditComponent } from './components/username-edit/username-edit.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -26,7 +27,8 @@ registerLocaleData(locale_de_ch);
     ContentComponent,
     ChatBarComponent,
     ChatHistoryComponent,
-    ChatBubbleComponent
+    ChatBubbleComponent,
+    UsernameEditComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,11 @@
+<h1>{{this.titleText}}</h1>
+<p>{{this.descriptionText}}</p>
+
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="Benutzername" autofocus [(ngModel)]="username"
+      (keyup.enter)="saveUsername()"/>
+    <span class="input-group-btn">
+      <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="saveUsername()">➜</button>
+    </span>
+</div>
+  
