@@ -1,9 +1,9 @@
-#myLink {
+a {
     color: black;
     text-decoration: none;
 }
 
-#myLink:hover {
+a:hover {
     color: white;
     cursor: pointer;
 }
