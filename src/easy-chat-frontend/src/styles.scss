@@ -1,0 +1,22 @@
+@import 'customize-bootstrap.scss';
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+/* You can add global styles to this file, and also import other style files */
+body {
+  overflow: hidden;
+}
+
+
+/* Customer overwrites */
+ec-header {
+  background-color: $gray-300;
+}
+
+ec-content {
+  background-image: url(https://subtlepatterns.com/patterns/sativa.png);
+}
+
+ec-footer {
+  background-color: $gray-300;
+}
+
