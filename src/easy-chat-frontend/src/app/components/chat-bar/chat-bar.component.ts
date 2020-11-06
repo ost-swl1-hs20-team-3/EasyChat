@@ -10,15 +10,15 @@ import { ChatService } from '../../services/chat.service';
 export class ChatBarComponent implements OnInit {
 
   public message = '';
-  public get isValidToSend(): boolean { 
-    return this.userService.isLoggedIn() && this.message.trim().length > 0; 
+  public get isValidToSend(): boolean {
+    return this.userService.isLoggedIn() && this.message.trim().length > 0;
   }
 
   constructor(
     private viewContainerRef: ViewContainerRef,
     private chatService: ChatService,
     private userService: UserService
-    ) { }
+  ) { }
 
   public ngOnInit(): void {
     if (!this.userService.isLoggedIn()) {
@@ -41,4 +41,5 @@ export class ChatBarComponent implements OnInit {
     this.message = '';
     this.chatService.typeMessage('');
   }
+
 }

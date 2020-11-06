@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, OnInit, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, ViewContainerRef } from '@angular/core';
 import { UsernameEditComponent } from '../components/username-edit/username-edit.component';
 
 @Injectable({
@@ -6,7 +6,7 @@ import { UsernameEditComponent } from '../components/username-edit/username-edit
 })
 export class UserService {
 
-  private username: string = '';
+  private username = '';
 
   constructor(private factoryResolver: ComponentFactoryResolver) { }
 
@@ -24,18 +24,18 @@ export class UserService {
   }
 
   public getUserName(): string {
-    return this.username;    
+    return this.username;
   }
 
   public isLoggedIn(): boolean {
     return this.username.trim().length > 0;
   }
 
-  public openUserEditModal(viewContainerRef: ViewContainerRef) {
+  public openUserEditModal(viewContainerRef: ViewContainerRef): void {
     const factory = this.factoryResolver.resolveComponentFactory(UsernameEditComponent);
     const component = factory.create(viewContainerRef.injector);
-    
-    component.instance.close.subscribe(() => component.destroy());
+
+    component.instance.modalClosed.subscribe(() => component.destroy());
 
     viewContainerRef.insert(component.hostView);
   }
