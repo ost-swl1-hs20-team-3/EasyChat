@@ -34,7 +34,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
       this.description = 'Bitte geben Sie einen Benutzernamen ein:';
       this.buttonText = 'Eintreten';
     } else {
-      this.title = 'Benutzernamen ändern?';
+      this.title = 'Benutzernamen';
       this.description = 'Bitte geben Sie den neuen Benutzernamen ein:';
       this.buttonText = 'Ändern';
     }

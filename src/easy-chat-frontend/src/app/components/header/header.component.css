@@ -7,3 +7,9 @@ a.profile:hover {
     cursor: pointer;
     text-decoration: none;
 }
+
+.userName {
+    max-width: 40%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
