@@ -16,7 +16,6 @@ import { UsernameEditComponent } from './components/username-edit/username-edit.
 const APP_LOCALE_ID = 'de-CH';
 
 import locale_de_ch from '@angular/common/locales/de-CH';
-import { LogoComponent } from './logo/logo.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -29,8 +28,7 @@ registerLocaleData(locale_de_ch);
     ChatBarComponent,
     ChatHistoryComponent,
     ChatBubbleComponent,
-    UsernameEditComponent,
-    LogoComponent
+    UsernameEditComponent
   ],
   imports: [
     BrowserModule,
