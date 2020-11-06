@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, OnInit, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, ViewContainerRef } from '@angular/core';
 import { UsernameEditComponent } from '../components/username-edit/username-edit.component';
 
 @Injectable({
