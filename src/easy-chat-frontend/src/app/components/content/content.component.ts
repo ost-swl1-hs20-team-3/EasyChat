@@ -6,21 +6,20 @@ import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@ang
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent implements OnInit, AfterViewChecked {
-
-  @ViewChild('scrollable') private myScrollContainer: ElementRef;
+  @ViewChild('scrollable') private scrollContainerRef: ElementRef;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  ngAfterViewChecked() {
-    this.scrollToElement();
+  public ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
-  scrollToElement(): void {
-    this.myScrollContainer.nativeElement.scroll({
-      top: this.myScrollContainer.nativeElement.scrollHeight,
+  public scrollToBottom(): void {
+    this.scrollContainerRef.nativeElement.scroll({
+      top: this.scrollContainerRef.nativeElement.scrollHeight,
       behavior: 'smooth'
     });
   }

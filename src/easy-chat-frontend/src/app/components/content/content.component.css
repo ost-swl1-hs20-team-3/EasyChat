@@ -2,7 +2,7 @@ ec-chat-history, #scrollable {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: 83vh;
+  height: 100vh;
 }
 
 ec-chat-bar {
