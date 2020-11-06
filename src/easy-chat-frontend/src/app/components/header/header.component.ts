@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -8,16 +9,22 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(
-    private viewContainerRef: ViewContainerRef,
-    public userService: UserService,
-  ) { }
 
-  public ngOnInit(): void {
+  private subRaiseWelcomeModal: Subscription;
+  @Input() raiseWelcomeModalChild: Observable<boolean>;
+  
+  public raiseEditModalParent: Subject<boolean> = new Subject<boolean>();
+
+  constructor(public userService: UserService) { 
   }
 
-  public changeUsername(): void {
-    this.userService.openUserEditModal(this.viewContainerRef);
+  public ngOnInit(): void {
+    this.subRaiseWelcomeModal = this.raiseWelcomeModalChild.subscribe((bool) => 
+      this.raiseModal(bool));
+  }
+
+  public raiseModal(bool: boolean) {
+    this.raiseEditModalParent.next(bool);
   }
 
 }

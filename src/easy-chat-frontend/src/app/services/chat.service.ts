@@ -12,9 +12,7 @@ export class ChatService {
   public currentMessage = this.messageSource.asObservable();
   public messageList: Array<ChatMessage> = new Array<ChatMessage>();
 
-  constructor(private userService: UserService) {
-    // this.setUpTestMessages(); // TEMP
-  }
+  constructor(private userService: UserService) { }
 
   public sendMessage(message: string): void {
     message = this.cleanInput(message);
@@ -36,42 +34,5 @@ export class ChatService {
 
   private cleanInput(message: string): string {
     return message.trim();
-  }
-
-
-  // TEMP
-  private setUpTestMessages(): void {
-    const msgA: ChatMessage = new ChatMessage();
-    msgA.sender = this.userService.getUserName();
-    msgA.content = 'Ich habe das geschrieben';
-    msgA.timestamp = new Date().toISOString();
-    this.messageList.push(msgA);
-
-    const msgB: ChatMessage = new ChatMessage();
-    msgB.sender = 'OTHER';
-    msgB.content = 'Jemand anderes hat das geschrieben';
-    msgB.timestamp = new Date().toISOString();
-    this.messageList.push(msgB);
-
-    const msgC: ChatMessage = new ChatMessage();
-    msgC.sender = this.userService.getUserName();
-    msgC.content = 'Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text habe ich geschrieben.';
-    msgC.timestamp = new Date().toISOString();
-    this.messageList.push(msgC);
-
-    const msgD: ChatMessage = new ChatMessage();
-    msgD.sender = 'OTHER';
-    msgD.content = 'Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text hat jemand anderes geschrieben.';
-    msgD.timestamp = new Date().toISOString();
-    this.messageList.push(msgD);
-
-
-    this.messageList.push(msgA);
-    this.messageList.push(msgA);
-    this.messageList.push(msgB);
-    this.messageList.push(msgC);
-    this.messageList.push(msgC);
-    this.messageList.push(msgD);
-    this.messageList.push(msgD);
   }
 }
