@@ -1,0 +1,21 @@
+<button type="button" #openButton data-toggle="modal" data-target="#userNameModal" aria-hidden="true" hidden="true"></button>
+<button type="button" #closeButton data-toggle="modal" data-target="#userNameModal" aria-hidden="true" hidden="true"></button>
+
+<div class="modal fade" id="userNameModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{title}}</h5>
+      </div>
+      <div class="modal-body">
+        <p>{{description}}</p>
+        <span class="error text-danger">{{errorMsg}}</span>
+        <input type="text" class="form-control" placeholder="Benutzername" autofocus [(ngModel)]="username" (keyup.enter)="saveUsername()" />
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="saveUsername()">{{buttonText}}</button>
+      </div>
+    </div>
+  </div>
+
+</div>
