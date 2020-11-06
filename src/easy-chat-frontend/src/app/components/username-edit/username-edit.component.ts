@@ -31,11 +31,11 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
     // Wird aufgerufen, wenn User sich das erste Mal anmeldet
     if(!this.userService.isLoggedIn()) {
       this.title = 'Willkommen!';
-      this.description = 'Bitte geben Sie einen Benutzernamen ein:';
+      this.description = 'Bitte geben Sie einen Benutzernamen ein.';
       this.buttonText = 'Eintreten';
     } else {
       this.title = 'Benutzernamen';
-      this.description = 'Bitte geben Sie den neuen Benutzernamen ein:';
+      this.description = 'Bitte geben Sie den neuen Benutzernamen ein.';
       this.buttonText = 'Ändern';
     }
     this.openModal();
