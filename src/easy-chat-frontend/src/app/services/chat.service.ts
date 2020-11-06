@@ -41,27 +41,27 @@ export class ChatService {
 
   // TEMP
   private setUpTestMessages(): void {
-    let msgA: ChatMessage = new ChatMessage()
+    const msgA: ChatMessage = new ChatMessage();
     msgA.sender = this.userService.getUserName();
-    msgA.content = "Ich habe das geschrieben";
+    msgA.content = 'Ich habe das geschrieben';
     msgA.timestamp = new Date().toISOString();
     this.messageList.push(msgA);
 
-    let msgB: ChatMessage = new ChatMessage()
-    msgB.sender = "OTHER";
-    msgB.content = "Jemand anderes hat das geschrieben";
+    const msgB: ChatMessage = new ChatMessage();
+    msgB.sender = 'OTHER';
+    msgB.content = 'Jemand anderes hat das geschrieben';
     msgB.timestamp = new Date().toISOString();
     this.messageList.push(msgB);
 
-    let msgC: ChatMessage = new ChatMessage()
+    const msgC: ChatMessage = new ChatMessage();
     msgC.sender = this.userService.getUserName();
-    msgC.content = "Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text habe ich geschrieben.";
+    msgC.content = 'Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text habe ich geschrieben.';
     msgC.timestamp = new Date().toISOString();
     this.messageList.push(msgC);
 
-    let msgD: ChatMessage = new ChatMessage()
-    msgD.sender = "OTHER";
-    msgD.content = "Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text hat jemand anderes geschrieben.";
+    const msgD: ChatMessage = new ChatMessage();
+    msgD.sender = 'OTHER';
+    msgD.content = 'Diesen sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr langen Text hat jemand anderes geschrieben.';
     msgD.timestamp = new Date().toISOString();
     this.messageList.push(msgD);
 

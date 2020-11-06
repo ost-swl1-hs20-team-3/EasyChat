@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from './services/user.service';
 
 @Component({
   selector: 'ec-root',
@@ -8,13 +7,10 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(public userService: UserService) {
-    
+  constructor() {
   }
-  
-  ngOnInit(): void {
-        
-    }
 
+  public ngOnInit(): void {
+  }
 
 }

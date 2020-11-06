@@ -11,12 +11,12 @@ export class HeaderComponent implements OnInit {
   constructor(
     private viewContainerRef: ViewContainerRef,
     public userService: UserService,
-    ) { }
+  ) { }
 
   public ngOnInit(): void {
   }
 
-  public changeUsername() {
+  public changeUsername(): void {
     this.userService.openUserEditModal(this.viewContainerRef);
   }
 

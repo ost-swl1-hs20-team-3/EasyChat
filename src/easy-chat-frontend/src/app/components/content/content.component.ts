@@ -6,6 +6,7 @@ import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@ang
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent implements OnInit, AfterViewChecked {
+
   @ViewChild('scrollable') private scrollContainerRef: ElementRef;
 
   constructor() { }

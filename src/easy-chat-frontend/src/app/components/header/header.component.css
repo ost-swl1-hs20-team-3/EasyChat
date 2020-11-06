@@ -1,15 +1,15 @@
 a.profile {
-    color: black;
+  color: black;
 }
 
 a.profile:hover {
-    color: white;
-    cursor: pointer;
-    text-decoration: none;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .userName {
-    max-width: 40%;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  max-width: 40%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
