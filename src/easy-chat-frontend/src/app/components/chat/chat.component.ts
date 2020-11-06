@@ -1,11 +1,11 @@
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'ec-content',
-  templateUrl: './content.component.html',
-  styleUrls: ['./content.component.css']
+  selector: 'ec-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css']
 })
-export class ContentComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('scrollable') private scrollContainerRef: ElementRef;
 
