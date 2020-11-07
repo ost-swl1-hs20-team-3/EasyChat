@@ -29,13 +29,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subEditModalChild = this.raiseEditModalChild.subscribe((bool) => {
-      if(bool) {
-        this.openModal(bool);
-      } else {
-        this.openModal(bool);
-      }
-    });
+    this.subEditModalChild = this.raiseEditModalChild.subscribe((bool) => this.openModal(bool));
   }
 
   public ngAfterViewInit(): void {
@@ -47,7 +41,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public openModal(bool: boolean): void {
     if(!bool) {
-      this.title = "Benutzernamen!";
+      this.title = "Benutzername";
       this.description = "Bitte geben Sie einen neuen Benutzer ein.";
       this.buttonText = "Ändern";
     }
