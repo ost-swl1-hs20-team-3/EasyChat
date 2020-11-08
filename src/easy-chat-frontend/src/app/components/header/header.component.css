@@ -1,11 +1,5 @@
 .userName {
   max-width: 40%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.userName {
-  max-width: 40%;
 }
 
 .btn-wrap-text {
