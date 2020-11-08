@@ -1,6 +1,5 @@
 ec-header {
-  min-height: 40px;
-  max-height: 12vh;
+  height: 66px;
 }
 
 ec-chat {
@@ -9,6 +8,5 @@ ec-chat {
 }
 
 ec-footer {
-  min-height: 25px;
-  max-height: 5vh;
+  height: 25px;
 }

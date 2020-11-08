@@ -4,7 +4,3 @@ ec-chat-history, #scrollable {
   -webkit-overflow-scrolling: touch;
   height: 100vh;
 }
-
-ec-chat-bar {
-  margin-bottom: 0.5rem;
-}
