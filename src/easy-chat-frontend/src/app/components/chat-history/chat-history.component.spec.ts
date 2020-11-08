@@ -8,9 +8,8 @@ describe('ChatHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [ChatHistoryComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

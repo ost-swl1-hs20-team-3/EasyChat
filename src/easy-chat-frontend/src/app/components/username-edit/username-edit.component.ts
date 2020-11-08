@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -7,18 +7,18 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./username-edit.component.css']
 })
 export class UsernameEditComponent implements OnInit, AfterViewInit {
-  @Output() close: EventEmitter<any> = new EventEmitter<any>();
+  @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
 
-  public username: string = '';
-  public title: string = '';
-  public description: string = '';
-  public buttonText: string = '';
-  public errorMsg: string = '';
+  public username = '';
+  public title = '';
+  public description = '';
+  public buttonText = '';
+  public errorMsg = '';
 
-  public get isValidToSend(): boolean { return this.username.trim().length > 0 };
+  public get isValidToSend(): boolean { return this.username.trim().length > 0; }
 
   constructor(private userService: UserService) {
     this.username = userService.getUserName();
@@ -27,9 +27,9 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
   }
 
-  public ngAfterViewInit (): void {
+  public ngAfterViewInit(): void {
     // Wird aufgerufen, wenn User sich das erste Mal anmeldet
-    if(!this.userService.isLoggedIn()) {
+    if (!this.userService.isLoggedIn()) {
       this.title = 'Willkommen!';
       this.description = 'Bitte geben Sie einen Benutzernamen ein.';
       this.buttonText = 'Eintreten';
@@ -47,12 +47,12 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
 
   public closeModal(): void {
     this.closeButton.nativeElement.click();
-    this.close.emit();
+    this.modalClosed.emit();
   }
 
   public saveUsername(): void {
     this.errorMsg = this.userService.setUsername(this.username);
-    if(this.errorMsg.length == 0) {
+    if (this.errorMsg.length === 0) {
       this.closeModal();
     }
   }
