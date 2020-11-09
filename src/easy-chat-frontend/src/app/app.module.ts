@@ -39,7 +39,6 @@ registerLocaleData(locale_de_ch);
       provide: LOCALE_ID, useValue: APP_LOCALE_ID
     }
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [UsernameEditComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

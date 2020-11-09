@@ -10,7 +10,7 @@ export class ChatHistoryComponent implements OnInit {
 
   constructor(public chatService: ChatService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }
