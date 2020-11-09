@@ -1,0 +1,16 @@
+@import './assets/styles/customize-bootstrap.scss';
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+
+body {
+  overflow: hidden;
+  background-image: url('./assets/images/sativa.webp');
+}
+
+ec-header {
+  background-color: transparent;
+}
+
+ec-footer {
+  background-color: transparent;
+}

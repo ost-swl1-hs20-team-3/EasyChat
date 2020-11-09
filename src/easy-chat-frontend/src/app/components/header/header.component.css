@@ -1,15 +1,10 @@
-a.profile {
-  color: black;
-}
-
-a.profile:hover {
-  color: white;
-  cursor: pointer;
-  text-decoration: none;
-}
-
 .userName {
-  max-width: 40%;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  max-width: 60%;
+}
+
+.btn-wrap-text {
+overflow: hidden;
+white-space: nowrap;
+display: inline-block;
+text-overflow: ellipsis;
 }
