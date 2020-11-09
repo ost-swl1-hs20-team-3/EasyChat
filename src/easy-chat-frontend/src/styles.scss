@@ -1,9 +1,10 @@
-@import 'customize-bootstrap.scss';
+@import './assets/styles/customize-bootstrap.scss';
 @import '../node_modules/bootstrap/scss/bootstrap';
+
 
 body {
   overflow: hidden;
-  background-image: url(https://subtlepatterns.com/patterns/sativa.png);
+  background-image: url('./assets/images/sativa.webp');
 }
 
 ec-header {
@@ -13,4 +14,3 @@ ec-header {
 ec-footer {
   background-color: transparent;
 }
-
