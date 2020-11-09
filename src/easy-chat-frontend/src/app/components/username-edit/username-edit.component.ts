@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -6,16 +7,19 @@ import { UserService } from '../../services/user.service';
   templateUrl: './username-edit.component.html',
   styleUrls: ['./username-edit.component.css']
 })
-export class UsernameEditComponent implements OnInit, AfterViewInit {
+export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
+
+  private subEditModalChild: Subscription;
+  @Input() raiseEditModalChild: Observable<boolean>;
 
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
 
   public username = '';
-  public title = '';
-  public description = '';
-  public buttonText = '';
+  public title = 'Willkommen!';
+  public description = 'Bitte geben Sie einen Benutzer ein.';
+  public buttonText = 'Eintreten';
   public errorMsg = '';
 
   public get isValidToSend(): boolean { return this.username.trim().length > 0; }
@@ -25,23 +29,24 @@ export class UsernameEditComponent implements OnInit, AfterViewInit {
   }
 
   public ngOnInit(): void {
+    this.subEditModalChild = this.raiseEditModalChild.subscribe((bool) => this.openModal(bool));
   }
 
   public ngAfterViewInit(): void {
-    // Wird aufgerufen, wenn User sich das erste Mal anmeldet
-    if (!this.userService.isLoggedIn()) {
-      this.title = 'Willkommen!';
-      this.description = 'Bitte geben Sie einen Benutzernamen ein.';
-      this.buttonText = 'Eintreten';
-    } else {
-      this.title = 'Benutzernamen';
-      this.description = 'Bitte geben Sie den neuen Benutzernamen ein.';
-      this.buttonText = 'Ändern';
-    }
-    this.openModal();
   }
 
-  public openModal(): void {
+  public ngOnDestroy(): void {
+    this.subEditModalChild.unsubscribe();
+  }
+
+  public openModal(bool: boolean): void {
+    if(!bool) {
+      this.title = "Benutzername";
+      this.description = "Bitte geben Sie einen neuen Benutzer ein.";
+      this.buttonText = "Ändern";
+    }
+
+    this.username = this.userService.getUserName();
     this.openButton.nativeElement.click();
   }
 

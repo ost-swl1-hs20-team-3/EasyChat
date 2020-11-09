@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 
@@ -15,15 +15,11 @@ export class ChatBarComponent implements OnInit {
   }
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
     private chatService: ChatService,
     private userService: UserService
   ) { }
 
   public ngOnInit(): void {
-    if (!this.userService.isLoggedIn()) {
-      this.userService.openUserEditModal(this.viewContainerRef);
-    }
   }
 
   public typeMessage(): void {
