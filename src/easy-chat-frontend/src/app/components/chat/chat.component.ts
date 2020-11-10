@@ -7,7 +7,7 @@ import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@ang
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
 
-  @ViewChild('scrollable') private scrollContainerRef: ElementRef;
+  @ViewChild('scrollable') scrollContainerRef: ElementRef;
 
   constructor() { }
 
@@ -18,7 +18,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  public scrollToBottom(): void {
+  private scrollToBottom(): void {
     this.scrollContainerRef.nativeElement.scroll({
       top: this.scrollContainerRef.nativeElement.scrollHeight,
       behavior: 'smooth'

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { EventService } from './services/event.service';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -9,9 +9,9 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-  raiseWelcomeModalParent: Subject<boolean> = new Subject<boolean>();
-
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private eventService: EventService) {
   }
 
   public ngOnInit(): void {
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     if(!this.userService.isLoggedIn()) {
-      this.raiseWelcomeModalParent.next(true);
+      this.eventService.setEditModal(true);
     }
   }
 

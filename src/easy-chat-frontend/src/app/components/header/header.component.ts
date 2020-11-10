@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { EventService } from 'src/app/services/event.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -9,22 +9,16 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-
-  private subRaiseWelcomeModal: Subscription;
-  @Input() raiseWelcomeModalChild: Observable<boolean>;
-  
-  public raiseEditModalParent: Subject<boolean> = new Subject<boolean>();
-
-  constructor(public userService: UserService) { 
+  constructor(
+    public userService: UserService,
+    private eventService: EventService) { 
   }
 
   public ngOnInit(): void {
-    this.subRaiseWelcomeModal = this.raiseWelcomeModalChild.subscribe((bool) => 
-      this.raiseModal(bool));
   }
 
-  public raiseModal(bool: boolean) {
-    this.raiseEditModalParent.next(bool);
+  public raiseModal() {
+    this.eventService.setEditModal(false);
   }
 
 }

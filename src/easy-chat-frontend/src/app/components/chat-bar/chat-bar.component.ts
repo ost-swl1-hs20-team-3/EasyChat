@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
-import { FocusService } from 'src/app/services/focus.service';
+import { EventService } from 'src/app/services/event.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ec-chat-bar',
@@ -10,7 +11,9 @@ import { FocusService } from 'src/app/services/focus.service';
 })
 export class ChatBarComponent implements OnInit {
 
-  @ViewChild('messageFocus') messageFocus;
+  private focusNowSubscription: Subscription;
+
+  @ViewChild('messageFocus') messageFocus: ElementRef;
 
   public message = '';
   public get isValidToSend(): boolean {
@@ -20,15 +23,19 @@ export class ChatBarComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private userService: UserService,
-    private focusService: FocusService
+    private eventService: EventService
   ) {
-    this.focusService.focusNow$.subscribe(
+    this.focusNowSubscription = this.eventService.focusNow$.subscribe(
       () => {
-        this.setFocus();
+        this.setChatbarFocus();
       });
    }
 
   public ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.focusNowSubscription.unsubscribe();
   }
 
   public typeMessage(): void {
@@ -45,10 +52,10 @@ export class ChatBarComponent implements OnInit {
   private resetMessage(): void {
     this.message = '';
     this.chatService.typeMessage('');
-    this.setFocus();
+    this.setChatbarFocus();
   }
 
-  private setFocus(): void {
+  private setChatbarFocus(): void {
     this.messageFocus.nativeElement.focus();
   }
 
