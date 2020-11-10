@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { UserService } from '../../services/user.service';
@@ -12,11 +12,11 @@ export class UsernameEditComponent implements OnInit {
 
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
-  editModalSubscription: Subscription;
+  private editModalSubscription: Subscription;
 
-  @ViewChild('openButton') openButton;
-  @ViewChild('closeButton') closeButton;
-  @ViewChild('usernameFocus') usernameFocus;
+  @ViewChild('openButton') openButton: ElementRef;
+  @ViewChild('closeButton') closeButton: ElementRef;
+  @ViewChild('usernameFocus') usernameFocus: ElementRef;
 
   public username = '';
   public title = 'Willkommen!';
@@ -29,7 +29,6 @@ export class UsernameEditComponent implements OnInit {
   constructor(
     private userService: UserService,
     private eventService: EventService) {
-    console.log("constructor aufgerufen");
     this.username = userService.getUserName();
     this.editModalSubscription = this.eventService.editModal$.subscribe(
       (bool) => {
@@ -44,8 +43,20 @@ export class UsernameEditComponent implements OnInit {
     this.editModalSubscription.unsubscribe();
   }
 
+  public saveUsername(): void {
+    this.errorMsg = this.userService.setUsername(this.username);
+    if (this.errorMsg.length === 0) {
+      this.closeModal();
+    }
+  }
 
-  public openModal(bool: boolean): void {
+  private closeModal(): void {
+    this.closeButton.nativeElement.click();
+    this.modalClosed.emit();
+    this.eventService.setFocusNow();
+  }
+
+  private openModal(bool: boolean): void {
     if (!bool) {
       this.title = "Benutzername";
       this.description = "Bitte geben Sie einen neuen Benutzer ein.";
@@ -55,19 +66,6 @@ export class UsernameEditComponent implements OnInit {
     this.openButton.nativeElement.click();
     this.usernameFocus.nativeElement.focus();
     this.usernameFocus.nativeElement.setSelectionRange(0, this.username.length);
-  }
-
-  public closeModal(): void {
-    this.closeButton.nativeElement.click();
-    this.modalClosed.emit();
-    this.eventService.setFocusNow();
-  }
-
-  public saveUsername(): void {
-    this.errorMsg = this.userService.setUsername(this.username);
-    if (this.errorMsg.length === 0) {
-      this.closeModal();
-    }
   }
 
 }

@@ -11,11 +11,10 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    public eventService: EventService) { 
+    private eventService: EventService) { 
   }
 
   public ngOnInit(): void {
-
   }
 
   public raiseModal() {

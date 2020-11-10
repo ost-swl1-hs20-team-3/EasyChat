@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 import { EventService } from 'src/app/services/event.service';
@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs';
 })
 export class ChatBarComponent implements OnInit {
 
-  focusNowSubscription: Subscription;
+  private focusNowSubscription: Subscription;
 
-  @ViewChild('messageFocus') messageFocus;
+  @ViewChild('messageFocus') messageFocus: ElementRef;
 
   public message = '';
   public get isValidToSend(): boolean {
