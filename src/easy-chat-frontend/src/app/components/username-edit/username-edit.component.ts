@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { FocusService } from 'src/app/services/focus.service';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { EventService } from 'src/app/services/event.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -8,11 +8,11 @@ import { UserService } from '../../services/user.service';
   templateUrl: './username-edit.component.html',
   styleUrls: ['./username-edit.component.css']
 })
-export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UsernameEditComponent implements OnInit {
+
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
-  private subEditModalChild: Subscription;
-  @Input() raiseEditModalChild: Observable<boolean>;
+  editModalSubscription: Subscription;
 
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
@@ -28,28 +28,29 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private focusService: FocusService) {
+    private eventService: EventService) {
+    console.log("constructor aufgerufen");
     this.username = userService.getUserName();
+    this.editModalSubscription = this.eventService.editModal$.subscribe(
+      (bool) => {
+        this.openModal(bool);
+      });
   }
 
   public ngOnInit(): void {
-    this.subEditModalChild = this.raiseEditModalChild.subscribe((bool) => this.openModal(bool));
-  }
-
-  public ngAfterViewInit(): void {
   }
 
   public ngOnDestroy(): void {
-    this.subEditModalChild.unsubscribe();
+    this.editModalSubscription.unsubscribe();
   }
 
+
   public openModal(bool: boolean): void {
-    if(!bool) {
+    if (!bool) {
       this.title = "Benutzername";
       this.description = "Bitte geben Sie einen neuen Benutzer ein.";
       this.buttonText = "Ändern";
     }
-
     this.username = this.userService.getUserName();
     this.openButton.nativeElement.click();
     this.usernameFocus.nativeElement.focus();
@@ -59,7 +60,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public closeModal(): void {
     this.closeButton.nativeElement.click();
     this.modalClosed.emit();
-    this.focusService.setFocusNow();
+    this.eventService.setFocusNow();
   }
 
   public saveUsername(): void {
