@@ -11,7 +11,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
   public ngAfterViewChecked(): void {

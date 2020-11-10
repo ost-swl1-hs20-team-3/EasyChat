@@ -14,7 +14,7 @@ export class ChatBubbleComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
   public isSentByMe(): boolean {

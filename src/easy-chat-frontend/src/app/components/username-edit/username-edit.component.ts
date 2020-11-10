@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { FocusService } from 'src/app/services/focus.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('openButton') openButton;
   @ViewChild('closeButton') closeButton;
+  @ViewChild('usernameFocus') usernameFocus;
 
   public username = '';
   public title = 'Willkommen!';
@@ -24,7 +26,9 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public get isValidToSend(): boolean { return this.username.trim().length > 0; }
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private focusService: FocusService) {
     this.username = userService.getUserName();
   }
 
@@ -48,11 +52,14 @@ export class UsernameEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.username = this.userService.getUserName();
     this.openButton.nativeElement.click();
+    this.usernameFocus.nativeElement.focus();
+    this.usernameFocus.nativeElement.setSelectionRange(0, this.username.length);
   }
 
   public closeModal(): void {
     this.closeButton.nativeElement.click();
     this.modalClosed.emit();
+    this.focusService.setFocusNow();
   }
 
   public saveUsername(): void {

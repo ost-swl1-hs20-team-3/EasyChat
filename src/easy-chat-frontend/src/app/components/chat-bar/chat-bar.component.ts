@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
+import { FocusService } from 'src/app/services/focus.service';
 
 @Component({
   selector: 'ec-chat-bar',
@@ -9,6 +10,8 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatBarComponent implements OnInit {
 
+  @ViewChild('messageFocus') messageFocus;
+
   public message = '';
   public get isValidToSend(): boolean {
     return this.userService.isLoggedIn() && this.message.trim().length > 0;
@@ -16,8 +19,14 @@ export class ChatBarComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private focusService: FocusService
+  ) {
+    this.focusService.focusNow$.subscribe(
+      () => {
+        this.setFocus();
+      });
+   }
 
   public ngOnInit(): void {
   }
@@ -36,6 +45,11 @@ export class ChatBarComponent implements OnInit {
   private resetMessage(): void {
     this.message = '';
     this.chatService.typeMessage('');
+    this.setFocus();
+  }
+
+  private setFocus(): void {
+    this.messageFocus.nativeElement.focus();
   }
 
 }
