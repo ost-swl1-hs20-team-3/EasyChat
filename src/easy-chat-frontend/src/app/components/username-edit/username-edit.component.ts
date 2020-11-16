@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { UserService } from '../../services/user.service';
@@ -8,7 +8,7 @@ import { UserService } from '../../services/user.service';
   templateUrl: './username-edit.component.html',
   styleUrls: ['./username-edit.component.css']
 })
-export class UsernameEditComponent implements OnInit {
+export class UsernameEditComponent implements OnInit, OnDestroy {
 
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -58,9 +58,9 @@ export class UsernameEditComponent implements OnInit {
 
   private openModal(bool: boolean): void {
     if (!bool) {
-      this.title = "Benutzername";
-      this.description = "Bitte geben Sie einen neuen Benutzer ein.";
-      this.buttonText = "Ändern";
+      this.title = 'Benutzername';
+      this.description = 'Bitte geben Sie einen neuen Benutzer ein.';
+      this.buttonText = 'Ändern';
     }
     this.username = this.userService.getUserName();
     this.openButton.nativeElement.click();
