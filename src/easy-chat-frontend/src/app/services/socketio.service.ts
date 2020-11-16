@@ -23,6 +23,10 @@ export class SocketioService {
     }
 
     this.socket = io.connect(environment.SOCKET_ENDPOINT, { transports: ['websocket'] });
+
+    // TMP FOR TESTING
+    this.getAllEvents().subscribe();
+    // TMP FOR TESTING - END
   }
 
   private emit(event: string, msg: any): void {
@@ -49,6 +53,18 @@ export class SocketioService {
     if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
 
     const eventName = 'login-broadcast';
+    return new Observable((observer) => {
+      this.socket.on(eventName, (data: any) => {
+        console.log(`${eventName}: `, data);
+        observer.next(data);
+      });
+    });
+  }
+
+  public getOnlineUsers(): Observable<any> {
+    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
+
+    const eventName = 'online-user-changed';
     return new Observable((observer) => {
       this.socket.on(eventName, (data: any) => {
         console.log(`${eventName}: `, data);
@@ -98,8 +114,9 @@ export class SocketioService {
 
     return merge(
       this.getLoginEvents(),
+      this.getOnlineUsers(),
       this.getUserNameChangedEvents(),
-      this.getMessageEvents(),
+      // this.getMessageEvents(),
       this.getAllMessagesEvents()
     );
   }

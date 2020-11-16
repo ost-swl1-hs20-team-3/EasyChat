@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
 
 // SOCKET.io
 io.on('connection', (socket) => {
-    const count = Object.keys(io.sockets.connected).length;
-    logMessage(`user connected [ID: ${socket.id}, connected: ${count}]`);
+    io.emit('online-user-changed', { count: Object.keys(io.sockets.connected).length });
+    logMessage(`user connected [ID: ${socket.id}, connected: ${Object.keys(io.sockets.connected).length}]`);
 
     socket.on('login', (theMessage) => {
         logMessage(`new login [ID: ${socket.id}]: `, theMessage);
@@ -45,7 +45,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        logMessage(`user disconnected [ID: ${socket.id}, connected: ${count}]`);
+        io.emit('online-user-changed', { count: Object.keys(io.sockets.connected).length });
+        logMessage(`user disconnected [ID: ${socket.id}, connected: ${Object.keys(io.sockets.connected).length}]`);
     });
 });
 
