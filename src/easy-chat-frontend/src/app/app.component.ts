@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    if(!this.userService.isLoggedIn()) {
+    if (!this.userService.isLoggedIn()) {
       this.eventService.setEditModal(true);
     }
   }

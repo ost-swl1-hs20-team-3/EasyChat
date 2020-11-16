@@ -1,0 +1,1 @@
+web: node src/easy-chat-backend/server.js
