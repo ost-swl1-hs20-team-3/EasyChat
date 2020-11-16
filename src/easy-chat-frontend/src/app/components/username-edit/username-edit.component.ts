@@ -31,8 +31,8 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
     private eventService: EventService) {
     this.username = userService.getUserName();
     this.editModalSubscription = this.eventService.editModal$.subscribe(
-      (bool) => {
-        this.openModal(bool);
+      (isLogin) => {
+        this.openModal(isLogin);
       });
   }
 
@@ -56,8 +56,8 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
     this.eventService.setFocusNow();
   }
 
-  private openModal(bool: boolean): void {
-    if (!bool) {
+  private openModal(isLogin: boolean): void {
+    if (!isLogin) {
       this.title = 'Benutzername';
       this.description = 'Bitte geben Sie einen neuen Benutzer ein.';
       this.buttonText = 'Ändern';

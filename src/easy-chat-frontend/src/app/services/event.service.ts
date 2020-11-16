@@ -18,9 +18,8 @@ export class EventService {
     this.focusNow.next();
   }
 
-  public setEditModal(bool: boolean): void {
-    this.editModal.next(bool);
+  public setEditModal(isLogin: boolean): void {
+    this.editModal.next(isLogin);
   }
-
 
 }
