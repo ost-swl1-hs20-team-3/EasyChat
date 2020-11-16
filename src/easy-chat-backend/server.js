@@ -25,18 +25,23 @@ io.on('connection', (socket) => {
 
     socket.on('login', (theMessage) => {
         logMessage(`new login [ID: ${socket.id}]: `, theMessage);
-        socket.emit('login-broadcast', theMessage);
+        io.emit('login-broadcast', theMessage);
     });
 
     socket.on('username-change', (theMessage) => {
         logMessage(`new username-change [ID: ${socket.id}]: `, theMessage);
-        socket.emit('username-change-broadcast', theMessage);
+        io.emit('username-change-broadcast', theMessage);
     });
 
     socket.on('message', (theMessage) => {
         allMessages.push(theMessage);
         logMessage(`new message [ID: ${socket.id}]: `, theMessage);
-        socket.emit('message-broadcast', theMessage);
+        io.emit('message-broadcast', theMessage);
+    });
+
+
+    socket.on('get-all-messages', () => {
+        socket.broadcast.to(socket.id).emit('all-messages', allMessages);
     });
 
     socket.on('disconnect', () => {
