@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
-import { EventService } from 'src/app/services/event.service';
-import { UsernameChangedEvent, UserService } from '../../services/user.service';
+import { EventService, UsernameChangedEvent } from 'src/app/services/event.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'ec-username-edit',
@@ -14,6 +14,7 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
   private editModalSubscription: Subscription;
+  private changeUsernameSubscription: Subscription;
 
   @ViewChild('openButton') openButton: ElementRef;
   @ViewChild('closeButton') closeButton: ElementRef;
@@ -30,9 +31,9 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private eventService: EventService,
-    private chatService: ChatService) {
-    this.editModalSubscription = this.eventService.editModal$.subscribe((isLogin) => this.openModal(isLogin));
-    userService.onUsernameChanged.subscribe(event => this.sendInfoMessage(chatService, event));
+    chatService: ChatService) {
+    this.editModalSubscription = this.eventService.editModal$.subscribe(isLogin => this.openModal(isLogin));
+    this.changeUsernameSubscription = this.eventService.changeUsername$.subscribe(event => this.sendInfoMessage(chatService, event));
   }
 
   public ngOnInit(): void {
@@ -40,7 +41,7 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.editModalSubscription.unsubscribe();
-    this.userService.onUsernameChanged.unsubscribe();
+    this.changeUsernameSubscription.unsubscribe();
   }
 
   public saveUsername(): void {

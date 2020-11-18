@@ -1,15 +1,14 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { EventService } from './event.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  public onUsernameChanged = new EventEmitter<UsernameChangedEvent>()
-
   private username = '';
 
-  constructor() { }
+  constructor(private eventService: EventService) { }
 
   private validateUsername(username: string): boolean {
     return /^[+a-zA-Z]{1}\S{0,29}$/.test(username);
@@ -20,7 +19,7 @@ export class UserService {
       return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
     } else {
       if (this.username !== username){
-        this.onUsernameChanged.emit({oldUsername: this.username, newUsername: username});
+        this.eventService.setUsernameChanged(this.username, username);
         this.username = username;
       }
       return '';
@@ -35,9 +34,4 @@ export class UserService {
     return this.username.trim().length > 0;
   }
 
-}
-
-export class UsernameChangedEvent{
-  public oldUsername: string;
-  public newUsername: string;
 }
