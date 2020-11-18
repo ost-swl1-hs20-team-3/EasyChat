@@ -10,7 +10,8 @@ export class ChatInfoMessageNewUserComponent implements OnInit {
 
   @Input() chatMessage: ChatMessage;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
