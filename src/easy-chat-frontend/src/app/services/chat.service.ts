@@ -6,23 +6,32 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService {
+export class ChatService implements InfoMessageDefinition {
   private messageSource = new BehaviorSubject('');
 
   public currentMessage = this.messageSource.asObservable();
   public messageList: Array<ChatMessage> = new Array<ChatMessage>();
 
   constructor(private userService: UserService) { }
-
+  
   public sendMessage(message: string): void {
     message = this.cleanInput(message);
-
-    const newMessage = new ChatMessage();
-    newMessage.sender = this.userService.getUserName();
-    newMessage.content = message;
-    newMessage.timestamp = new Date().toISOString();
-
+    const newMessage = this.createChatMessage(message, 'message');
     this.messageSource.next(message);
+    this.messageList.push(newMessage);
+  }
+  
+  public sendInfoMessage(): InfoMessageDefinition {
+    return this;
+  }
+  
+  public forNewUser(message: string): void {
+    const newMessage = this.createChatMessage(message, 'newUser');
+    this.messageList.push(newMessage);
+  }
+
+  public forUsernameChanged(message: string): void {
+    const newMessage = this.createChatMessage(message, 'usernameChanged');
     this.messageList.push(newMessage);
   }
 
@@ -31,8 +40,25 @@ export class ChatService {
     this.messageSource.next(message);
   }
 
-
   private cleanInput(message: string): string {
     return message.trim();
   }
+
+  private createChatMessage(content: string, type: string){
+    const newMessage = new ChatMessage();
+    newMessage.sender = this.userService.getUserName();
+    newMessage.content = content;
+    newMessage.timestamp = new Date().toISOString();
+    newMessage.type = type;
+    return newMessage;
+  }
+
+}
+
+export interface InfoMessageDefinition {
+
+  forNewUser(message: string): void;
+
+  forUsernameChanged(message: string): void;
+
 }

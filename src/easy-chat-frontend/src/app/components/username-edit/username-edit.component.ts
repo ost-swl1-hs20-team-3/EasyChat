@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ChatService } from 'src/app/services/chat.service';
 import { EventService } from 'src/app/services/event.service';
-import { UserService } from '../../services/user.service';
+import { UsernameChangedEvent, UserService } from '../../services/user.service';
 
 @Component({
   selector: 'ec-username-edit',
@@ -28,12 +29,10 @@ export class UsernameEditComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private eventService: EventService) {
-    this.username = userService.getUserName();
-    this.editModalSubscription = this.eventService.editModal$.subscribe(
-      (bool) => {
-        this.openModal(bool);
-      });
+    private eventService: EventService,
+    private chatService: ChatService) {
+    this.editModalSubscription = this.eventService.editModal$.subscribe((openForNewUser) => this.openModal(openForNewUser));
+    userService.onUsernameChanged.subscribe(event => this.sendInfoMessage(chatService, event));
   }
 
   public ngOnInit(): void {
@@ -41,6 +40,7 @@ export class UsernameEditComponent implements OnInit {
 
   public ngOnDestroy(): void {
     this.editModalSubscription.unsubscribe();
+    this.userService.onUsernameChanged.unsubscribe();
   }
 
   public saveUsername(): void {
@@ -66,6 +66,14 @@ export class UsernameEditComponent implements OnInit {
     this.openButton.nativeElement.click();
     this.usernameFocus.nativeElement.focus();
     this.usernameFocus.nativeElement.setSelectionRange(0, this.username.length);
+  }
+
+  private sendInfoMessage(chatService: ChatService, event: UsernameChangedEvent): void {
+    if (event.oldUsername === ''){
+      chatService.sendInfoMessage().forNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
+    } else {
+      chatService.sendInfoMessage().forUsernameChanged(`${event.oldUsername} änderte den Benutzernamen zu ${event.newUsername}`);
+    }
   }
 
 }
