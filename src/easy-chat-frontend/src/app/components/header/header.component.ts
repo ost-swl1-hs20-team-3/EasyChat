@@ -11,13 +11,13 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private eventService: EventService) { 
+    private eventService: EventService) {
   }
 
   public ngOnInit(): void {
   }
 
-  public raiseModal() {
+  public raiseModal(): void {
     this.eventService.setEditModal(false);
   }
 

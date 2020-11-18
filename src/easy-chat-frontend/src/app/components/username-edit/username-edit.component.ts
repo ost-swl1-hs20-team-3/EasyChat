@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
 import { EventService } from 'src/app/services/event.service';
@@ -9,7 +9,7 @@ import { UsernameChangedEvent, UserService } from '../../services/user.service';
   templateUrl: './username-edit.component.html',
   styleUrls: ['./username-edit.component.css']
 })
-export class UsernameEditComponent implements OnInit {
+export class UsernameEditComponent implements OnInit, OnDestroy {
 
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,7 +31,7 @@ export class UsernameEditComponent implements OnInit {
     private userService: UserService,
     private eventService: EventService,
     private chatService: ChatService) {
-    this.editModalSubscription = this.eventService.editModal$.subscribe((openForNewUser) => this.openModal(openForNewUser));
+    this.editModalSubscription = this.eventService.editModal$.subscribe((isLogin) => this.openModal(isLogin));
     userService.onUsernameChanged.subscribe(event => this.sendInfoMessage(chatService, event));
   }
 
@@ -56,11 +56,11 @@ export class UsernameEditComponent implements OnInit {
     this.eventService.setFocusNow();
   }
 
-  private openModal(bool: boolean): void {
-    if (!bool) {
-      this.title = "Benutzername";
-      this.description = "Bitte geben Sie einen neuen Benutzer ein.";
-      this.buttonText = "Ändern";
+  private openModal(isLogin: boolean): void {
+    if (!isLogin) {
+      this.title = 'Benutzername';
+      this.description = 'Bitte geben Sie einen neuen Benutzer ein.';
+      this.buttonText = 'Ändern';
     }
     this.username = this.userService.getUserName();
     this.openButton.nativeElement.click();

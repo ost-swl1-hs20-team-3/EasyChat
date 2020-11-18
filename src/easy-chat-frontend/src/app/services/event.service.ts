@@ -9,18 +9,17 @@ export class EventService {
   public focusNow = new Subject<void>();
   public editModal = new Subject<boolean>();
 
-  focusNow$ = this.focusNow.asObservable()
-  editModal$ = this.editModal.asObservable()
+  focusNow$ = this.focusNow.asObservable();
+  editModal$ = this.editModal.asObservable();
 
   constructor() { }
 
-  setFocusNow() {
+  public setFocusNow(): void {
     this.focusNow.next();
   }
 
-  setEditModal(bool: boolean) {
-    this.editModal.next(bool);
+  public setEditModal(isLogin: boolean): void {
+    this.editModal.next(isLogin);
   }
-
 
 }
