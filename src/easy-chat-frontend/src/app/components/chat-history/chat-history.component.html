@@ -1,5 +1,5 @@
-<ng-component *ngFor="let chatMsg of chatService.messageList" [ngSwitch]="chatMsg.type">
+<ng-container *ngFor="let chatMsg of chatService.messageList" [ngSwitch]="chatMsg.type">
     <ec-chat-bubble *ngSwitchCase="'message'" [chatMessage]="chatMsg"></ec-chat-bubble>
     <ec-chat-info-message-new-user *ngSwitchCase="'newUser'" [chatMessage]="chatMsg"></ec-chat-info-message-new-user>
     <ec-chat-info-message-username-changed *ngSwitchCase="'usernameChanged'" [chatMessage]="chatMsg"></ec-chat-info-message-username-changed>
-</ng-component>
+</ng-container>

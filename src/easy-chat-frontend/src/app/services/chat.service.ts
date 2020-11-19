@@ -21,13 +21,12 @@ export class ChatService {
     this.messageList.push(newMessage);
   }
 
-  
-  public forNewUser(message: string): void {
+  public sendInfoMessageForNewUser(message: string): void {
     const newMessage = this.createChatMessage(message, 'newUser');
     this.messageList.push(newMessage);
   }
 
-  public forUsernameChanged(message: string): void {
+  public sendInfoMessageForUsernameChanged(message: string): void {
     const newMessage = this.createChatMessage(message, 'usernameChanged');
     this.messageList.push(newMessage);
   }
