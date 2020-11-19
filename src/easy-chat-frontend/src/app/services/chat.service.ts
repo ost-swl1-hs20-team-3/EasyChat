@@ -17,7 +17,7 @@ export class ChatService {
     private userService: UserService
   ) {
     this.changeUsernameSubscription = this.userService.changeUsername$.subscribe((event: UsernameChangedEvent) => {
-      this.handleUsernameChangedEvent(event);
+      this.handleUsernameEvent(event);
     });
   }
 
@@ -58,7 +58,7 @@ export class ChatService {
     return message.trim();
   }
 
-  public handleUsernameChangedEvent(event: UsernameChangedEvent): void {
+  public handleUsernameEvent(event: UsernameChangedEvent): void {
     if (event.oldUsername === '') {
       this.sendInfoMessageForNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
     } else {
