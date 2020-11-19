@@ -6,7 +6,7 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService implements InfoMessageDefinition {
+export class ChatService {
   private messageSource = new BehaviorSubject('');
 
   public currentMessage = this.messageSource.asObservable();
@@ -20,10 +20,7 @@ export class ChatService implements InfoMessageDefinition {
     this.messageSource.next(message);
     this.messageList.push(newMessage);
   }
-  
-  public sendInfoMessage(): InfoMessageDefinition {
-    return this;
-  }
+
   
   public forNewUser(message: string): void {
     const newMessage = this.createChatMessage(message, 'newUser');
@@ -52,13 +49,5 @@ export class ChatService implements InfoMessageDefinition {
     newMessage.type = type;
     return newMessage;
   }
-
-}
-
-export interface InfoMessageDefinition {
-
-  forNewUser(message: string): void;
-
-  forUsernameChanged(message: string): void;
 
 }

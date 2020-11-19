@@ -31,9 +31,9 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private eventService: EventService,
-    chatService: ChatService) {
+    private chatService: ChatService) {
     this.editModalSubscription = this.eventService.editModal$.subscribe(isLogin => this.openModal(isLogin));
-    this.changeUsernameSubscription = this.eventService.changeUsername$.subscribe(event => this.sendInfoMessage(chatService, event));
+    this.changeUsernameSubscription = this.eventService.changeUsername$.subscribe(event => this.sendInfoMessage(event));
   }
 
   public ngOnInit(): void {
@@ -69,11 +69,11 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
     this.usernameFocus.nativeElement.setSelectionRange(0, this.username.length);
   }
 
-  private sendInfoMessage(chatService: ChatService, event: UsernameChangedEvent): void {
+  private sendInfoMessage(event: UsernameChangedEvent): void {
     if (event.oldUsername === ''){
-      chatService.sendInfoMessage().forNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
+      this.chatService.forNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
     } else {
-      chatService.sendInfoMessage().forUsernameChanged(`${event.oldUsername} änderte den Benutzernamen zu ${event.newUsername}`);
+      this.chatService.forUsernameChanged(`${event.oldUsername} änderte den Benutzernamen zu ${event.newUsername}`);
     }
   }
 
