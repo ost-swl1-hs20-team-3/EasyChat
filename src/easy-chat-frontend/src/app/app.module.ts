@@ -11,7 +11,8 @@ import { ChatBarComponent } from './components/chat-bar/chat-bar.component';
 import { ChatHistoryComponent } from './components/chat-history/chat-history.component';
 import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
 import { UsernameEditComponent } from './components/username-edit/username-edit.component';
-
+import { ChatInfoMessageNewUserComponent } from './components/chat-info-message-new-user/chat-info-message-new-user.component';
+import { ChatInfoMessageUsernameChangedComponent } from './components/chat-info-message-username-changed/chat-info-message-username-changed.component';
 
 const APP_LOCALE_ID = 'de-CH';
 
@@ -28,7 +29,9 @@ registerLocaleData(locale_de_ch);
     ChatBarComponent,
     ChatHistoryComponent,
     ChatBubbleComponent,
-    UsernameEditComponent
+    UsernameEditComponent,
+    ChatInfoMessageNewUserComponent,
+    ChatInfoMessageUsernameChangedComponent
   ],
   imports: [
     BrowserModule,

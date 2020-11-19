@@ -6,8 +6,8 @@ import { Subject } from 'rxjs';
 })
 export class EventService {
 
-  public focusNow = new Subject<void>();
-  public editModal = new Subject<boolean>();
+  private focusNow = new Subject<void>();
+  private editModal = new Subject<boolean>();
 
   focusNow$ = this.focusNow.asObservable();
   editModal$ = this.editModal.asObservable();
@@ -23,3 +23,4 @@ export class EventService {
   }
 
 }
+

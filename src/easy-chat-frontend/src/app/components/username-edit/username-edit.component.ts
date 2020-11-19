@@ -28,12 +28,9 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private eventService: EventService) {
-    this.username = userService.getUserName();
-    this.editModalSubscription = this.eventService.editModal$.subscribe(
-      (isLogin) => {
-        this.openModal(isLogin);
-      });
+    private eventService: EventService
+  ) {
+    this.editModalSubscription = this.eventService.editModal$.subscribe(isLogin => this.openModal(isLogin));
   }
 
   public ngOnInit(): void {

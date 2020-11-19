@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,9 @@ import { Injectable } from '@angular/core';
 export class UserService {
 
   private username = '';
+  private changeUsername = new Subject<UsernameChangedEvent>();
+
+  public changeUsername$ = this.changeUsername.asObservable();
 
   constructor() { }
 
@@ -17,7 +21,10 @@ export class UserService {
     if (!this.validateUsername(username)) {
       return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
     } else {
-      this.username = username;
+      if (this.username !== username) {
+        this.changeUsername.next({ oldUsername: this.username, newUsername: username });
+        this.username = username;
+      }
       return '';
     }
   }
@@ -29,4 +36,10 @@ export class UserService {
   public isLoggedIn(): boolean {
     return this.username.trim().length > 0;
   }
+
+}
+
+export interface UsernameChangedEvent {
+  oldUsername: string;
+  newUsername: string;
 }

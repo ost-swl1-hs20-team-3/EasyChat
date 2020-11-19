@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 import { EventService } from 'src/app/services/event.service';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './chat-bar.component.html',
   styleUrls: ['./chat-bar.component.css']
 })
-export class ChatBarComponent implements OnInit {
+export class ChatBarComponent implements OnInit, OnDestroy {
 
   private focusNowSubscription: Subscription;
 
@@ -29,7 +29,7 @@ export class ChatBarComponent implements OnInit {
       () => {
         this.setChatbarFocus();
       });
-   }
+  }
 
   public ngOnInit(): void {
   }
