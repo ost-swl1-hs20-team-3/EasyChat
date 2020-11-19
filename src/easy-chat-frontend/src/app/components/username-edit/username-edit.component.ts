@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ChatService } from 'src/app/services/chat.service';
-import { EventService, UsernameChangedEvent } from 'src/app/services/event.service';
+import { EventService } from 'src/app/services/event.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -14,7 +13,6 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   @Output() modalClosed: EventEmitter<any> = new EventEmitter<any>();
 
   private editModalSubscription: Subscription;
-  private changeUsernameSubscription: Subscription;
 
   @ViewChild('openButton') openButton: ElementRef;
   @ViewChild('closeButton') closeButton: ElementRef;
@@ -30,10 +28,9 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private eventService: EventService,
-    private chatService: ChatService) {
+    private eventService: EventService
+  ) {
     this.editModalSubscription = this.eventService.editModal$.subscribe(isLogin => this.openModal(isLogin));
-    this.changeUsernameSubscription = this.eventService.changeUsername$.subscribe(event => this.sendInfoMessage(event));
   }
 
   public ngOnInit(): void {
@@ -41,7 +38,6 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.editModalSubscription.unsubscribe();
-    this.changeUsernameSubscription.unsubscribe();
   }
 
   public saveUsername(): void {
@@ -67,14 +63,6 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
     this.openButton.nativeElement.click();
     this.usernameFocus.nativeElement.focus();
     this.usernameFocus.nativeElement.setSelectionRange(0, this.username.length);
-  }
-
-  private sendInfoMessage(event: UsernameChangedEvent): void {
-    if (event.oldUsername === '') {
-      this.chatService.sendInfoMessageForNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
-    } else {
-      this.chatService.sendInfoMessageForUsernameChanged(`${event.oldUsername} änderte den Benutzernamen zu ${event.newUsername}`);
-    }
   }
 
 }

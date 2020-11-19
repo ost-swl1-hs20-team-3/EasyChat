@@ -1,6 +1,7 @@
-<ng-container *ngFor="let chatMsg of chatService.messageList" [ngSwitch]="chatMsg.type">
-  <ec-chat-bubble *ngSwitchCase="'message'" [chatMessage]="chatMsg"></ec-chat-bubble>
-  <ec-chat-info-message-new-user *ngSwitchCase="'newUser'" [chatMessage]="chatMsg"></ec-chat-info-message-new-user>
-  <ec-chat-info-message-username-changed *ngSwitchCase="'usernameChanged'" [chatMessage]="chatMsg">
+<ng-container *ngFor="let theMsg of chatService.messageList" [ngSwitch]="theMsg.getType()">
+  <ec-chat-bubble *ngSwitchCase="MessageType.ChatMessage" [chatMessage]="theMsg"></ec-chat-bubble>
+  <ec-chat-info-message-new-user *ngSwitchCase="MessageType.UserConnected" [message]="theMsg">
+  </ec-chat-info-message-new-user>
+  <ec-chat-info-message-username-changed *ngSwitchCase="MessageType.UserNameChanged" [message]="theMsg">
   </ec-chat-info-message-username-changed>
 </ng-container>

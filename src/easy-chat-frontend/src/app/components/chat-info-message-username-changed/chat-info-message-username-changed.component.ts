@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChatMessage } from 'src/app/models/chat-message.model';
+import { UsernameChangedMessage } from '../../models/chat-message.model';
 
 @Component({
   selector: 'ec-chat-info-message-username-changed',
@@ -8,7 +8,7 @@ import { ChatMessage } from 'src/app/models/chat-message.model';
 })
 export class ChatInfoMessageUsernameChangedComponent implements OnInit {
 
-  @Input() chatMessage: ChatMessage;
+  @Input() message: UsernameChangedMessage;
 
   constructor() { }
 

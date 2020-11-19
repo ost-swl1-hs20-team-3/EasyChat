@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChatMessage } from '../../models/chat-message.model';
+import { UserConnectedMessage } from '../../models/chat-message.model';
 
 import { ChatInfoMessageNewUserComponent } from './chat-info-message-new-user.component';
 
@@ -20,13 +20,12 @@ describe('ChatInfoMessageNewUserComponent', () => {
   });
 
   it('should create with correct input', () => {
-    const infoMsg = new ChatMessage();
-    infoMsg.content = 'InfoContent';
-    infoMsg.sender = 'TheSender';
-    infoMsg.timestamp = new Date().toISOString();
-    infoMsg.type = 'usernameChanged';
+    const mockUserConnectedMsg = new UserConnectedMessage();
+    mockUserConnectedMsg.content = 'InfoContent';
+    mockUserConnectedMsg.sender = 'TheSender';
+    mockUserConnectedMsg.timestamp = new Date().toISOString();
 
-    component.chatMessage = infoMsg;
+    component.message = mockUserConnectedMsg;
 
     fixture.detectChanges();
     expect(component).toBeTruthy();

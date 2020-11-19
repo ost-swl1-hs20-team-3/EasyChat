@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventService } from './event.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +7,11 @@ import { EventService } from './event.service';
 export class UserService {
 
   private username = '';
+  private changeUsername = new Subject<UsernameChangedEvent>();
 
-  constructor(private eventService: EventService) { }
+  public changeUsername$ = this.changeUsername.asObservable();
+
+  constructor() { }
 
   private validateUsername(username: string): boolean {
     return /^[+a-zA-Z]{1}\S{0,29}$/.test(username);
@@ -19,7 +22,7 @@ export class UserService {
       return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
     } else {
       if (this.username !== username) {
-        this.eventService.setUsernameChanged(this.username, username);
+        this.changeUsername.next({ oldUsername: this.username, newUsername: username });
         this.username = username;
       }
       return '';
@@ -34,4 +37,9 @@ export class UserService {
     return this.username.trim().length > 0;
   }
 
+}
+
+export interface UsernameChangedEvent {
+  oldUsername: string;
+  newUsername: string;
 }

@@ -19,13 +19,12 @@ describe('ChatBubbleComponent', () => {
   });
 
   it('should create', () => {
-    const infoMsg = new ChatMessage();
-    infoMsg.content = 'InfoContent';
-    infoMsg.sender = 'TheSender';
-    infoMsg.timestamp = new Date().toISOString();
-    infoMsg.type = 'usernameChanged';
+    const mockChatMsg = new ChatMessage();
+    mockChatMsg.content = 'InfoContent';
+    mockChatMsg.sender = 'TheSender';
+    mockChatMsg.timestamp = new Date().toISOString();
 
-    component.chatMessage = infoMsg;
+    component.chatMessage = mockChatMsg;
 
     fixture.detectChanges();
     expect(component).toBeTruthy();
