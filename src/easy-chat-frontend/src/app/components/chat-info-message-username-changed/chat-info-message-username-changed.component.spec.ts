@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChatMessage } from '../../models/chat-message.model';
 
 import { ChatInfoMessageUsernameChangedComponent } from './chat-info-message-username-changed.component';
 
@@ -8,18 +9,26 @@ describe('ChatInfoMessageUsernameChangedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatInfoMessageUsernameChangedComponent ]
+      declarations: [ChatInfoMessageUsernameChangedComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChatInfoMessageUsernameChangedComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create with correct input', () => {
+    const mockInfoMsg = new ChatMessage();
+    mockInfoMsg.content = 'InfoContent';
+    mockInfoMsg.sender = 'TheSender';
+    mockInfoMsg.timestamp = new Date().toISOString();
+    mockInfoMsg.type = 'usernameChanged';
+
+    component.chatMessage = mockInfoMsg;
+
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });
