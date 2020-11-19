@@ -70,7 +70,7 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   }
 
   private sendInfoMessage(event: UsernameChangedEvent): void {
-    if (event.oldUsername === ''){
+    if (event.oldUsername === '') {
       this.chatService.sendInfoMessageForNewUser(`${event.newUsername} ist diesem Chat beigetreten`);
     } else {
       this.chatService.sendInfoMessageForUsernameChanged(`${event.oldUsername} änderte den Benutzernamen zu ${event.newUsername}`);

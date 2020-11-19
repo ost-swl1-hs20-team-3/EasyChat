@@ -13,7 +13,7 @@ export class ChatService {
   public messageList: Array<ChatMessage> = new Array<ChatMessage>();
 
   constructor(private userService: UserService) { }
-  
+
   public sendMessage(message: string): void {
     message = this.cleanInput(message);
     const newMessage = this.createChatMessage(message, 'message');
@@ -40,7 +40,7 @@ export class ChatService {
     return message.trim();
   }
 
-  private createChatMessage(content: string, type: string){
+  private createChatMessage(content: string, type: string): ChatMessage {
     const newMessage = new ChatMessage();
     newMessage.sender = this.userService.getUserName();
     newMessage.content = content;

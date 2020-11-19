@@ -24,13 +24,13 @@ export class EventService {
     this.editModal.next(isLogin);
   }
 
-  public setUsernameChanged(oldUsername: string, newUsername: string){
-    this.changeUsername.next({oldUsername: oldUsername, newUsername: newUsername});
+  public setUsernameChanged(oldUsername: string, newUsername: string): void {
+    this.changeUsername.next({ oldUsername, newUsername });
   }
 
 }
 
-export class UsernameChangedEvent{
+export class UsernameChangedEvent {
   public oldUsername: string;
   public newUsername: string;
 }

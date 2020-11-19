@@ -18,7 +18,7 @@ export class UserService {
     if (!this.validateUsername(username)) {
       return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
     } else {
-      if (this.username !== username){
+      if (this.username !== username) {
         this.eventService.setUsernameChanged(this.username, username);
         this.username = username;
       }
