@@ -20,36 +20,69 @@ app.get('/', (req, res) => {
 
 // SOCKET.io
 io.on('connection', (socket) => {
-    io.emit('online-user-changed', { count: Object.keys(io.sockets.connected).length });
-    logMessage(`user connected [ID: ${socket.id}, connected: ${Object.keys(io.sockets.connected).length}]`);
+    let userChangeResp = getBaseResponseObject();
+    userChangeResp.responseData = { count: Object.keys(io.sockets.connected).length }
+    io.emit('online-user-changed', userChangeResp);
+    logMessage(`${socket.id} - online-user-changed: `, userChangeResp)
 
     socket.on('login', (theMessage) => {
-        logMessage(`new login [ID: ${socket.id}]: `, theMessage);
-        io.emit('login-broadcast', theMessage);
+        let responseObj = getBaseResponseObject();
+        responseObj.requestData = theMessage;
+        responseObj.responseData = theMessage;
+
+        io.emit('login-broadcast', responseObj);
+        logMessage(`${socket.id} - login-broadcast: `, responseObj)
     });
 
     socket.on('username-change', (theMessage) => {
-        logMessage(`new username-change [ID: ${socket.id}]: `, theMessage);
-        io.emit('username-change-broadcast', theMessage);
+        let responseObj = getBaseResponseObject();
+        responseObj.requestData = theMessage;
+        responseObj.responseData = theMessage;
+
+        io.emit('username-change-broadcast', responseObj);
+        logMessage(`${socket.id} - username-change-broadcast: `, responseObj)
     });
 
     socket.on('message', (theMessage) => {
         allMessages.push(theMessage);
-        logMessage(`new message [ID: ${socket.id}]: `, theMessage);
-        io.emit('message-broadcast', theMessage);
+
+        let responseObj = getBaseResponseObject();
+        responseObj.requestData = theMessage;
+        responseObj.responseData = theMessage;
+
+        io.emit('message-broadcast', responseObj);
+        logMessage(`${socket.id} - message-broadcast: `, responseObj)
     });
 
 
     socket.on('get-all-messages', () => {
-        socket.broadcast.to(socket.id).emit('all-messages', allMessages);
+        let responseObj = getBaseResponseObject();
+        responseObj.requestData = {};
+        responseObj.responseData = allMessages;
+
+        socket.broadcast.to(socket.id).emit('all-messages', responseObj);
+        logMessage(`${socket.id} - all-messages: `, responseObj)
     });
 
     socket.on('disconnect', () => {
-        io.emit('online-user-changed', { count: Object.keys(io.sockets.connected).length });
-        logMessage(`user disconnected [ID: ${socket.id}, connected: ${Object.keys(io.sockets.connected).length}]`);
+        let responseObj = getBaseResponseObject();
+        responseObj.responseData = { count: Object.keys(io.sockets.connected).length }
+
+        io.emit('online-user-changed', responseObj);
+        logMessage(`${socket.id} - online-user-changed: `, responseObj)
     });
 });
 
+
+function getBaseResponseObject() {
+    const actDate = new Date();
+
+    return {
+        timestamp: actDate.toISOString(),
+        requestData: {},
+        responseData: {}
+    };
+}
 
 function logMessage(msg, param) {
     const actDate = new Date();

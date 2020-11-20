@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageType } from '../../models/chat-message.model';
+import { MessageType } from '../../models/models';
 import { ChatService } from '../../services/chat.service';
 
 @Component({

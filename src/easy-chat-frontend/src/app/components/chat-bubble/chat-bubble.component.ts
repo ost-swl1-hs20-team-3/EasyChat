@@ -1,6 +1,6 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { ChatMessage } from '../../models/chat-message.model';
+import { ChatMessage } from '../../models/models';
 import { UserService } from '../../services/user.service';
 
 @Component({

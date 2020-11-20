@@ -1,15 +1,23 @@
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
-import { EMPTY, merge, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 import { environment } from '../../environments/environment';
+import {
+  LoginBroadcastResponse,
+  LoginRequest,
+  MessageBroadcastResponse,
+  MessageRequest, OnlineUserChangedResponse,
+  SocketRequest,
+  UsernameChangeResponse,
+  UsernameChangeRequest
+} from '../models/api-models';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketioService {
-
-  private FF_USE_SOCKET_IO: boolean = environment.FEATURE_FLAGS.USE_SOCKET_IO;
   private socket: SocketIOClient.Socket;
 
   constructor() {
@@ -17,107 +25,85 @@ export class SocketioService {
   }
 
   private setupSocketConnection(): void {
-    if (!this.FF_USE_SOCKET_IO) {
-      console.warn(`SOCKET.IO connecton is NOT used!`);
-      return;
-    }
-
     this.socket = io.connect(environment.SOCKET_ENDPOINT, { transports: ['websocket'] });
-
-    // TMP FOR TESTING
-    this.getAllEvents().subscribe();
-    // TMP FOR TESTING - END
   }
 
-  private emit(event: string, msg: any): void {
-    if (!this.FF_USE_SOCKET_IO) { return; }
+  private emit(msg: SocketRequest): void {
+    this.socket.emit(msg.getEventName(), msg.getRequestObject());
+  }
 
-    this.socket.emit(event, msg);
+  private logEvent(eventName: string, eventObject: any): void {
+    if (!environment.production) {
+      console.log(`${eventName}: `, eventObject);
+    }
   }
 
 
-  public emitChatMessage(msg: any): void {
-    this.emit('message', msg);
+  public emitChatMessage(sender: string, content: string): void {
+    this.emit(new MessageRequest({ sender, content }));
   }
 
   public emitLogin(username: string): void {
-    this.emit('login', username);
+    this.emit(new LoginRequest({ username }));
   }
 
   public emitUsernameChange(oldUsername: string, newUsername: string): void {
-    this.emit('username-change', { oldUsername, newUsername });
+    this.emit(new UsernameChangeRequest({ oldUsername, newUsername }));
   }
 
 
-  public getLoginEvents(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
+  public getOnlineUsers(): Observable<OnlineUserChangedResponse> {
+    const eventName = new OnlineUserChangedResponse({}).getEventName();
 
-    const eventName = 'login-broadcast';
     return new Observable((observer) => {
       this.socket.on(eventName, (data: any) => {
-        console.log(`${eventName}: `, data);
-        observer.next(data);
+        this.logEvent(`${eventName}: `, OnlineUserChangedResponse);
+        observer.next(new OnlineUserChangedResponse(data));
       });
     });
   }
 
-  public getOnlineUsers(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
+  public getLoginEvents(): Observable<LoginBroadcastResponse> {
+    const eventName = new LoginBroadcastResponse({}).getEventName();
 
-    const eventName = 'online-user-changed';
     return new Observable((observer) => {
-      this.socket.on(eventName, (data: any) => {
-        console.log(`${eventName}: `, data);
-        observer.next(data);
+      this.socket.on(eventName, (data: LoginBroadcastResponse) => {
+        this.logEvent(`${eventName}: `, data);
+        observer.next(new LoginBroadcastResponse(data));
       });
     });
   }
 
-  public getUserNameChangedEvents(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
+  public getUserNameChangedEvents(): Observable<UsernameChangeResponse> {
+    const eventName = new UsernameChangeResponse({}).getEventName();
 
-    const eventName = 'username-change-broadcast';
     return new Observable((observer) => {
-      this.socket.on(eventName, (data: any) => {
-        console.log(`${eventName}: `, data);
-        observer.next(data);
+      this.socket.on(eventName, (data: UsernameChangeResponse) => {
+        this.logEvent(`${eventName}: `, data);
+        observer.next(new UsernameChangeResponse(data));
       });
     });
   }
 
-  public getMessageEvents(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
+  public getMessageEvents(): Observable<MessageBroadcastResponse> {
+    const eventName = new MessageBroadcastResponse({}).getEventName();
 
-    const eventName = 'message-broadcast';
     return new Observable((observer) => {
-      this.socket.on(eventName, (data: any) => {
-        console.log(`${eventName}: `, data);
-        observer.next(data);
+      this.socket.on(eventName, (data: MessageBroadcastResponse) => {
+        this.logEvent(`${eventName}: `, data);
+        observer.next(new MessageBroadcastResponse(data));
       });
     });
   }
 
-  public getAllMessagesEvents(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
-
+  public getAllMessagesEvents(): Observable<Message> {
     const eventName = 'all-messages';
+
     return new Observable((observer) => {
       this.socket.on(eventName, (data: any) => {
-        console.log(`${eventName}: `, data);
+        this.logEvent(`${eventName}: `, data);
         observer.next(data);
       });
     });
-  }
-
-  public getAllEvents(): Observable<any> {
-    if (!this.FF_USE_SOCKET_IO) { return EMPTY; }
-
-    return merge(
-      this.getLoginEvents(),
-      this.getOnlineUsers(),
-      this.getUserNameChangedEvents(),
-      // this.getMessageEvents(),
-      this.getAllMessagesEvents()
-    );
   }
 }

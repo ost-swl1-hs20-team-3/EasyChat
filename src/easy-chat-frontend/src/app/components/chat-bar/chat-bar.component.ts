@@ -38,10 +38,6 @@ export class ChatBarComponent implements OnInit, OnDestroy {
     this.focusNowSubscription.unsubscribe();
   }
 
-  public typeMessage(): void {
-    this.chatService.typeMessage(this.message);
-  }
-
   public sendMessage(): void {
     if (this.isValidToSend) {
       this.chatService.sendMessage(this.message);
@@ -51,7 +47,6 @@ export class ChatBarComponent implements OnInit, OnDestroy {
 
   private resetMessage(): void {
     this.message = '';
-    this.chatService.typeMessage('');
     this.setChatbarFocus();
   }
 
