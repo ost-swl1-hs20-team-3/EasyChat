@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageType } from '../../models/chat-message.model';
 import { ChatService } from '../../services/chat.service';
 
 @Component({
@@ -7,10 +8,10 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['./chat-history.component.css']
 })
 export class ChatHistoryComponent implements OnInit {
+  MessageType = MessageType; // To use this Enum in the template
 
   constructor(public chatService: ChatService) { }
 
   public ngOnInit(): void {
   }
-
 }

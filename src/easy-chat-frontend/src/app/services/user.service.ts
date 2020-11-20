@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { SocketioService } from './socketio.service';
 
 @Injectable({
@@ -7,8 +8,11 @@ import { SocketioService } from './socketio.service';
 export class UserService {
 
   private username = '';
+  private changeUsername = new Subject<UsernameChangedEvent>();
 
-  constructor(private socketioService: SocketioService) { }
+  public changeUsername$ = this.changeUsername.asObservable();
+
+  constructor() { }
 
   private validateUsername(username: string): boolean {
     return /^[+a-zA-Z]{1}\S{0,29}$/.test(username);
@@ -25,7 +29,10 @@ export class UserService {
         this.socketioService.emitUsernameChange(oldUsername, username); // Emit username-change event
       }
 
-      this.username = username;
+      if (this.username !== username) {
+        this.changeUsername.next({ oldUsername: this.username, newUsername: username });
+        this.username = username;
+      }
       return '';
     }
   }
@@ -37,4 +44,10 @@ export class UserService {
   public isLoggedIn(): boolean {
     return this.username.trim().length > 0;
   }
+
+}
+
+export interface UsernameChangedEvent {
+  oldUsername: string;
+  newUsername: string;
 }

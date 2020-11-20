@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChatMessage } from '../../models/chat-message.model';
 
 import { ChatBubbleComponent } from './chat-bubble.component';
 
@@ -15,10 +16,17 @@ describe('ChatBubbleComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChatBubbleComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
+    const mockChatMsg = new ChatMessage();
+    mockChatMsg.content = 'InfoContent';
+    mockChatMsg.sender = 'TheSender';
+    mockChatMsg.timestamp = new Date().toISOString();
+
+    component.chatMessage = mockChatMsg;
+
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });
