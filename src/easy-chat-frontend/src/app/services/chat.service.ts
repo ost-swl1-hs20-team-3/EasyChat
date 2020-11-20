@@ -45,9 +45,7 @@ export class ChatService {
   }
 
   private addMessageToMessageList(message: Message): void {
-    if (this.userService.isLoggedIn()) {
       this.messageList.push(message);
-    }
   }
 
   public sendMessage(message: string): void {

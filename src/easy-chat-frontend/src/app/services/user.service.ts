@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { EventService } from './event.service';
 import { SocketioService } from './socketio.service';
 
 @Injectable({
@@ -11,7 +12,10 @@ export class UserService {
   private reservedUsernames: string[] = [];
   private oldUsernames: Set<string> = new Set<string>();
 
-  constructor(private socketioService: SocketioService) {
+  constructor(
+    private socketioService: SocketioService,
+    private eventService: EventService) 
+    {
     this.reservedUsernamesSubscription = this.socketioService.getReservedUsernames().subscribe((msg) => {
       this.reservedUsernames = msg.getReservedUsernames();
     });
@@ -40,6 +44,7 @@ export class UserService {
     if (!this.isLoggedIn()) {
       this.username = newUsername;
       this.socketioService.emitLogin(newUsername); // Emit login event
+      this.eventService.setblurNow(false);
     } else {
       if (this.username !== newUsername) {
         const oldUsername = this.username;

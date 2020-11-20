@@ -19,6 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     if (!this.userService.isLoggedIn()) {
+      this.eventService.setblurNow(true);
       this.eventService.setEditModal(true);
     }
   }
