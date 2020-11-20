@@ -21,22 +21,33 @@ export class ChatService {
     this.chatMessageEventsSubscription = this.socketioService.getMessageEvents().subscribe((msg) => {
       const theMsg = new ChatMessage(msg.senderSocketId, msg.getSenderUsername(), msg.getContent());
       theMsg.timestamp = msg.timestamp;
-      this.messageList.push(theMsg);
+
+      this.addMessageToMessageList(theMsg);
     });
 
     this.loginEventsSubscription = this.socketioService.getLoginEvents().subscribe((msg) => {
       const theMsg = new UserConnectedMessage(msg.getUserName());
       theMsg.timestamp = msg.timestamp;
 
-      this.messageList.push(theMsg);
+      this.addMessageToMessageList(theMsg);
     });
 
     this.changeUsernameEventSubscription = this.socketioService.getUserNameChangedEvents().subscribe((msg) => {
       const theMsg = new UsernameChangedMessage(msg.getOldUsername(), msg.getNewUsername());
       theMsg.timestamp = msg.timestamp;
 
-      this.messageList.push(theMsg);
+      this.addMessageToMessageList(theMsg);
     });
+  }
+
+  private cleanInput(message: string): string {
+    return message.trim();
+  }
+
+  private addMessageToMessageList(message: Message): void {
+    if (this.userService.isLoggedIn()) {
+      this.messageList.push(message);
+    }
   }
 
   public sendMessage(message: string): void {
@@ -52,10 +63,6 @@ export class ChatService {
 
   public sendInfoMessageForUsernameChanged(oldUserName: string, newUsername: string): void {
     this.socketioService.emitUsernameChange(oldUserName, newUsername);
-  }
-
-  private cleanInput(message: string): string {
-    return message.trim();
   }
 
 }
