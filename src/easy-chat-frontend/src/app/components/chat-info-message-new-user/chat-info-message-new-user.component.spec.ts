@@ -21,7 +21,7 @@ describe('ChatInfoMessageNewUserComponent', () => {
 
   it('should create with correct input', () => {
     const mockUserConnectedMsg = new UserConnectedMessage('TheSender');
-    mockUserConnectedMsg.sender = 'TheSender';
+    mockUserConnectedMsg.senderName = 'TheSender';
     mockUserConnectedMsg.timestamp = new Date().toISOString();
 
     component.message = mockUserConnectedMsg;

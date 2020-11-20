@@ -19,8 +19,7 @@ describe('ChatBubbleComponent', () => {
   });
 
   it('should create', () => {
-    const mockChatMsg = new ChatMessage('InfoContent');
-    mockChatMsg.sender = 'TheSender';
+    const mockChatMsg = new ChatMessage('SOCKETID', 'SENDERNAME', 'InfoContent');
     mockChatMsg.timestamp = new Date().toISOString();
 
     component.chatMessage = mockChatMsg;

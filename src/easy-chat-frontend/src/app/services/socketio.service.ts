@@ -1,6 +1,6 @@
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import {
@@ -10,7 +10,8 @@ import {
   MessageRequest, OnlineUserChangedResponse,
   SocketRequest,
   UsernameChangeResponse,
-  UsernameChangeRequest
+  UsernameChangeRequest,
+  ReservedUsernamesChangedResponse
 } from '../models/api-models';
 
 
@@ -19,6 +20,7 @@ import {
 })
 export class SocketioService {
   private socket: SocketIOClient.Socket;
+  private socketIds: string[] = [];
 
   constructor() {
     this.setupSocketConnection();
@@ -26,6 +28,10 @@ export class SocketioService {
 
   private setupSocketConnection(): void {
     this.socket = io.connect(environment.SOCKET_ENDPOINT, { transports: ['websocket'] });
+
+    this.socket.on('connect', () => {
+      this.socketIds.push(this.socket.id);
+    });
   }
 
   private emit(msg: SocketRequest): void {
@@ -38,6 +44,10 @@ export class SocketioService {
     }
   }
 
+
+  public isMySocketId(socketId: string): boolean {
+    return this.socketIds.includes(socketId);
+  }
 
   public emitChatMessage(sender: string, content: string): void {
     this.emit(new MessageRequest({ sender, content }));
@@ -57,8 +67,19 @@ export class SocketioService {
 
     return new Observable((observer) => {
       this.socket.on(eventName, (data: any) => {
-        this.logEvent(`${eventName}: `, OnlineUserChangedResponse);
+        this.logEvent(`${eventName}: `, data);
         observer.next(new OnlineUserChangedResponse(data));
+      });
+    });
+  }
+
+  public getReservedUsernames(): Observable<ReservedUsernamesChangedResponse> {
+    const eventName = new ReservedUsernamesChangedResponse({}).getEventName();
+
+    return new Observable((observer) => {
+      this.socket.on(eventName, (data: any) => {
+        this.logEvent(`${eventName}: `, data);
+        observer.next(new ReservedUsernamesChangedResponse(data));
       });
     });
   }

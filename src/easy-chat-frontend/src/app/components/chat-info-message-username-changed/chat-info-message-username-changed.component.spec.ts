@@ -21,7 +21,7 @@ describe('ChatInfoMessageUsernameChangedComponent', () => {
 
   it('should create with correct input', () => {
     const mockUsernameChangedMsg = new UsernameChangedMessage('old', 'new');
-    mockUsernameChangedMsg.sender = 'TheSender';
+    mockUsernameChangedMsg.senderName = 'TheSender';
     mockUsernameChangedMsg.timestamp = new Date().toISOString();
 
     component.message = mockUsernameChangedMsg;

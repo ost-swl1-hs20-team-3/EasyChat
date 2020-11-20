@@ -1,40 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { UserConnectedMessage, UsernameChangedMessage } from '../models/models';
+import { Subscription } from 'rxjs';
 import { SocketioService } from './socketio.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  private reservedUsernamesSubscription = new Subscription();
   private username = '';
-  private oldUsernames = [];
+  private reservedUsernames: string[] = [];
+  private oldUsernames: Set<string> = new Set<string>();
 
-  constructor(private socketioService: SocketioService) { }
+  constructor(private socketioService: SocketioService) {
+    this.reservedUsernamesSubscription = this.socketioService.getReservedUsernames().subscribe((msg) => {
+      this.reservedUsernames = msg.getReservedUsernames();
+    });
+  }
 
-  private validateUsername(username: string): boolean {
+  private isUsernameValid(username: string): boolean {
     return /^[+a-zA-Z]{1}\S{0,29}$/.test(username);
   }
 
+  private isUsernameReserved(username: string): boolean {
+    return this.reservedUsernames.includes(username);
+  }
+
+  private isUsernameReservedForMe(username: string): boolean {
+    return this.oldUsernames.has(username);
+  }
+
   public setUsername(newUsername: string): string {
-    if (!this.validateUsername(newUsername)) {
+    if (!this.isUsernameValid(newUsername)) {
       return 'Benutzername muss mit einem Buchstaben beginnen und darf keine Leerzeichen enthalten! Maximal 30 Zeichen sind erlaubt!';
-    } else {
-      if (!this.isLoggedIn()) {
-        this.username = newUsername;
-        this.socketioService.emitLogin(newUsername); // Emit login event
-      } else {
-        const oldUsername = this.username;
-
-        if (this.username !== newUsername) {
-          this.socketioService.emitUsernameChange(oldUsername, newUsername); // Emit username-change event
-          this.username = newUsername;
-        }
-      }
-
-      return '';
     }
+    if (this.isUsernameReserved(newUsername) && !this.isUsernameReservedForMe(newUsername)) {
+      return 'Benutzername ist reserviert!';
+    }
+
+    if (!this.isLoggedIn()) {
+      this.username = newUsername;
+      this.socketioService.emitLogin(newUsername); // Emit login event
+    } else {
+      if (this.username !== newUsername) {
+        const oldUsername = this.username;
+        this.socketioService.emitUsernameChange(oldUsername, newUsername); // Emit username-change event
+        this.username = newUsername;
+      }
+    }
+
+    this.oldUsernames.add(this.username);
+    return '';
   }
 
   public getUserName(): string {
@@ -43,6 +58,10 @@ export class UserService {
 
   public isLoggedIn(): boolean {
     return this.username.trim().length > 0;
+  }
+
+  public isMySocketId(socketId: string): boolean {
+    return this.socketioService.isMySocketId(socketId);
   }
 
 }

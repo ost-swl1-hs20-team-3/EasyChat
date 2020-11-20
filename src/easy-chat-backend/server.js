@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 
 let allMessages = [];
+let usernameMapping = {};
 
 
 // start http server
@@ -20,43 +21,78 @@ app.get('/', (req, res) => {
 
 // SOCKET.io
 io.on('connection', (socket) => {
-    let userChangeResp = getBaseResponseObject();
-    userChangeResp.responseData = { count: Object.keys(io.sockets.connected).length }
-    io.emit('online-user-changed', userChangeResp);
-    logMessage(`${socket.id} - online-user-changed: `, userChangeResp)
 
+    // ------------------------------------------------
+    // OnConnect
+    // ------------------------------------------------
+    usernameMapping[socket.id] = [];
+    sendReservedUsernamesBroadcast(io, socket);
+    sendOnlineUserBroadcast(io, socket);
+
+
+    // ------------------------------------------------
+    // onLogin
+    // ------------------------------------------------
     socket.on('login', (theMessage) => {
-        let responseObj = getBaseResponseObject();
+        const userName = theMessage.username;
+
+        mapUserNameToSocket(socket.id, userName);
+
+        let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = theMessage;
+        responseObj.responseData = { username: userName };
 
         io.emit('login-broadcast', responseObj);
         logMessage(`${socket.id} - login-broadcast: `, responseObj)
+
+        sendReservedUsernamesBroadcast(io, socket);
+        sendOnlineUserBroadcast(io, socket);
     });
 
+    // ------------------------------------------------
+    // onUsernameChange
+    // ------------------------------------------------
     socket.on('username-change', (theMessage) => {
-        let responseObj = getBaseResponseObject();
+        let senderSocket = socket.id;
+        let oldUsername = theMessage.oldUsername;
+        let newUsername = theMessage.newUsername;
+
+        mapUserNameToSocket(socket.id, newUsername);
+
+        let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = theMessage;
+        responseObj.responseData = { senderSocket: senderSocket, oldUsername: oldUsername, newUsername: newUsername };
 
         io.emit('username-change-broadcast', responseObj);
         logMessage(`${socket.id} - username-change-broadcast: `, responseObj)
+
+        sendReservedUsernamesBroadcast(io, socket);
     });
 
+    // ------------------------------------------------
+    // onMessage
+    // ------------------------------------------------
     socket.on('message', (theMessage) => {
-        allMessages.push(theMessage);
+        let senderSocket = socket.id;
+        let sender = theMessage.sender;
+        let content = theMessage.content;
 
-        let responseObj = getBaseResponseObject();
+        let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = theMessage;
+        responseObj.responseData = { senderSocket: senderSocket, sender: sender, content: content };
+
+        allMessages.push(responseObj.responseData);
 
         io.emit('message-broadcast', responseObj);
         logMessage(`${socket.id} - message-broadcast: `, responseObj)
     });
 
 
+    // ------------------------------------------------
+    // onGetAllMessages
+    // ------------------------------------------------
     socket.on('get-all-messages', () => {
-        let responseObj = getBaseResponseObject();
+        let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = {};
         responseObj.responseData = allMessages;
 
@@ -64,21 +100,56 @@ io.on('connection', (socket) => {
         logMessage(`${socket.id} - all-messages: `, responseObj)
     });
 
+    // ------------------------------------------------
+    // OnDisconnect
+    // ------------------------------------------------
     socket.on('disconnect', () => {
-        let responseObj = getBaseResponseObject();
-        responseObj.responseData = { count: Object.keys(io.sockets.connected).length }
+        delete usernameMapping[socket.id];
 
-        io.emit('online-user-changed', responseObj);
-        logMessage(`${socket.id} - online-user-changed: `, responseObj)
+        sendReservedUsernamesBroadcast(io, socket);
+        sendOnlineUserBroadcast(io, socket);
     });
 });
 
 
-function getBaseResponseObject() {
+// ------------------------------------------------
+// Send functions
+// ------------------------------------------------
+function sendReservedUsernamesBroadcast(io, socket) {
+    let reservedUsernames = [];
+    Object.entries(usernameMapping).forEach(([key, value]) => { reservedUsernames.push(...value); })
+
+    let responseObj = getBaseResponseObject(socket.id);
+    responseObj.responseData = { reservedUsernames: reservedUsernames };
+
+    io.emit('reserved-usernames-changed', responseObj);
+    logMessage(`${socket.id} - reserved-usernames-changed: `, responseObj)
+}
+
+function sendOnlineUserBroadcast(io, socket) {
+    let responseObj = getBaseResponseObject(socket.id);
+    responseObj.responseData = { count: Object.keys(io.sockets.connected).length }
+
+    io.emit('online-user-changed', responseObj);
+    logMessage(`${socket.id} - online-user-changed: `, responseObj)
+}
+
+// ------------------------------------------------
+// Helper functions
+// ------------------------------------------------
+function mapUserNameToSocket(socket, username) {
+    let socketUsernames = usernameMapping[socket];
+    socketUsernames.push(username);
+
+    usernameMapping[socket] = socketUsernames;
+}
+
+function getBaseResponseObject(socketId) {
     const actDate = new Date();
 
     return {
         timestamp: actDate.toISOString(),
+        socketId: socketId,
         requestData: {},
         responseData: {}
     };

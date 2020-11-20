@@ -1,7 +1,5 @@
-import { AnyAaaaRecord } from 'dns';
-
 export interface Message {
-  sender: string;
+  senderName: string;
   timestamp: string;
 
   getType(): MessageType;
@@ -18,11 +16,13 @@ export enum MessageType {
 export class ChatMessage implements Message {
   private content: string;
 
-  public sender: string;
+  public senderSocketId: string;
+  public senderName: string;
   public timestamp: string;
 
-  constructor(sender: string, chatMessage: string) {
-    this.sender = sender;
+  constructor(senderSocketId: string, senderName: string, chatMessage: string) {
+    this.senderSocketId = senderSocketId;
+    this.senderName = senderName;
     this.content = chatMessage;
   }
 
@@ -38,7 +38,7 @@ export class ChatMessage implements Message {
 export class UserConnectedMessage implements Message {
   private content: string;
 
-  public sender: string;
+  public senderName: string;
   public timestamp: string;
 
   constructor(username: string) {
@@ -55,7 +55,7 @@ export class UserConnectedMessage implements Message {
 }
 
 export class UsernameChangedMessage implements Message {
-  public sender: string;
+  public senderName: string;
   public content: string;
   public timestamp: string;
 

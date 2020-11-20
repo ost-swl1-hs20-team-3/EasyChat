@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SocketioService } from './socketio.service';
-import { environment } from 'src/environments/environment';
 import { ChatMessage, Message, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
-import { UsernameChangedEvent, UserService } from './user.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private changeUsernameEventSubscription: Subscription;
+  private changeUsernameEventSubscription = new Subscription();
   private chatMessageEventsSubscription = new Subscription();
   private loginEventsSubscription = new Subscription();
 
@@ -19,12 +18,9 @@ export class ChatService {
     private userService: UserService,
     private socketioService: SocketioService
   ) {
-
     this.chatMessageEventsSubscription = this.socketioService.getMessageEvents().subscribe((msg) => {
-      const theMsg = new ChatMessage(msg.getSender(), msg.getContent());
+      const theMsg = new ChatMessage(msg.senderSocketId, msg.getSenderUsername(), msg.getContent());
       theMsg.timestamp = msg.timestamp;
-      // theMsg.sender = msg.sender;
-      // theMsg.timestamp = msg.timestamp;
       this.messageList.push(theMsg);
     });
 

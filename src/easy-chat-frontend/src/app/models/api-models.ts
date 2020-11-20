@@ -13,12 +13,14 @@ export interface SocketResponse {
 
 export interface ApiSocketResponse {
   timestamp?: string;
+  socketId?: string;
   requestData?: any;
   responseData?: any;
 }
 
 // -------------------------------------------------------------------
 // REQUESTS
+// -------------------------------------------------------------------
 export class LoginRequest implements SocketRequest {
   private data: any;
 
@@ -32,10 +34,6 @@ export class LoginRequest implements SocketRequest {
 
   public getEventName(): string {
     return 'login';
-  }
-
-  public getDataString(): string {
-    return JSON.stringify(this.data);
   }
 
   public getRequestObject(): any {
@@ -60,10 +58,6 @@ export class UsernameChangeRequest implements SocketRequest {
 
   public getEventName(): string {
     return 'username-change';
-  }
-
-  public getDataString(): string {
-    return JSON.stringify(this.data);
   }
 
   public getRequestObject(): any {
@@ -91,10 +85,6 @@ export class MessageRequest implements SocketRequest {
     return 'message';
   }
 
-  public getDataString(): string {
-    return JSON.stringify(this.data);
-  }
-
   public getRequestObject(): any {
     return {
       sender: this.sender,
@@ -106,6 +96,34 @@ export class MessageRequest implements SocketRequest {
 
 // -------------------------------------------------------------------
 // RESPONSES
+// -------------------------------------------------------------------
+export class ReservedUsernamesChangedResponse implements SocketResponse {
+  private data: any;
+  private reservedUsernames: string[] = [];
+
+  public timestamp: string;
+
+  constructor(dataObj: ApiSocketResponse) {
+    this.data = dataObj;
+
+    this.timestamp = dataObj?.timestamp;
+
+    this.reservedUsernames = dataObj?.responseData?.reservedUsernames || [];
+  }
+
+  public getEventName(): string {
+    return 'reserved-usernames-changed';
+  }
+
+  public getResponseObject(): any {
+    return this.data;
+  }
+
+  public getReservedUsernames(): string[] {
+    return this.reservedUsernames;
+  }
+}
+
 export class OnlineUserChangedResponse implements SocketResponse {
   private data: any;
   private onlineUsers: number;
@@ -116,6 +134,7 @@ export class OnlineUserChangedResponse implements SocketResponse {
     this.data = dataObj;
 
     this.timestamp = dataObj?.timestamp;
+
     this.onlineUsers = dataObj?.responseData?.count;
   }
 
@@ -142,6 +161,7 @@ export class LoginBroadcastResponse implements SocketResponse {
     this.data = dataObj;
 
     this.timestamp = dataObj?.timestamp;
+
     this.username = dataObj?.responseData?.username;
   }
 
@@ -161,16 +181,19 @@ export class LoginBroadcastResponse implements SocketResponse {
 
 export class MessageBroadcastResponse implements SocketResponse {
   private data: any;
-  private sender: string;
+  private senderUsername: string;
   private content: string;
 
   public timestamp: string;
+  public senderSocketId: string;
 
   constructor(dataObj?: ApiSocketResponse) {
     this.data = dataObj;
 
     this.timestamp = dataObj?.timestamp;
-    this.sender = dataObj?.responseData?.sender;
+    this.senderSocketId = dataObj?.socketId;
+
+    this.senderUsername = dataObj?.responseData?.sender;
     this.content = dataObj?.responseData?.content;
   }
 
@@ -182,8 +205,8 @@ export class MessageBroadcastResponse implements SocketResponse {
     return this.data;
   }
 
-  public getSender(): string {
-    return this.sender;
+  public getSenderUsername(): string {
+    return this.senderUsername;
   }
 
   public getContent(): string {
