@@ -2,19 +2,165 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
+const PORT = process.env.PORT || 3000;
+
+
+let allMessages = [];
+let usernameMapping = {};
+
 
 // start http server
-http.listen(3000, () => {
-    console.log('webserver is running on *:3000');
+http.listen(PORT, () => {
+    console.log(`webserver is running on *:${PORT}`);
 });
 
+// TESTPAGE
+app.get('/', (req, res) => {
+    res.send('<h1>API is running</h1>');
+});
 
 // SOCKET.io
 io.on('connection', (socket) => {
-    console.log('new connection...');
 
+    // ------------------------------------------------
+    // OnConnect
+    // ------------------------------------------------
+    usernameMapping[socket.id] = [];
+    sendReservedUsernamesBroadcast(io, socket);
+    sendOnlineUserBroadcast(io, socket);
+
+
+    // ------------------------------------------------
+    // onLogin
+    // ------------------------------------------------
+    socket.on('login', (theMessage) => {
+        const userName = theMessage.username;
+
+        mapUserNameToSocket(socket.id, userName);
+
+        let responseObj = getBaseResponseObject(socket.id);
+        responseObj.requestData = theMessage;
+        responseObj.responseData = { username: userName };
+
+        io.emit('login-broadcast', responseObj);
+        logMessage(`${socket.id} - login-broadcast: `, responseObj)
+
+        sendReservedUsernamesBroadcast(io, socket);
+        sendOnlineUserBroadcast(io, socket);
+    });
+
+    // ------------------------------------------------
+    // onUsernameChange
+    // ------------------------------------------------
+    socket.on('username-change', (theMessage) => {
+        let senderSocket = socket.id;
+        let oldUsername = theMessage.oldUsername;
+        let newUsername = theMessage.newUsername;
+
+        mapUserNameToSocket(socket.id, newUsername);
+
+        let responseObj = getBaseResponseObject(socket.id);
+        responseObj.requestData = theMessage;
+        responseObj.responseData = { senderSocket: senderSocket, oldUsername: oldUsername, newUsername: newUsername };
+
+        io.emit('username-change-broadcast', responseObj);
+        logMessage(`${socket.id} - username-change-broadcast: `, responseObj)
+
+        sendReservedUsernamesBroadcast(io, socket);
+    });
+
+    // ------------------------------------------------
+    // onMessage
+    // ------------------------------------------------
     socket.on('message', (theMessage) => {
-        console.log(`new message: `, theMessage);
-        socket.broadcast.emit('message-broadcast', theMessage);
+        let senderSocket = socket.id;
+        let sender = theMessage.sender;
+        let content = theMessage.content;
+
+        let responseObj = getBaseResponseObject(socket.id);
+        responseObj.requestData = theMessage;
+        responseObj.responseData = { senderSocket: senderSocket, sender: sender, content: content };
+
+        allMessages.push(responseObj.responseData);
+
+        io.emit('message-broadcast', responseObj);
+        logMessage(`${socket.id} - message-broadcast: `, responseObj)
+    });
+
+
+    // ------------------------------------------------
+    // onGetAllMessages
+    // ------------------------------------------------
+    socket.on('get-all-messages', () => {
+        let responseObj = getBaseResponseObject(socket.id);
+        responseObj.requestData = {};
+        responseObj.responseData = allMessages;
+
+        socket.broadcast.to(socket.id).emit('all-messages', responseObj);
+        logMessage(`${socket.id} - all-messages: `, responseObj)
+    });
+
+    // ------------------------------------------------
+    // OnDisconnect
+    // ------------------------------------------------
+    socket.on('disconnect', () => {
+        delete usernameMapping[socket.id];
+
+        sendReservedUsernamesBroadcast(io, socket);
+        sendOnlineUserBroadcast(io, socket);
     });
 });
+
+
+// ------------------------------------------------
+// Send functions
+// ------------------------------------------------
+function sendReservedUsernamesBroadcast(io, socket) {
+    let reservedUsernames = [];
+    Object.entries(usernameMapping).forEach(([key, value]) => { reservedUsernames.push(...value); })
+
+    let responseObj = getBaseResponseObject(socket.id);
+    responseObj.responseData = { reservedUsernames: reservedUsernames };
+
+    io.emit('reserved-usernames-changed', responseObj);
+    logMessage(`${socket.id} - reserved-usernames-changed: `, responseObj)
+}
+
+function sendOnlineUserBroadcast(io, socket) {
+    let responseObj = getBaseResponseObject(socket.id);
+    responseObj.responseData = { count: Object.keys(io.sockets.connected).length }
+
+    io.emit('online-user-changed', responseObj);
+    logMessage(`${socket.id} - online-user-changed: `, responseObj)
+}
+
+// ------------------------------------------------
+// Helper functions
+// ------------------------------------------------
+function mapUserNameToSocket(socket, username) {
+    let socketUsernames = usernameMapping[socket];
+    socketUsernames.push(username);
+
+    usernameMapping[socket] = socketUsernames;
+}
+
+function getBaseResponseObject(socketId) {
+    const actDate = new Date();
+
+    return {
+        timestamp: actDate.toISOString(),
+        socketId: socketId,
+        requestData: {},
+        responseData: {}
+    };
+}
+
+function logMessage(msg, param) {
+    const actDate = new Date();
+
+    if (param) {
+        console.log(`${actDate.toISOString()}: ${msg}`, param);
+    } else {
+        console.log(`${actDate.toISOString()}: ${msg}`);
+    }
+}

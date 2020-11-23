@@ -8,9 +8,11 @@ export class EventService {
 
   private focusNow = new Subject<void>();
   private editModal = new Subject<boolean>();
+  private blurNow = new Subject <boolean>();
 
   focusNow$ = this.focusNow.asObservable();
   editModal$ = this.editModal.asObservable();
+  blurNow$ = this.blurNow.asObservable();
 
   constructor() { }
 
@@ -20,6 +22,10 @@ export class EventService {
 
   public setEditModal(isLogin: boolean): void {
     this.editModal.next(isLogin);
+  }
+
+  public setblurNow(isBlur: boolean) {
+    this.blurNow.next(isBlur);
   }
 
 }

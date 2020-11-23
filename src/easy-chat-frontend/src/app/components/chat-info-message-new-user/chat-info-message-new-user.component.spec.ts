@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserConnectedMessage } from '../../models/chat-message.model';
+import { UserConnectedMessage } from '../../models/models';
 
 import { ChatInfoMessageNewUserComponent } from './chat-info-message-new-user.component';
 
@@ -20,9 +20,8 @@ describe('ChatInfoMessageNewUserComponent', () => {
   });
 
   it('should create with correct input', () => {
-    const mockUserConnectedMsg = new UserConnectedMessage();
-    mockUserConnectedMsg.content = 'InfoContent';
-    mockUserConnectedMsg.sender = 'TheSender';
+    const mockUserConnectedMsg = new UserConnectedMessage('TheSender');
+    mockUserConnectedMsg.senderName = 'TheSender';
     mockUserConnectedMsg.timestamp = new Date().toISOString();
 
     component.message = mockUserConnectedMsg;

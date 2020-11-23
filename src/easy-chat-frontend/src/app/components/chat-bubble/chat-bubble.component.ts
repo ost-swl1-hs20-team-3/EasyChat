@@ -1,6 +1,6 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { ChatMessage } from '../../models/chat-message.model';
+import { ChatMessage } from '../../models/models';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ChatBubbleComponent implements OnInit {
   }
 
   public isSentByMe(): boolean {
-    return (this.chatMessage.sender === this.userService.getUserName()) ? true : false;
+    return this.userService.isMySocketId(this.chatMessage.senderSocketId);
   }
 
 }

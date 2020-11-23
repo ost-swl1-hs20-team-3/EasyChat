@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChatMessage } from '../../models/chat-message.model';
+import { ChatMessage } from '../../models/models';
 
 import { ChatBubbleComponent } from './chat-bubble.component';
 
@@ -19,9 +19,7 @@ describe('ChatBubbleComponent', () => {
   });
 
   it('should create', () => {
-    const mockChatMsg = new ChatMessage();
-    mockChatMsg.content = 'InfoContent';
-    mockChatMsg.sender = 'TheSender';
+    const mockChatMsg = new ChatMessage('SOCKETID', 'SENDERNAME', 'InfoContent');
     mockChatMsg.timestamp = new Date().toISOString();
 
     component.chatMessage = mockChatMsg;
