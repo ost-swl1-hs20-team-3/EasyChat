@@ -17,7 +17,7 @@
   <div class="row msg">
     <div class="col-12 d-flex justify-content-start">
       <div class="msg-content msg-content-other bg-secondary text-white">
-        <div class="msg-content-username">{{chatMessage.senderName}}</div>
+        <div *ngIf="showUsername" class="msg-content-username">{{chatMessage.senderName}}</div>
         <div class="">{{chatMessage.getContent()}}</div>
       </div>
     </div>
