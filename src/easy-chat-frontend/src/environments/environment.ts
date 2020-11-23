@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  SOCKET_ENDPOINT: 'http://easy-chat-backend.herokuapp.com/',
-  // SOCKET_ENDPOINT: 'http://localhost:3000',
+  // SOCKET_ENDPOINT: 'http://easy-chat-backend.herokuapp.com/',
+  SOCKET_ENDPOINT: 'http://localhost:3000',
   FEATURE_FLAGS: {
   }
 };
