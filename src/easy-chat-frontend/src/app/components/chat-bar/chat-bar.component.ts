@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, forwardRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 import { EventService } from 'src/app/services/event.service';
@@ -11,13 +11,24 @@ import { Subscription } from 'rxjs';
 })
 export class ChatBarComponent implements OnInit, OnDestroy {
 
+  private maxRows = 4;
+
   private focusNowSubscription: Subscription;
 
-  @ViewChild('messageFocus') messageFocus: ElementRef;
+  @ViewChild('focusTextfield') focusTextfield: ElementRef;
+  @ViewChild('focusTextarea') focusTextarea: ElementRef;
 
   public message = '';
+  public get showTextArea(): boolean {return this.rows > 1;}
+  public get rows(): number {
+    const requiredRows = ((this.message || '').match(/\n/g) || []).length + 1;
+    return requiredRows > this.maxRows ? this.maxRows : requiredRows;
+  }
   public get isValidToSend(): boolean {
-    return this.userService.isLoggedIn() && this.message.trim().length > 0;
+    return this.userService.isLoggedIn() && !this.isMessageBlank;
+  }
+  private get isMessageBlank(): boolean {
+    return /^\s*$/.test(this.message);
   }
 
   constructor(
@@ -45,13 +56,22 @@ export class ChatBarComponent implements OnInit, OnDestroy {
     }
   }
 
+  public toggleTextarea(): void {
+    this.message += "\n";
+    this.setChatbarFocus();
+  }
+
   private resetMessage(): void {
     this.message = '';
     this.setChatbarFocus();
   }
 
   private setChatbarFocus(): void {
-    this.messageFocus.nativeElement.focus();
+    if (this.showTextArea){
+      this.focusTextarea.nativeElement.focus();
+    } else {
+      this.focusTextfield.nativeElement.focus();
+    }
   }
 
 }

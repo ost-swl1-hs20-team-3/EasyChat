@@ -1,6 +1,6 @@
 <div class="input-group">
-  <input type="text" #messageFocus class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message"
-    (keyup.enter)="sendMessage()" />
+  <input type="text" #focusTextfield class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message" (keyup.enter)="sendMessage()" (keyup.shift.enter)="toggleTextarea()" *ngIf="!showTextArea" ng-focus="!showTextArea" />
+  <textarea #focusTextarea class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message" (keyup.enter)="sendMessage()" [rows]="rows" *ngIf="showTextArea" ng-focus="showTextArea"></textarea>
   <span class="input-group-btn ml-2">
     <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="sendMessage()">➜</button>
   </span>
