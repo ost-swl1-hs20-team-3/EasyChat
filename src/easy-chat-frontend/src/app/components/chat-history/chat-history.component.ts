@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageType } from '../../models/models';
+import { ChatMessage, MessageType } from '../../models/models';
 import { ChatService } from '../../services/chat.service';
 
 @Component({
@@ -13,5 +13,18 @@ export class ChatHistoryComponent implements OnInit {
   constructor(public chatService: ChatService) { }
 
   public ngOnInit(): void {
+  }
+
+  public showUsername(message: ChatMessage, indexOfMessage: number): boolean {
+    if(this.chatService.messageList.length >= 2 && indexOfMessage > 0) {
+      if((message.senderName === this.chatService.messageList[indexOfMessage-1].senderName)
+      && (message.getType() === this.chatService.messageList[indexOfMessage-1].getType())) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
   }
 }

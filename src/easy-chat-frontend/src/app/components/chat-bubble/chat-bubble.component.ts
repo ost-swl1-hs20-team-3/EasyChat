@@ -11,6 +11,7 @@ import { UserService } from '../../services/user.service';
 export class ChatBubbleComponent implements OnInit {
 
   @Input() chatMessage: ChatMessage;
+  @Input() showUsername: boolean;
 
   constructor(private userService: UserService) { }
 

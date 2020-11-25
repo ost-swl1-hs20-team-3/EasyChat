@@ -19,7 +19,7 @@ export class UsernameEditComponent implements OnInit, OnDestroy {
   @ViewChild('usernameFocus') usernameFocus: ElementRef;
 
   public username = '';
-  public title = 'Willkommen!';
+  public title = 'Willkommen beim EasyChat!';
   public description = 'Bitte geben Sie einen Benutzer ein.';
   public buttonText = 'Eintreten';
   public errorMsg = '';

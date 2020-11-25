@@ -9,7 +9,7 @@ Entwicklung einer Chat-App mit dem Namen EasyChat.
 - Die Chat Anwendung läuft sehr stabil.
 
 ## Links
-- [EasyChat App](https://ost-swl1-hs20-team-3.github.io/EasyChat)
+- [EasyChat App](http://easy-chat-frontend.herokuapp.com/)
 - [Repository](https://github.com/ost-swl1-hs20-team-3/EasyChat)
 - [Moodle](https://elearning.fhsg.ch/course/view.php?id=4473)
 - [Board](https://app.vivifyscrum.com/boards/99679)
