@@ -14,7 +14,7 @@ export class ChatService {
   private loginEventsSubscription = new Subscription();
 
   private messageStorage: MessageStorage = new MessageStorage();
-  public get messages(): Array<Message> { return this.messageStorage.getAll() };
+  public get messageList(): Array<Message> { return this.messageStorage.getAll() };
 
   constructor(
     private userService: UserService,
