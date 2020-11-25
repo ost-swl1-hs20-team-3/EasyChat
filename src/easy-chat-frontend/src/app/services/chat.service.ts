@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { SocketioService } from './socketio.service';
 import { ChatMessage, Message, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
 import { UserService } from './user.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class ChatService {
   private chatMessageEventsSubscription = new Subscription();
   private loginEventsSubscription = new Subscription();
 
-  public messageList: Array<Message> = new Array<Message>();
+  private messageStorage: MessageStorage = new MessageStorage();
+  public get messages(): Array<Message> { return this.messageStorage.getAll() };
 
   constructor(
     private userService: UserService,
@@ -45,7 +47,7 @@ export class ChatService {
   }
 
   private addMessageToMessageList(message: Message): void {
-      this.messageList.push(message);
+    this.messageStorage.push(message);
   }
 
   public sendMessage(message: string): void {
@@ -61,6 +63,23 @@ export class ChatService {
 
   public sendInfoMessageForUsernameChanged(oldUserName: string, newUsername: string): void {
     this.socketioService.emitUsernameChange(oldUserName, newUsername);
+  }
+  
+}
+
+class MessageStorage {
+
+  private messageList: Array<Message> = new Array<Message>();
+
+  public push(message: Message): void {
+    this.messageList.push(message);
+    if (this.messageList.length > environment.MESSAGE_LIMIT){
+      this.messageList.splice(0, this.messageList.length - environment.MESSAGE_LIMIT);
+    }
+  }
+
+  public getAll(): Array<Message>{
+    return Array.from(this.messageList);
   }
 
 }
