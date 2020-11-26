@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { SocketioService } from './socketio.service';
 import { ChatMessage, Message, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
 import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private changeUsernameEventSubscription = new Subscription();
-  private chatMessageEventsSubscription = new Subscription();
-  private loginEventsSubscription = new Subscription();
+  private changeUsernameEventSubscription;
+  private chatMessageEventsSubscription;
+  private loginEventsSubscription;
 
   private messageStorage: MessageStorage = new MessageStorage();
   public get messageList(): Array<Message> { return this.messageStorage.getAll() };
@@ -37,9 +37,20 @@ export class ChatService {
     this.changeUsernameEventSubscription = this.socketioService.getUserNameChangedEvents().subscribe((msg) => {
       const theMsg = new UsernameChangedMessage(msg.getOldUsername(), msg.getNewUsername());
       theMsg.timestamp = msg.timestamp;
-
+-
       this.addMessageToMessageList(theMsg);
     });
+
+    this.socketioService.getAllMessagesEvents().pipe(first()).subscribe((allMsgs) => {
+      allMsgs.getAllMessages().forEach(msg => {
+        const theMsg = new ChatMessage(msg.senderSocket, msg.sender, msg.content);
+        theMsg.timestamp = msg.timestamp;
+
+        this.addMessageToMessageList(theMsg);
+      })
+    });
+    
+    socketioService.emitGetAllMessages();
   }
 
   private cleanInput(message: string): string {
@@ -64,7 +75,7 @@ export class ChatService {
   public sendInfoMessageForUsernameChanged(oldUserName: string, newUsername: string): void {
     this.socketioService.emitUsernameChange(oldUserName, newUsername);
   }
-  
+
 }
 
 class MessageStorage {
@@ -73,12 +84,12 @@ class MessageStorage {
 
   public push(message: Message): void {
     this.messageList.push(message);
-    if (this.messageList.length > environment.MESSAGE_LIMIT){
+    if (this.messageList.length > environment.MESSAGE_LIMIT) {
       this.messageList.splice(0, this.messageList.length - environment.MESSAGE_LIMIT);
     }
   }
 
-  public getAll(): Array<Message>{
+  public getAll(): Array<Message> {
     return Array.from(this.messageList);
   }
 

@@ -1,31 +1,12 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var MessageStorage = require('./messagestorage.js');
 
 const PORT = process.env.PORT || 3000;
-const MESSAGE_LIMIT = 15;
-
-class MessageStorage {
-
-    _messageList = [];
-
-    push(message) {
-        this._messageList.push(message);
-        if (this._messageList.length > MESSAGE_LIMIT) {
-            this._messageList.splice(0, this._messageList.length - MESSAGE_LIMIT);
-        }
-    }
-
-    getAll() {
-        return Array.from(this._messageList);
-    }
-
-}
-
-const messageStorage = new MessageStorage();
 
 let usernameMapping = {};
-
+const messageStorage = new MessageStorage();
 
 // start http server
 http.listen(PORT, () => {
@@ -94,10 +75,11 @@ io.on('connection', (socket) => {
         let senderSocket = socket.id;
         let sender = theMessage.sender;
         let content = theMessage.content;
+        let timestamp = new Date().toISOString();
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = { senderSocket: senderSocket, sender: sender, content: content };
+        responseObj.responseData = { senderSocket: senderSocket, sender: sender, content: content, timestamp: timestamp };
 
         messageStorage.push(responseObj.responseData);
 
@@ -114,7 +96,7 @@ io.on('connection', (socket) => {
         responseObj.requestData = {};
         responseObj.responseData = messageStorage.getAll();
 
-        socket.broadcast.to(socket.id).emit('all-messages', responseObj);
+        socket.emit('all-messages', responseObj);
         logMessage(`${socket.id} - all-messages: `, responseObj)
     });
 

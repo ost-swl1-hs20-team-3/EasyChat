@@ -24,7 +24,7 @@ export class EventService {
     this.editModal.next(isLogin);
   }
 
-  public setblurNow(isBlur: boolean) {
+  public setBlurNow(isBlur: boolean) {
     this.blurNow.next(isBlur);
   }
 

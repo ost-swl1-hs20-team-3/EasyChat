@@ -11,6 +11,13 @@ export interface SocketResponse {
   getResponseObject(): any;
 }
 
+export interface Message {
+  timestamp: string;
+  senderSocket: string;
+  sender: string;
+  content: string;
+}
+
 export interface ApiSocketResponse {
   timestamp?: string;
   socketId?: string;
@@ -93,6 +100,17 @@ export class MessageRequest implements SocketRequest {
   }
 }
 
+export class AllMessagesRequest implements SocketRequest {
+  
+  getEventName(): string {
+    return 'get-all-messages';
+  }
+  
+  getRequestObject() {
+    return {};
+  }
+
+}
 
 // -------------------------------------------------------------------
 // RESPONSES
@@ -212,6 +230,33 @@ export class MessageBroadcastResponse implements SocketResponse {
   public getContent(): string {
     return this.content;
   }
+}
+
+export class AllMessagesResponse implements SocketResponse{
+  private data: any;
+  private messages: Array<Message> = [];
+  
+  public timestamp: string;
+
+  constructor(dataObj?: ApiSocketResponse) {
+    this.data = dataObj;
+    
+    this.messages = dataObj?.responseData;
+    this.timestamp = dataObj?.timestamp;
+  }
+  
+  public getEventName(): string {
+    return 'all-messages';
+  }
+  
+  public getResponseObject(): any {
+    return this.data;
+  }
+
+  public getAllMessages(): Array<Message> {
+    return this.messages;  
+  }
+
 }
 
 export class UsernameChangeResponse implements SocketResponse {
