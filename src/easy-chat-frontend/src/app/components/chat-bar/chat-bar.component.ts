@@ -18,7 +18,6 @@ export class ChatBarComponent implements OnInit, OnDestroy {
   @ViewChild('focusTextarea') focusTextarea: ElementRef;
 
   public message = '';
-  public get showTextArea(): boolean { return this.rows > 1; }
   public get rows(): number {
     const requiredRows = ((this.message || '').match(/\n/g) || []).length + 1;
     return requiredRows > this.maxRows ? this.maxRows : requiredRows;
