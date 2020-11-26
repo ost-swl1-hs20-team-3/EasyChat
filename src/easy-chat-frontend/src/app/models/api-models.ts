@@ -14,10 +14,6 @@ export interface SocketResponse {
 }
 
 export interface MessageResponse {
-  timestamp: string;
-  senderSocket: string;
-  sender: string;
-  content: string;
   type: number;
 }
 
