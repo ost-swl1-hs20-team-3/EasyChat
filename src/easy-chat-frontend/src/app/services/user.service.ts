@@ -44,7 +44,7 @@ export class UserService {
     if (!this.isLoggedIn()) {
       this.username = newUsername;
       this.socketioService.emitLogin(newUsername); // Emit login event
-      this.eventService.setblurNow(false);
+      this.eventService.setBlurNow(false);
     } else {
       if (this.username !== newUsername) {
         const oldUsername = this.username;

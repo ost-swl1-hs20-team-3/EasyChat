@@ -7,11 +7,14 @@ import {
   LoginBroadcastResponse,
   LoginRequest,
   MessageBroadcastResponse,
-  MessageRequest, OnlineUserChangedResponse,
+  MessageRequest, 
+  OnlineUserChangedResponse,
   SocketRequest,
   UsernameChangeResponse,
   UsernameChangeRequest,
-  ReservedUsernamesChangedResponse
+  ReservedUsernamesChangedResponse,
+  AllMessagesRequest, 
+  AllMessagesResponse
 } from '../models/api-models';
 
 
@@ -44,7 +47,6 @@ export class SocketioService {
     }
   }
 
-
   public isMySocketId(socketId: string): boolean {
     return this.socketIds.includes(socketId);
   }
@@ -61,6 +63,9 @@ export class SocketioService {
     this.emit(new UsernameChangeRequest({ oldUsername, newUsername }));
   }
 
+  public emitGetAllMessages(): void {
+    this.emit(new AllMessagesRequest());
+  }
 
   public getOnlineUsers(): Observable<OnlineUserChangedResponse> {
     const eventName = new OnlineUserChangedResponse({}).getEventName();
@@ -117,13 +122,13 @@ export class SocketioService {
     });
   }
 
-  public getAllMessagesEvents(): Observable<Message> {
-    const eventName = 'all-messages';
+  public getAllMessagesEvents(): Observable<AllMessagesResponse> {
+    const eventName = new AllMessagesResponse().getEventName();
 
     return new Observable((observer) => {
-      this.socket.on(eventName, (data: any) => {
+      this.socket.on(eventName, (data: AllMessagesResponse) => {
         this.logEvent(`${eventName}: `, data);
-        observer.next(data);
+        observer.next(new AllMessagesResponse(data));
       });
     });
   }

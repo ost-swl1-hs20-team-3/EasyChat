@@ -1,13 +1,12 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var MessageStorage = require('./messagestorage.js');
 
 const PORT = process.env.PORT || 3000;
 
-
-let allMessages = [];
 let usernameMapping = {};
-
+const messageStorage = new MessageStorage();
 
 // start http server
 http.listen(PORT, () => {
@@ -35,12 +34,15 @@ io.on('connection', (socket) => {
     // ------------------------------------------------
     socket.on('login', (theMessage) => {
         const userName = theMessage.username;
+        let type = theMessage.type;
 
         mapUserNameToSocket(socket.id, userName);
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = { username: userName };
+        responseObj.responseData = { type: type, username: userName };
+
+        messageStorage.push(responseObj.responseData);
 
         io.emit('login-broadcast', responseObj);
         logMessage(`${socket.id} - login-broadcast: `, responseObj)
@@ -54,6 +56,7 @@ io.on('connection', (socket) => {
     // ------------------------------------------------
     socket.on('username-change', (theMessage) => {
         let senderSocket = socket.id;
+        let type = theMessage.type;
         let oldUsername = theMessage.oldUsername;
         let newUsername = theMessage.newUsername;
 
@@ -61,7 +64,9 @@ io.on('connection', (socket) => {
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = { senderSocket: senderSocket, oldUsername: oldUsername, newUsername: newUsername };
+        responseObj.responseData = { type: type, senderSocket: senderSocket, oldUsername: oldUsername, newUsername: newUsername };
+
+        messageStorage.push(responseObj.responseData);
 
         io.emit('username-change-broadcast', responseObj);
         logMessage(`${socket.id} - username-change-broadcast: `, responseObj)
@@ -74,14 +79,16 @@ io.on('connection', (socket) => {
     // ------------------------------------------------
     socket.on('message', (theMessage) => {
         let senderSocket = socket.id;
+        let type = theMessage.type;
         let sender = theMessage.sender;
         let content = theMessage.content;
+        let timestamp = new Date().toISOString();
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
-        responseObj.responseData = { senderSocket: senderSocket, sender: sender, content: content };
+        responseObj.responseData = { type: type, senderSocket: senderSocket, sender: sender, content: content, timestamp: timestamp };
 
-        allMessages.push(responseObj.responseData);
+        messageStorage.push(responseObj.responseData);
 
         io.emit('message-broadcast', responseObj);
         logMessage(`${socket.id} - message-broadcast: `, responseObj)
@@ -94,9 +101,9 @@ io.on('connection', (socket) => {
     socket.on('get-all-messages', () => {
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = {};
-        responseObj.responseData = allMessages;
+        responseObj.responseData = messageStorage.getAll();
 
-        socket.broadcast.to(socket.id).emit('all-messages', responseObj);
+        socket.emit('all-messages', responseObj);
         logMessage(`${socket.id} - all-messages: `, responseObj)
     });
 

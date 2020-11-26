@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { EventService } from './services/event.service';
+import { SocketioService } from './services/socketio.service';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(
     private userService: UserService,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private socketService: SocketioService) {
   }
 
   public ngOnInit(): void {
@@ -19,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     if (!this.userService.isLoggedIn()) {
-      this.eventService.setblurNow(true);
+      this.eventService.setBlurNow(true);
       this.eventService.setEditModal(true);
     }
   }
