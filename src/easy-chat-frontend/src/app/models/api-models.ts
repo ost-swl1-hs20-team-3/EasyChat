@@ -1,3 +1,5 @@
+import { MessageType } from './models';
+
 export interface SocketRequest {
   getEventName(): string;
 
@@ -11,11 +13,12 @@ export interface SocketResponse {
   getResponseObject(): any;
 }
 
-export interface Message {
+export interface MessageResponse {
   timestamp: string;
   senderSocket: string;
   sender: string;
   content: string;
+  type: number;
 }
 
 export interface ApiSocketResponse {
@@ -45,7 +48,8 @@ export class LoginRequest implements SocketRequest {
 
   public getRequestObject(): any {
     return {
-      username: this.username
+      username: this.username,
+      type: MessageType.UserConnected
     };
   }
 }
@@ -70,7 +74,8 @@ export class UsernameChangeRequest implements SocketRequest {
   public getRequestObject(): any {
     return {
       oldUsername: this.oldUsername,
-      newUsername: this.newUsername
+      newUsername: this.newUsername,
+      type: MessageType.UserNameChanged
     };
   }
 }
@@ -95,7 +100,8 @@ export class MessageRequest implements SocketRequest {
   public getRequestObject(): any {
     return {
       sender: this.sender,
-      content: this.content
+      content: this.content,
+      type: MessageType.ChatMessage
     };
   }
 }
@@ -171,8 +177,8 @@ export class OnlineUserChangedResponse implements SocketResponse {
 
 export class LoginBroadcastResponse implements SocketResponse {
   private data: any;
-  private username: string;
 
+  public username: string;
   public timestamp: string;
 
   constructor(dataObj: ApiSocketResponse) {
@@ -191,17 +197,13 @@ export class LoginBroadcastResponse implements SocketResponse {
     return this.data;
   }
 
-  public getUserName(): string {
-    return this.username;
-  }
-
 }
 
 export class MessageBroadcastResponse implements SocketResponse {
   private data: any;
-  private senderUsername: string;
-  private content: string;
 
+  public senderUsername: string;
+  public content: string;
   public timestamp: string;
   public senderSocketId: string;
 
@@ -223,18 +225,11 @@ export class MessageBroadcastResponse implements SocketResponse {
     return this.data;
   }
 
-  public getSenderUsername(): string {
-    return this.senderUsername;
-  }
-
-  public getContent(): string {
-    return this.content;
-  }
 }
 
 export class AllMessagesResponse implements SocketResponse{
   private data: any;
-  private messages: Array<Message> = [];
+  private messages: Array<MessageResponse> = [];
   
   public timestamp: string;
 
@@ -253,7 +248,7 @@ export class AllMessagesResponse implements SocketResponse{
     return this.data;
   }
 
-  public getAllMessages(): Array<Message> {
+  public getAllMessages(): Array<MessageResponse> {
     return this.messages;  
   }
 
@@ -261,8 +256,8 @@ export class AllMessagesResponse implements SocketResponse{
 
 export class UsernameChangeResponse implements SocketResponse {
   private data: any;
-  private oldUsername: string;
-  private newUsername: string;
+  public oldUsername: string;
+  public newUsername: string;
 
   public timestamp: string;
 
@@ -282,11 +277,4 @@ export class UsernameChangeResponse implements SocketResponse {
     return this.data;
   }
 
-  public getOldUsername(): string {
-    return this.oldUsername;
-  }
-
-  public getNewUsername(): string {
-    return this.newUsername;
-  }
 }

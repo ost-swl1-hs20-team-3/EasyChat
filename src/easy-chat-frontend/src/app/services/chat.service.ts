@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SocketioService } from './socketio.service';
-import { ChatMessage, Message, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
+import { ChatMessage, Message, MessageType, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
 import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
 import { first } from 'rxjs/operators';
+import { LoginBroadcastResponse, MessageBroadcastResponse, UsernameChangeResponse } from '../models/api-models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,36 +22,54 @@ export class ChatService {
     private socketioService: SocketioService
   ) {
     this.chatMessageEventsSubscription = this.socketioService.getMessageEvents().subscribe((msg) => {
-      const theMsg = new ChatMessage(msg.senderSocketId, msg.getSenderUsername(), msg.getContent());
-      theMsg.timestamp = msg.timestamp;
-
-      this.addMessageToMessageList(theMsg);
+      this.addNewChatMessage(msg);
     });
 
     this.loginEventsSubscription = this.socketioService.getLoginEvents().subscribe((msg) => {
-      const theMsg = new UserConnectedMessage(msg.getUserName());
-      theMsg.timestamp = msg.timestamp;
-
-      this.addMessageToMessageList(theMsg);
+      this.addNewUserConnectedMessage(msg);
     });
 
     this.changeUsernameEventSubscription = this.socketioService.getUserNameChangedEvents().subscribe((msg) => {
-      const theMsg = new UsernameChangedMessage(msg.getOldUsername(), msg.getNewUsername());
-      theMsg.timestamp = msg.timestamp;
--
-      this.addMessageToMessageList(theMsg);
+      this.addNewUsernameChangedMessage(msg);
     });
 
     this.socketioService.getAllMessagesEvents().pipe(first()).subscribe((allMsgs) => {
       allMsgs.getAllMessages().forEach(msg => {
-        const theMsg = new ChatMessage(msg.senderSocket, msg.sender, msg.content);
-        theMsg.timestamp = msg.timestamp;
+        switch(msg.type) {
+          case MessageType.UserConnected : this.addNewUserConnectedMessage(msg);
+          break;
+          case MessageType.UserNameChanged : this.addNewUsernameChangedMessage(msg);
+          break;
+          case MessageType.ChatMessage : this.addNewChatMessage(msg);
+          break;
+          default: throw new TypeError(`type '${msg.type}' not known`);
+        }
 
-        this.addMessageToMessageList(theMsg);
       })
     });
-    
+
     socketioService.emitGetAllMessages();
+  }
+
+  private addNewUsernameChangedMessage(msg: any) {
+    const theMsg = new UsernameChangedMessage(msg.oldUsername, msg.newUsername);
+    theMsg.timestamp = msg.timestamp;
+
+    this.addMessageToMessageList(theMsg);
+  }
+
+  private addNewUserConnectedMessage(msg: any) {
+    const theMsg = new UserConnectedMessage(msg.username);
+    theMsg.timestamp = msg.timestamp;
+
+    this.addMessageToMessageList(theMsg);
+  }
+
+  private addNewChatMessage(msg: any) {
+    const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername, msg.content);
+    theMsg.timestamp = msg.timestamp;
+
+    this.addMessageToMessageList(theMsg);
   }
 
   private cleanInput(message: string): string {
