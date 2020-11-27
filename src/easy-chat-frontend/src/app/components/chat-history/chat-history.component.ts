@@ -16,9 +16,9 @@ export class ChatHistoryComponent implements OnInit {
   }
 
   public showUsername(message: ChatMessage, indexOfMessage: number): boolean {
-    if(this.chatService.messageList.length >= 2 && indexOfMessage > 0) {
-      if((message.senderName === this.chatService.messageList[indexOfMessage-1].senderName)
-      && (message.getType() === this.chatService.messageList[indexOfMessage-1].getType())) {
+    if (this.chatService.messageList.length >= 2 && indexOfMessage > 0) {
+      if ((message.senderName === this.chatService.messageList[indexOfMessage - 1].senderName)
+        && (message.getType() === this.chatService.messageList[indexOfMessage - 1].getType())) {
         return false;
       } else {
         return true;

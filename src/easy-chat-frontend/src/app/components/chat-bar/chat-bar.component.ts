@@ -58,9 +58,9 @@ export class ChatBarComponent implements OnInit, OnDestroy {
     this.message = '';
     this.setChatbarFocus();
   }
-  
-  public preventEnter(event): void {
-    if (event.keyCode == 13 && !event.shiftKey) {
+
+  public preventEnter(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.sendMessage();
     }

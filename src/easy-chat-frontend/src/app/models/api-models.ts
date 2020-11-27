@@ -14,7 +14,7 @@ export interface SocketResponse {
 }
 
 export interface MessageResponse {
-  type: number;
+  type: MessageType;
 }
 
 export interface ApiSocketResponse {
@@ -103,12 +103,12 @@ export class MessageRequest implements SocketRequest {
 }
 
 export class AllMessagesRequest implements SocketRequest {
-  
+
   getEventName(): string {
     return 'get-all-messages';
   }
-  
-  getRequestObject() {
+
+  getRequestObject(): object {
     return {};
   }
 
@@ -223,29 +223,29 @@ export class MessageBroadcastResponse implements SocketResponse {
 
 }
 
-export class AllMessagesResponse implements SocketResponse{
+export class AllMessagesResponse implements SocketResponse {
   private data: any;
   private messages: Array<MessageResponse> = [];
-  
+
   public timestamp: string;
 
   constructor(dataObj?: ApiSocketResponse) {
     this.data = dataObj;
-    
+
     this.messages = dataObj?.responseData;
     this.timestamp = dataObj?.timestamp;
   }
-  
+
   public getEventName(): string {
     return 'all-messages';
   }
-  
+
   public getResponseObject(): any {
     return this.data;
   }
 
   public getAllMessages(): Array<MessageResponse> {
-    return this.messages;  
+    return this.messages;
   }
 
 }
