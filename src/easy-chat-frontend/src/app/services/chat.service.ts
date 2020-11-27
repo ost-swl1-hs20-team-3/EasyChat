@@ -68,7 +68,7 @@ export class ChatService {
   }
 
   private addNewChatMessage(msg: any): void {
-    const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername, msg.content);
+    const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername || msg.sender, msg.content);
     theMsg.timestamp = msg.timestamp;
 
     this.addMessageToMessageList(theMsg);
