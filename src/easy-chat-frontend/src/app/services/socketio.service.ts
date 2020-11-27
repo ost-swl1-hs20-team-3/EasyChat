@@ -7,13 +7,13 @@ import {
   LoginBroadcastResponse,
   LoginRequest,
   MessageBroadcastResponse,
-  MessageRequest, 
+  MessageRequest,
   OnlineUserChangedResponse,
   SocketRequest,
   UsernameChangeResponse,
   UsernameChangeRequest,
   ReservedUsernamesChangedResponse,
-  AllMessagesRequest, 
+  AllMessagesRequest,
   AllMessagesResponse
 } from '../models/api-models';
 

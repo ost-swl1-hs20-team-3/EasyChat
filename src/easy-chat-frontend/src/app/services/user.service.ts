@@ -14,8 +14,7 @@ export class UserService {
 
   constructor(
     private socketioService: SocketioService,
-    private eventService: EventService) 
-    {
+    private eventService: EventService) {
     this.reservedUsernamesSubscription = this.socketioService.getReservedUsernames().subscribe((msg) => {
       this.reservedUsernames = msg.getReservedUsernames();
     });

@@ -10,7 +10,7 @@ import { EventService } from 'src/app/services/event.service';
 export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   private setBlurSubscription: Subscription;
-  public blurToggle: boolean = true;
+  public blurToggle = true;
 
   @ViewChild('scrollable') scrollContainerRef: ElementRef;
 
@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   public ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
-  
+
   public ngOnDestroy(): void {
     this.setBlurSubscription.unsubscribe();
   }
@@ -38,11 +38,11 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
-  private changeBlur(isBlur: boolean) {
-    if(isBlur) {
-      this.scrollContainerRef.nativeElement.classList.add("blurBackground");
+  private changeBlur(isBlur: boolean): void {
+    if (isBlur) {
+      this.scrollContainerRef.nativeElement.classList.add('blurBackground');
     } else {
-      this.scrollContainerRef.nativeElement.classList.remove("blurBackground");
+      this.scrollContainerRef.nativeElement.classList.remove('blurBackground');
     }
   }
 

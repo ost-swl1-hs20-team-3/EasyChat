@@ -15,7 +15,7 @@ export class ChatService {
   private loginEventsSubscription;
 
   private messageStorage: MessageStorage = new MessageStorage();
-  public get messageList(): Array<Message> { return this.messageStorage.getAll() };
+  public get messageList(): Array<Message> { return this.messageStorage.getAll(); }
 
   constructor(
     private userService: UserService,
@@ -35,37 +35,39 @@ export class ChatService {
 
     this.socketioService.getAllMessagesEvents().pipe(first()).subscribe((allMsgs) => {
       allMsgs.getAllMessages().forEach(msg => {
-        switch(msg.type) {
-          case MessageType.UserConnected : this.addNewUserConnectedMessage(msg);
-          break;
-          case MessageType.UserNameChanged : this.addNewUsernameChangedMessage(msg);
-          break;
-          case MessageType.ChatMessage : this.addNewChatMessage(msg);
-          break;
+        switch (msg.type) {
+          case MessageType.UserConnected:
+            this.addNewUserConnectedMessage(msg);
+            break;
+          case MessageType.UserNameChanged:
+            this.addNewUsernameChangedMessage(msg);
+            break;
+          case MessageType.ChatMessage:
+            this.addNewChatMessage(msg);
+            break;
           default: throw new TypeError(`type '${msg.type}' not known`);
         }
-
-      })
+      });
     });
 
     socketioService.emitGetAllMessages();
   }
 
-  private addNewUsernameChangedMessage(msg: any) {
+  private addNewUsernameChangedMessage(msg: any): void {
     const theMsg = new UsernameChangedMessage(msg.oldUsername, msg.newUsername);
     theMsg.timestamp = msg.timestamp;
 
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewUserConnectedMessage(msg: any) {
+  private addNewUserConnectedMessage(msg: any): void {
     const theMsg = new UserConnectedMessage(msg.username);
     theMsg.timestamp = msg.timestamp;
 
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewChatMessage(msg: any) {
+  private addNewChatMessage(msg: any): void {
     const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername, msg.content);
     theMsg.timestamp = msg.timestamp;
 
