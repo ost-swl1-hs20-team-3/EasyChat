@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, forwardRef, NgModule, AfterViewChecked, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
-import { EventService } from 'src/app/services/event.service';
-import { Subscription } from 'rxjs';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'ec-chat-bar',
