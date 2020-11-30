@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, forwardRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, forwardRef, NgModule, AfterViewChecked, Renderer2 } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ChatService } from '../../services/chat.service';
 import { EventService } from 'src/app/services/event.service';
@@ -11,17 +11,11 @@ import { Subscription } from 'rxjs';
 })
 export class ChatBarComponent implements OnInit, OnDestroy {
 
-  private maxRows = 4;
-
   private focusNowSubscription: Subscription;
 
   @ViewChild('focusTextarea') focusTextarea: ElementRef;
 
   public message = '';
-  public get rows(): number {
-    const requiredRows = ((this.message || '').match(/\n/g) || []).length + 1;
-    return requiredRows > this.maxRows ? this.maxRows : requiredRows;
-  }
   public get isValidToSend(): boolean {
     return this.userService.isLoggedIn() && !this.isMessageBlank;
   }
