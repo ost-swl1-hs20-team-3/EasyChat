@@ -132,4 +132,8 @@ export class SocketioService {
       });
     });
   }
+
+  public isConnected(): boolean {
+    return this.socket.connected;
+  }
 }

@@ -1,1 +1,5 @@
-<p>users-online-button works!</p>
+<div class="container-fluid btn btn-outline-primary border-0 btn-block">
+    <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
+    <div>{{noOfOnlineUsers}} Online</div>
+</div>
+  

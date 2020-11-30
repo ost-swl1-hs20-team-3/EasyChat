@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SocketioService } from 'src/app/services/socketio.service';
 
 @Component({
   selector: 'ec-users-online-button',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersOnlineButtonComponent implements OnInit {
 
-  constructor() { }
+  private onlineUsersSubscription = new Subscription();
+
+  public noOfOnlineUsers = 0;
+
+  constructor(private socketioService: SocketioService) {
+    this.onlineUsersSubscription = socketioService.getOnlineUsers().subscribe((msg) => {
+      this.noOfOnlineUsers = msg.getNumberOfOnlineUsers();
+    });
+  }
 
   ngOnInit(): void {
+  }
+
+  public isConnected(): boolean {
+    return this.socketioService.isConnected();
   }
 
 }
