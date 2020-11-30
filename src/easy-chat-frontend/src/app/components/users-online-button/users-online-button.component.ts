@@ -1,27 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SocketioService } from 'src/app/services/socketio.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'ec-users-online-button',
   templateUrl: './users-online-button.component.html',
   styleUrls: ['./users-online-button.component.css']
 })
-export class UsersOnlineButtonComponent implements OnInit {
+export class UsersOnlineButtonComponent implements OnInit, OnDestroy {
 
-  private onlineUsersSubscription = new Subscription();
+  private reservedUsernamesSubscription = new Subscription();
 
-  public noOfOnlineUsers = 0;
+  public onlineUsernames: string[] = [];
 
   constructor(
     private socketioService: SocketioService
   ) {
-    this.onlineUsersSubscription = socketioService.getOnlineUsers().subscribe((msg) => {
-      this.noOfOnlineUsers = msg.getNumberOfOnlineUsers();
+    this.reservedUsernamesSubscription = this.socketioService.getReservedUsernames().subscribe((msg) => {
+      this.onlineUsernames = msg.getReservedUsernames();
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.reservedUsernamesSubscription.unsubscribe();
   }
 
   public isConnected(): boolean {
