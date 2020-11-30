@@ -1,5 +1,36 @@
-<div class="container-fluid btn btn-outline-primary border-0 btn-block">
+<button class="container-fluid btn btn-outline-primary border-0 btn-block" [ngbPopover]="popContent" popoverTitle="Aktive Nutzer" placement="bottom-right" popoverClass="user-popover">
     <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
     <div>{{noOfOnlineUsers}} Online</div>
-</div>
-  
+</button>
+
+<ng-template #popContent>
+    <ul class="list-group">
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+        <li class="list-group-item">Test 1</li>
+    </ul>
+</ng-template>

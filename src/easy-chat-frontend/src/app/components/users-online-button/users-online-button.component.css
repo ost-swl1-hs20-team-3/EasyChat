@@ -3,6 +3,11 @@
     --colorRGBAConnected: 3, 108, 64;
     --colorRGBADisconnected: 219, 0, 0
   }
+
+ ::ng-deep.user-popover {
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
   
   .dot {
     border-radius: 50%;

@@ -13,7 +13,9 @@ export class UsersOnlineButtonComponent implements OnInit {
 
   public noOfOnlineUsers = 0;
 
-  constructor(private socketioService: SocketioService) {
+  constructor(
+    private socketioService: SocketioService
+  ) {
     this.onlineUsersSubscription = socketioService.getOnlineUsers().subscribe((msg) => {
       this.noOfOnlineUsers = msg.getNumberOfOnlineUsers();
     });
