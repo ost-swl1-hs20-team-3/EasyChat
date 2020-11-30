@@ -45,7 +45,7 @@ class DateTransformer implements PipeTransform {
     } else if (this.isYesterday(currentDate)) {
       return 'Gestern';
     } else {
-      return this.datePipe.transform(currentDate.toISOString(), 'dd.MM.yyyy');
+      return this.datePipe.transform(currentDate.toISOString(), 'dd. MMMM yyyy');
     }
   }
 
