@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
 import { first } from 'rxjs/operators';
 import { LoginBroadcastResponse, MessageBroadcastResponse, UsernameChangeResponse } from '../models/api-models';
+import { SoundService } from './sound.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class ChatService {
 
   constructor(
     private userService: UserService,
-    private socketioService: SocketioService
+    private socketioService: SocketioService,
+    private soundService: SoundService
   ) {
     this.chatMessageEventsSubscription = this.socketioService.getMessageEvents().subscribe((msg) => {
       this.addNewChatMessage(msg);
@@ -43,7 +45,7 @@ export class ChatService {
             this.addNewUsernameChangedMessage(msg);
             break;
           case MessageType.ChatMessage:
-            this.addNewChatMessage(msg);
+            this.addNewChatMessage(msg, false);
             break;
           default: throw new TypeError(`type '${msg.type}' not known`);
         }
@@ -67,9 +69,13 @@ export class ChatService {
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewChatMessage(msg: any): void {
+  private addNewChatMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername || msg.sender, msg.content);
     theMsg.timestamp = msg.timestamp;
+
+    if (isNewMessage && !this.userService.isMySocketId(theMsg.senderSocketId)) {
+      this.soundService.playNotification();
+    }
 
     this.addMessageToMessageList(theMsg);
   }
