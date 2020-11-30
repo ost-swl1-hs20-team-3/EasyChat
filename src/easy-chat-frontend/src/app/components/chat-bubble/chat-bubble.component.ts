@@ -30,7 +30,7 @@ export class ChatBubbleComponent implements OnInit {
 
 class DateTransformer implements PipeTransform {
 
-  constructor(private datePipe: DatePipe){}
+  constructor(private datePipe: DatePipe) { }
 
   public transform(isoString: string, ...args: any[]): string {
     const currentDate: Date = new Date(Date.parse(isoString));
@@ -39,7 +39,7 @@ class DateTransformer implements PipeTransform {
     return `${day}, ${time} Uhr`;
   }
 
-  private getDay(currentDate: Date): string{
+  private getDay(currentDate: Date): string {
     if (this.isToday(currentDate)) {
       return 'Heute';
     } else if (this.isYesterday(currentDate)) {
