@@ -17,6 +17,7 @@ import { ChatInfoMessageUsernameChangedComponent } from './components/chat-info-
 const APP_LOCALE_ID = 'de-CH';
 
 import locale_de_ch from '@angular/common/locales/de-CH';
+import { UsersOnlineButtonComponent } from './components/users-online-button/users-online-button.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -31,7 +32,8 @@ registerLocaleData(locale_de_ch);
     ChatBubbleComponent,
     UsernameEditComponent,
     ChatInfoMessageNewUserComponent,
-    ChatInfoMessageUsernameChangedComponent
+    ChatInfoMessageUsernameChangedComponent,
+    UsersOnlineButtonComponent
   ],
   imports: [
     BrowserModule,
