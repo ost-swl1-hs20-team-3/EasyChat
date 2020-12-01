@@ -1,8 +1,9 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -39,7 +40,8 @@ registerLocaleData(locale_de_ch);
   imports: [
     BrowserModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    TextareaAutosizeModule
   ],
   providers: [
     {

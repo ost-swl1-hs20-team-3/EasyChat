@@ -1,5 +1,5 @@
 <div class="input-group">
-  <textarea #focusTextarea class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message" (keydown)="preventEnter($event)" [rows]="rows"></textarea>
+  <textarea autosize #focusTextarea class="form-control" placeholder="Nachricht eingeben" [(ngModel)]="message" (keydown)="preventEnter($event)"></textarea>
   <span class="input-group-btn ml-2">
     <button type="submit" class="btn btn-primary h-100" [disabled]="!isValidToSend" (click)="sendMessage()">➜</button>
   </span>
