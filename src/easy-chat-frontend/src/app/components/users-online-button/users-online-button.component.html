@@ -1,0 +1,11 @@
+<button class="container-fluid btn btn-outline-primary border-0 btn-block" [ngbPopover]="popContent"
+  popoverTitle="Aktive Nutzer" placement="bottom-right" popoverClass="user-popover">
+  <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
+  <div>{{getNumberOfOnlineUsers()}} Online</div>
+</button>
+
+<ng-template #popContent>
+  <ul class="list-group">
+    <li class="list-group-item list-item-content" *ngFor="let user of getOnlineUsernames()">{{user}}</li>
+  </ul>
+</ng-template>

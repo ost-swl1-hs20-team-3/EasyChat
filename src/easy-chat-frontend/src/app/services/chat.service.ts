@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import { SocketioService } from './socketio.service';
-import { ChatMessage, Message, MessageType, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
-import { UserService } from './user.service';
-import { environment } from '../../environments/environment';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { LoginBroadcastResponse, MessageBroadcastResponse, UsernameChangeResponse } from '../models/api-models';
+
+import { environment } from '../../environments/environment';
+import { ChatMessage, Message, MessageType, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
+import { SocketioService } from './socketio.service';
+import { UserService } from './user.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private changeUsernameEventSubscription;
-  private chatMessageEventsSubscription;
-  private loginEventsSubscription;
+  private changeUsernameEventSubscription = new Subscription();
+  private chatMessageEventsSubscription = new Subscription();
+  private loginEventsSubscription = new Subscription();
+  private reservedUsernamesSubscription = new Subscription();
 
   private messageStorage: MessageStorage = new MessageStorage();
+
   public get messageList(): Array<Message> { return this.messageStorage.getAll(); }
+  public onlineUserNames: Array<string> = [];
 
   constructor(
     private userService: UserService,
@@ -31,6 +36,20 @@ export class ChatService {
 
     this.changeUsernameEventSubscription = this.socketioService.getUserNameChangedEvents().subscribe((msg) => {
       this.addNewUsernameChangedMessage(msg);
+    });
+
+    this.reservedUsernamesSubscription = this.socketioService.getOnlineUsers().subscribe((msg) => {
+      this.onlineUserNames = [];
+
+      const onlineUserMap = msg.getOnlineUsers();
+
+      Object.keys(onlineUserMap).forEach((socketId: string) => {
+        const actUserName: string = onlineUserMap[socketId].pop();
+
+        if (typeof actUserName !== 'undefined') {
+          this.onlineUserNames.push(actUserName);
+        }
+      });
     });
 
     this.socketioService.getAllMessagesEvents().pipe(first()).subscribe((allMsgs) => {
