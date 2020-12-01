@@ -1,7 +1,9 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -13,6 +15,7 @@ import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.compon
 import { UsernameEditComponent } from './components/username-edit/username-edit.component';
 import { ChatInfoMessageNewUserComponent } from './components/chat-info-message-new-user/chat-info-message-new-user.component';
 import { ChatInfoMessageUsernameChangedComponent } from './components/chat-info-message-username-changed/chat-info-message-username-changed.component';
+import { UsersOnlineButtonComponent } from './components/users-online-button/users-online-button.component';
 
 const APP_LOCALE_ID = 'de-CH';
 
@@ -31,11 +34,14 @@ registerLocaleData(locale_de_ch);
     ChatBubbleComponent,
     UsernameEditComponent,
     ChatInfoMessageNewUserComponent,
-    ChatInfoMessageUsernameChangedComponent
+    ChatInfoMessageUsernameChangedComponent,
+    UsersOnlineButtonComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    NgbModule,
+    TextareaAutosizeModule
   ],
   providers: [
     {

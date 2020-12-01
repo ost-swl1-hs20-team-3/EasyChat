@@ -72,6 +72,7 @@ io.on('connection', (socket) => {
         logMessage(`${socket.id} - username-change-broadcast: `, responseObj)
 
         sendReservedUsernamesBroadcast(io, socket);
+        sendOnlineUserBroadcast(io, socket);
     });
 
     // ------------------------------------------------
@@ -135,7 +136,7 @@ function sendReservedUsernamesBroadcast(io, socket) {
 
 function sendOnlineUserBroadcast(io, socket) {
     let responseObj = getBaseResponseObject(socket.id);
-    responseObj.responseData = { count: Object.keys(io.sockets.connected).length }
+    responseObj.responseData = usernameMapping;
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)
@@ -146,6 +147,11 @@ function sendOnlineUserBroadcast(io, socket) {
 // ------------------------------------------------
 function mapUserNameToSocket(socket, username) {
     let socketUsernames = usernameMapping[socket];
+    
+    socketUsernames = socketUsernames.filter((val) => {
+        return val !== username;
+    });
+    
     socketUsernames.push(username);
 
     usernameMapping[socket] = socketUsernames;

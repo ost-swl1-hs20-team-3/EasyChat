@@ -1,3 +1,23 @@
 textarea {
-    resize: none;
+  resize: none;
+  max-height: 96px;
+  overflow: auto !important;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background-color: #ced4da;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #adb5bd;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #6c757d;
 }

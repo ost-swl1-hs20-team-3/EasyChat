@@ -146,7 +146,7 @@ export class ReservedUsernamesChangedResponse implements SocketResponse {
 
 export class OnlineUserChangedResponse implements SocketResponse {
   private data: any;
-  private onlineUsers: number;
+  private onlineUsers: Map<string, Array<string>>;
 
   public timestamp: string;
 
@@ -155,7 +155,7 @@ export class OnlineUserChangedResponse implements SocketResponse {
 
     this.timestamp = dataObj?.timestamp;
 
-    this.onlineUsers = dataObj?.responseData?.count;
+    this.onlineUsers = dataObj?.responseData;
   }
 
   public getEventName(): string {
@@ -166,7 +166,7 @@ export class OnlineUserChangedResponse implements SocketResponse {
     return this.data;
   }
 
-  public getNumberOfOnlineUsers(): number {
+  public getOnlineUsers(): Map<string, Array<string>> {
     return this.onlineUsers;
   }
 }
