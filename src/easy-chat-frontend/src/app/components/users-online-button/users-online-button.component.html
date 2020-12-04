@@ -1,5 +1,5 @@
 <button class="container-fluid btn btn-outline-primary border-0 btn-block" [ngbPopover]="popContent"
-  popoverTitle="Aktive Nutzer" placement="bottom-right" popoverClass="user-popover">
+  popoverTitle="Aktive Nutzer" placement="bottom" popoverClass="user-popover">
   <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
   <div>{{getNumberOfOnlineUsers()}} Online</div>
 </button>
