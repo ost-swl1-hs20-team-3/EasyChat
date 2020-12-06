@@ -3,8 +3,9 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http, {
     cors: true,
     origins: [
-        "https://easy-chat-frontend.herokuapp.com/"
-        // "https://easy-chat-frontend-test.herokuapp.com/"
+        // "https://localhost:4200",
+        "https://easy-chat-frontend.herokuapp.com/",
+        "https://easy-chat-frontend-test.herokuapp.com/"
     ]
 });
 var MessageStorage = require('./messagestorage.js');
