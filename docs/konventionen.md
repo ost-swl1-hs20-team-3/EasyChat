@@ -13,7 +13,7 @@ dass nicht mehr als 2 Storys gleichzeitig im Status "in Progress" sind.
 #### In Progress
 Sobald die technische Implementation durch den Entwickler abgeschlossen und alle Akzeptanzkriterien der Story erfüllt sind, kann
 die Story auf "To be Tested" gestellt werden. Die Entwicklung ist abgeschlossen, wenn die neuen Funktionen in den Master Branch überführt wurden
-und vorgängig ein Code-Review stattgefunden hat. Zudem dürfen im Code keine Linting-Errors mehr vorhanden sein.
+und vorgängig ein Code-Review stattgefunden hat. Zudem dürfen im Code keine Linting-Errors mehr vorhanden sein. Die Implementierung des Items wurde vom Entwickler auf Mobile- und auf Desktop-Screengrösse getestet.
 
 #### To Be Tested
 Sobald der UI-Tester die Story sich zugewisen hat und die Tests für die Story beginnen, wird sie auf "Testing" gestellt.
