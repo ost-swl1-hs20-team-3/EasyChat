@@ -1,6 +1,12 @@
 var app = require('express')();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+    cors: true,
+    origins: [
+        "https://easy-chat-frontend.herokuapp.com/"
+        // "https://easy-chat-frontend-test.herokuapp.com/"
+    ]
+});
 var MessageStorage = require('./messagestorage.js');
 
 const PORT = process.env.PORT || 3000;
@@ -147,11 +153,11 @@ function sendOnlineUserBroadcast(io, socket) {
 // ------------------------------------------------
 function mapUserNameToSocket(socket, username) {
     let socketUsernames = usernameMapping[socket];
-    
+
     socketUsernames = socketUsernames.filter((val) => {
         return val !== username;
     });
-    
+
     socketUsernames.push(username);
 
     usernameMapping[socket] = socketUsernames;
