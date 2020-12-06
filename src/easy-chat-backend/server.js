@@ -1,14 +1,10 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http, {
-    cors: false,
     origins: [
-        '*'
-        /*
         "https://localhost:4200", // TODO: Remove later for security?
         "https://easy-chat-frontend.herokuapp.com",
         "https://easy-chat-frontend-test.herokuapp.com"
-        */
     ]
 });
 var MessageStorage = require('./messagestorage.js');
