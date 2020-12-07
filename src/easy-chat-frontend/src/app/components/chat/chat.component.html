@@ -1,8 +1,19 @@
-<div class="container h-100 d-flex flex-column">
-  <div #scrollable id="scrollable" class="pr-2 pl-2">
-    <ec-chat-history class="flex-grow-1 h-100"></ec-chat-history>
+<div class="container d-flex h-100 flex-column">
+  <div class="row flex-fill d-flex justify-content-start">
+    <div #scrollable class="col-12 col-lg-10 col-xl-10">
+      <ec-chat-history></ec-chat-history>
+    </div>
+    <div class="d-none d-lg-block d-xl-block">
+      <ec-users-online-desktop></ec-users-online-desktop>
+    </div>
   </div>
-  <ec-chat-bar class="flex-grow-0 mb-2 mt-2"></ec-chat-bar>
+  <div class="row">
+    <div class="col-12 col-lg-10 col-xl-10">
+      <ec-chat-bar></ec-chat-bar>
+    </div>
+  </div>
+
 </div>
 
 <ec-username-edit></ec-username-edit>
+

@@ -2,7 +2,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: 100vh;
 }
 
 ::-webkit-scrollbar {
