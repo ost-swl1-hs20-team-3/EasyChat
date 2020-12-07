@@ -176,11 +176,13 @@ export class LoginBroadcastResponse implements SocketResponse {
 
   public username: string;
   public timestamp: string;
+  public senderSocketId: string;
 
   constructor(dataObj: ApiSocketResponse) {
     this.data = dataObj;
 
     this.timestamp = dataObj?.timestamp;
+    this.senderSocketId = dataObj?.socketId;
 
     this.username = dataObj?.responseData?.username;
   }

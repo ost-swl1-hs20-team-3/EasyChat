@@ -68,6 +68,10 @@ export class UserService {
     return this.socketioService.isMySocketId(socketId);
   }
 
+  public isMyUsername(username: string): boolean {
+    return username === this.username;
+  }
+
 }
 
 export interface UsernameChangedEvent {

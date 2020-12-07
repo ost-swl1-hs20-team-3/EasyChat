@@ -57,7 +57,7 @@ export class ChatService {
       allMsgs.getAllMessages().forEach(msg => {
         switch (msg.type) {
           case MessageType.UserConnected:
-            this.addNewUserConnectedMessage(msg);
+            this.addNewUserConnectedMessage(msg, false);
             break;
           case MessageType.UserNameChanged:
             this.addNewUsernameChangedMessage(msg);
@@ -80,9 +80,13 @@ export class ChatService {
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewUserConnectedMessage(msg: any): void {
+  private addNewUserConnectedMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new UserConnectedMessage(msg.username);
     theMsg.timestamp = msg.timestamp;
+
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(msg.senderSocketId)) {
+      this.soundService.playUserLogin();
+    }
 
     this.addMessageToMessageList(theMsg);
   }
@@ -91,8 +95,8 @@ export class ChatService {
     const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername || msg.sender, msg.content);
     theMsg.timestamp = msg.timestamp;
 
-    if (isNewMessage && !this.userService.isMySocketId(theMsg.senderSocketId)) {
-      this.soundService.playNotification();
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(theMsg.senderSocketId)) {
+      this.soundService.playNewMessage();
     }
 
     this.addMessageToMessageList(theMsg);
