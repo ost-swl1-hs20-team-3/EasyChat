@@ -20,6 +20,7 @@ import { UsersOnlineButtonComponent } from './components/users-online-button/use
 const APP_LOCALE_ID = 'de-CH';
 
 import locale_de_ch from '@angular/common/locales/de-CH';
+import { UsersOnlineDesktopComponent } from './components/users-online-desktop/users-online-desktop.component';
 registerLocaleData(locale_de_ch);
 
 
@@ -35,7 +36,8 @@ registerLocaleData(locale_de_ch);
     UsernameEditComponent,
     ChatInfoMessageNewUserComponent,
     ChatInfoMessageUsernameChangedComponent,
-    UsersOnlineButtonComponent
+    UsersOnlineButtonComponent,
+    UsersOnlineDesktopComponent
   ],
   imports: [
     BrowserModule,
