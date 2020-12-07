@@ -1,4 +1,4 @@
-const MESSAGE_LIMIT = 15;
+const MESSAGE_LIMIT = 50;
 
 class MessageStorage {
 
