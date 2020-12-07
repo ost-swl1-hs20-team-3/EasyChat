@@ -20,7 +20,9 @@ class ActivityHandler {
         Object.entries(activeUsers).forEach(([socketId, user]) => {
             let userMessages = onlyMessages.filter(message => message.senderSocket === socketId);
             let activityScore = this._calculateActivityScore(userMessages);
-            scores.push({ socketId: socketId, activityScore: activityScore, noOfMessages: userMessages.length });
+            if (activityScore > 0) {
+                scores.push({ socketId: socketId, activityScore: activityScore, noOfMessages: userMessages.length });
+            }
         })
 
         let standardDeviation = this._calculateStandardDeviaton(scores);
@@ -44,7 +46,7 @@ class ActivityHandler {
         messages.forEach(message => {
             let messageTime = new Date(Date.parse(message.timestamp));
             let diff = this._diffSeconds(this.zeroTime, messageTime);
-            if (diff <= ZERO_TIME_BASE_IN_SECONDS) {
+            if (diff > 0) {
                 cumulativeAcitviyScore += diff ** TIMELINESS_REWARD_FACTOR;
             }
         })
