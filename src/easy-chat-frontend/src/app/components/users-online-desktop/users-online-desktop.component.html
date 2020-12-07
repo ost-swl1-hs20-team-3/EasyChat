@@ -1,5 +1,10 @@
 <div class="container">
-    <ul class="list-group">
-        <li class="list-group-item list-item-content" *ngFor="let user of getOnlineUsernames()">{{user}}</li>
-    </ul>
+    <h5>Aktive User</h5>
+    <p class="text-muted">Insgesamt {{getNumberOfOnlineUsers()}} User online</p>
+        <div class="border-bottom border-dark mt-2 mb-2" *ngFor="let user of getOnlineUsernames()">
+            <div class="userName">{{user}}</div>
+            <div>
+                <!-- ICON ONFIRE -->
+            </div>
+        </div>
 </div>

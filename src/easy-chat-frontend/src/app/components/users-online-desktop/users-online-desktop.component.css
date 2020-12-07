@@ -1,0 +1,8 @@
+.userName {
+    max-width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  
