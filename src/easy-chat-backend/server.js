@@ -11,7 +11,8 @@ const allowedOrigins = [
     'https://easy-chat-frontend-test.herokuapp.com'
 ];
 
-if (PORT === 3000) {
+// if (PORT === 3000) { // TODO: Enable if fully active (security!)
+if (true) {
     allowedOrigins.push('http://localhost');
     allowedOrigins.push('https://localhost')
 }
