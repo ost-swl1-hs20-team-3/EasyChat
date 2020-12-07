@@ -178,7 +178,7 @@ function sendOnlineUserBroadcast(io, socket) {
         }
     })
 
-    responseObj.responseData = activityHandler.markActiveUsers(currentlyActiveUsers);
+    responseObj.responseData = activityHandler.markActiveUsers(usernameMapping);
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)

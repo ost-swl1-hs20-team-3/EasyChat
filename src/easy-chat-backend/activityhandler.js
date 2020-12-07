@@ -1,7 +1,6 @@
-const LOOKUP_LIMIT = 20;
+const LOOKUP_LIMIT = 30;
 const ZERO_TIME_BASE_IN_SECONDS = 240;
 const TIMELINESS_REWARD_FACTOR = 1.1;
-const ON_FIRE_THRESHOLD = 3 * ZERO_TIME_BASE_IN_SECONDS ** TIMELINESS_REWARD_FACTOR;
 
 class ActivityHandler {
 
@@ -9,42 +8,72 @@ class ActivityHandler {
         this._messageStorage = messageStorage;
     }
 
-    markActiveUsers(usernameMapping) {
+    markActiveUsers(activeUsers) {
         const onlyMessages = this._messageStorage.getAllMessages();
         onlyMessages.splice(0, onlyMessages.length - LOOKUP_LIMIT);
 
         this.zeroTime = new Date();
-        this.zeroTime.setMinutes(this.zeroTime.getMinutes() - ZERO_TIME_BASE_IN_SECONDS);
+        this.zeroTime.setSeconds(this.zeroTime.getSeconds() - ZERO_TIME_BASE_IN_SECONDS);
 
-        Object.entries(usernameMapping).forEach(([socketId, user]) => {
-            user.onFire = this.isOnFire(socketId, onlyMessages);
-            if (user.onFire) {
-                console.log(`### user ${user.currentUsername} is on fire!!!`);
+        let scores = [];
+
+        Object.entries(activeUsers).forEach(([socketId, user]) => {
+            let userMessages = onlyMessages.filter(message => message.senderSocket === socketId);
+            let activityScore = this._calculateActivityScore(userMessages);
+            scores.push({ socketId: socketId, activityScore: activityScore, noOfMessages: userMessages.length });
+        })
+
+        let standardDeviation = this._calculateStandardDeviaton(scores);
+        let mean = this._calculateMean(scores);
+        let threshold = mean + (standardDeviation / 2);
+        this._log(threshold);
+
+        scores.forEach(entry => {
+            if (entry.noOfMessages > 3 && entry.activityScore > threshold) {
+                activeUsers[entry.socketId].onFire = true;
+                console.log(`### ${activeUsers[entry.socketId].currentUsername} is on fire!`)
             }
         })
 
-        return usernameMapping;
+        return activeUsers;
     }
 
-    isOnFire(socket, allMessages) {
-        let acitviyScore = 0;
+    _calculateActivityScore(messages) {
+        let cumulativeAcitviyScore = 0;
 
-        allMessages.filter(message => message.senderSocket === socket).forEach(message => {
+        messages.forEach(message => {
             let messageTime = new Date(Date.parse(message.timestamp));
-            let diff = this._diff_seconds(this.zeroTime, messageTime);
-            if (diff <= ZERO_TIME_BASE_IN_SECONDS){
-                let weight = ZERO_TIME_BASE_IN_SECONDS - diff;
-                acitviyScore += weight ** TIMELINESS_REWARD_FACTOR;
+            let diff = this._diffSeconds(this.zeroTime, messageTime);
+            if (diff <= ZERO_TIME_BASE_IN_SECONDS) {
+                cumulativeAcitviyScore += diff ** TIMELINESS_REWARD_FACTOR;
             }
         })
 
-        return acitviyScore >= ON_FIRE_THRESHOLD;
+        let relativeActivityScore = messages.length ? cumulativeAcitviyScore / messages.length : 0;
+
+        return relativeActivityScore;
     }
 
-    _diff_seconds(dt1, dt2) {
-        var diff = (dt1.getTime() - dt2.getTime()) / 1000;
-        diff /= 60 * 60;
-        return Math.abs(Math.round(diff));
+    _calculateStandardDeviaton(scores) {
+        const allScores = scores.map(rec => rec.activityScore);
+        const n = allScores.length;
+        const mean = allScores.reduce((a, b) => a + b, 0) / n;
+        return Math.sqrt(allScores.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / n);
+    }
+
+    _calculateMean(scores) {
+        const allScores = scores.map(rec => rec.activityScore);
+        const n = allScores.length;
+        return allScores.reduce((value1, value2) => value1 + value2, 0) / n;
+    }
+
+    _diffSeconds(dt1, dt2) {
+        var diffInSeconds = (dt2.getTime() - dt1.getTime()) / 1000;
+        return Math.abs(diffInSeconds);
+    }
+
+    _log(threshold) {
+        console.log(`activity threshold: ${threshold}`);
     }
 
 }
