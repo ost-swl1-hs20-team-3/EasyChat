@@ -34,6 +34,7 @@ io.origins((origin, callback) => {
     const originUrl = origin.replace(/:\d+/, '');
 
     if (!allowedOrigins.includes(originUrl)) {
+        console.warn(`Origin ${origin} is not allowed!`);
         return callback('origin not allowed', false);
     }
     callback(null, true);
