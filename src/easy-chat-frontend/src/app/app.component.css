@@ -1,0 +1,14 @@
+ec-header {
+  height: 10vh;
+  min-height: 66px;
+}
+
+ec-chat {
+  height: 85vh;
+  overflow: hidden;
+}
+
+ec-footer {
+  height: 5vh;
+  min-height: 25px;
+}
