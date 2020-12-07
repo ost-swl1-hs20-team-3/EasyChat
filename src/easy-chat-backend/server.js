@@ -4,6 +4,18 @@ var io = require('socket.io')(http);
 var MessageStorage = require('./messagestorage.js');
 
 const PORT = process.env.PORT || 3000;
+const allowedOrigins = [
+    'http://easy-chat-frontend.herokuapp.com',
+    'https://easy-chat-frontend.herokuapp.com',
+    'http://easy-chat-frontend-test.herokuapp.com',
+    'https://easy-chat-frontend-test.herokuapp.com'
+];
+
+// if (PORT === 3000) { // TODO: Enable if fully active (security!)
+if (true) {
+    allowedOrigins.push('http://localhost');
+    allowedOrigins.push('https://localhost')
+}
 
 let usernameMapping = {};
 const messageStorage = new MessageStorage();
@@ -19,6 +31,16 @@ app.get('/', (req, res) => {
 });
 
 // SOCKET.io
+io.origins((origin, callback) => {
+    const originUrl = origin.replace(/:\d+/, '');
+
+    if (!allowedOrigins.includes(originUrl)) {
+        console.warn(`Origin ${origin} is not allowed!`);
+        return callback('origin not allowed', false);
+    }
+    callback(null, true);
+});
+
 io.on('connection', (socket) => {
 
     // ------------------------------------------------
@@ -147,11 +169,11 @@ function sendOnlineUserBroadcast(io, socket) {
 // ------------------------------------------------
 function mapUserNameToSocket(socket, username) {
     let socketUsernames = usernameMapping[socket];
-    
+
     socketUsernames = socketUsernames.filter((val) => {
         return val !== username;
     });
-    
+
     socketUsernames.push(username);
 
     usernameMapping[socket] = socketUsernames;
