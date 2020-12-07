@@ -60,7 +60,7 @@ export class ChatService {
             this.addNewUserConnectedMessage(msg, false);
             break;
           case MessageType.UserNameChanged:
-            this.addNewUsernameChangedMessage(msg);
+            this.addNewUsernameChangedMessage(msg, false);
             break;
           case MessageType.ChatMessage:
             this.addNewChatMessage(msg, false);
@@ -73,9 +73,13 @@ export class ChatService {
     socketioService.emitGetAllMessages();
   }
 
-  private addNewUsernameChangedMessage(msg: any): void {
+  private addNewUsernameChangedMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new UsernameChangedMessage(msg.oldUsername, msg.newUsername);
     theMsg.timestamp = msg.timestamp;
+
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(msg.senderSocketId)) {
+      this.soundService.playUsernameChanged();
+    }
 
     this.addMessageToMessageList(theMsg);
   }

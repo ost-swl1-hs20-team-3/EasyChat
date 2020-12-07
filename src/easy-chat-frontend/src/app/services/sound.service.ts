@@ -9,6 +9,7 @@ export class SoundService {
   private newMessageSound = '';
   private newUserLoginSound = '';
   private newUserLogoutSound = '';
+  private usernameChangedSound = '';
 
   // Sound Files
   // must match with /assets/sounds/*
@@ -39,6 +40,9 @@ export class SoundService {
   private userLogoutSoundfiles = {
     // www.freesfx.co.uk / Three Down Beep / 17036_1461336968
     threeDownBeep: '/assets/sounds/threeDownBeep_freesfx.co.uk.mp3',
+  };
+
+  private usernameChangedfiles = {
   };
 
   constructor() {
@@ -76,6 +80,11 @@ export class SoundService {
         // tslint:disable-next-line: no-bitwise
         return this.userLogoutSoundfiles[userLogoutKeys[userLogoutKeys.length * Math.random() << 0]];
         break;
+      case SoundType.UsernameChanged:
+        const usernameChangedKeys = Object.keys(this.usernameChangedfiles);
+        // tslint:disable-next-line: no-bitwise
+        return this.usernameChangedfiles[usernameChangedKeys[usernameChangedKeys.length * Math.random() << 0]];
+        break;
       default:
         break;
     }
@@ -104,10 +113,19 @@ export class SoundService {
 
     this.playSound(this.newUserLogoutSound);
   }
+
+  public playUsernameChanged(): void {
+    if (this.usernameChangedSound === undefined || this.usernameChangedSound === '') {
+      this.usernameChangedSound = this.getRandomSound(SoundType.UsernameChanged);
+    }
+
+    this.playSound(this.usernameChangedSound);
+  }
 }
 
 export enum SoundType {
   NewMessage,
   UserLogin,
-  UserLogout
+  UserLogout,
+  UsernameChanged
 }

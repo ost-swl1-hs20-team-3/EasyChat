@@ -257,12 +257,16 @@ export class UsernameChangeResponse implements SocketResponse {
   public oldUsername: string;
   public newUsername: string;
 
+  public senderSocketId: string;
   public timestamp: string;
 
   constructor(dataObj?: ApiSocketResponse) {
     this.data = dataObj;
 
     this.timestamp = dataObj?.timestamp;
+    this.senderSocketId = dataObj?.socketId;
+
+
     this.oldUsername = dataObj?.responseData?.oldUsername;
     this.newUsername = dataObj?.responseData?.newUsername;
   }
