@@ -166,7 +166,7 @@ export class OnlineUserChangedResponse implements SocketResponse {
     return this.data;
   }
 
-  public getOnlineUsers(): Map<string, Array<string>> {
+  public getOnlineUsers(): Map<string, any> {
     return this.onlineUsers;
   }
 }

@@ -44,11 +44,8 @@ export class ChatService {
       const onlineUserMap = msg.getOnlineUsers();
 
       Object.keys(onlineUserMap).forEach((socketId: string) => {
-        const actUserName: string = onlineUserMap[socketId].pop();
-
-        if (typeof actUserName !== 'undefined') {
-          this.onlineUserNames.push(actUserName);
-        }
+        const actUserName: string = onlineUserMap[socketId].currentUsername;
+        this.onlineUserNames.push(actUserName);
       });
     });
 

@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var MessageStorage = require('./messagestorage.js');
+var { markActiveUsers } = require('./userhandler.js');
 
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
@@ -46,7 +47,11 @@ io.on('connection', (socket) => {
     // ------------------------------------------------
     // OnConnect
     // ------------------------------------------------
-    usernameMapping[socket.id] = [];
+    usernameMapping[socket.id] = {
+        usernames: [],
+        currentUsername: '',
+        onFire: false
+    };
     sendReservedUsernamesBroadcast(io, socket);
     sendOnlineUserBroadcast(io, socket);
 
@@ -58,7 +63,7 @@ io.on('connection', (socket) => {
         const userName = theMessage.username;
         let type = theMessage.type;
 
-        mapUserNameToSocket(socket.id, userName);
+        mapUserToSocket(socket.id, userName);
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
@@ -82,7 +87,7 @@ io.on('connection', (socket) => {
         let oldUsername = theMessage.oldUsername;
         let newUsername = theMessage.newUsername;
 
-        mapUserNameToSocket(socket.id, newUsername);
+        mapUserToSocket(socket.id, newUsername);
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
@@ -147,7 +152,10 @@ io.on('connection', (socket) => {
 // ------------------------------------------------
 function sendReservedUsernamesBroadcast(io, socket) {
     let reservedUsernames = [];
-    Object.entries(usernameMapping).forEach(([key, value]) => { reservedUsernames.push(...value); })
+
+    Object.entries(usernameMapping).forEach(([socketId, user]) => {
+        reservedUsernames.push(...user.usernames);
+    })
 
     let responseObj = getBaseResponseObject(socket.id);
     responseObj.responseData = { reservedUsernames: reservedUsernames };
@@ -158,7 +166,7 @@ function sendReservedUsernamesBroadcast(io, socket) {
 
 function sendOnlineUserBroadcast(io, socket) {
     let responseObj = getBaseResponseObject(socket.id);
-    responseObj.responseData = usernameMapping;
+    responseObj.responseData = markActiveUsers(usernameMapping);
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)
@@ -167,16 +175,16 @@ function sendOnlineUserBroadcast(io, socket) {
 // ------------------------------------------------
 // Helper functions
 // ------------------------------------------------
-function mapUserNameToSocket(socket, username) {
-    let socketUsernames = usernameMapping[socket];
+function mapUserToSocket(socket, username) {
+    let socketUser = usernameMapping[socket];
 
-    socketUsernames = socketUsernames.filter((val) => {
+    socketUser.usernames = socketUser.usernames.filter((val) => {
         return val !== username;
     });
+    socketUser.usernames.push(username);
+    socketUser.currentUsername = username;
 
-    socketUsernames.push(username);
-
-    usernameMapping[socket] = socketUsernames;
+    usernameMapping[socket] = socketUser;
 }
 
 function getBaseResponseObject(socketId) {
