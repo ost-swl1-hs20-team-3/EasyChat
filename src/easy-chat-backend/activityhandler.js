@@ -1,4 +1,3 @@
-const LOOKUP_LIMIT = 30;
 const ZERO_TIME_BASE_IN_SECONDS = 240;
 const TIMELINESS_REWARD_FACTOR = 1.1;
 
@@ -10,8 +9,7 @@ class ActivityHandler {
 
     markActiveUsers(activeUsers) {
         const onlyMessages = this._messageStorage.getAllMessages();
-        onlyMessages.splice(0, onlyMessages.length - LOOKUP_LIMIT);
-
+        
         this.zeroTime = new Date();
         this.zeroTime.setSeconds(this.zeroTime.getSeconds() - ZERO_TIME_BASE_IN_SECONDS);
 
@@ -28,12 +26,10 @@ class ActivityHandler {
         let standardDeviation = this._calculateStandardDeviaton(scores);
         let mean = this._calculateMean(scores);
         let threshold = mean + (standardDeviation / 2);
-        this._log(threshold);
 
         scores.forEach(entry => {
             if (entry.noOfMessages > 3 && entry.activityScore > threshold) {
                 activeUsers[entry.socketId].onFire = true;
-                console.log(`### ${activeUsers[entry.socketId].currentUsername} is on fire!`)
             }
         })
 
@@ -72,10 +68,6 @@ class ActivityHandler {
     _diffSeconds(dt1, dt2) {
         var diffInSeconds = (dt2.getTime() - dt1.getTime()) / 1000;
         return Math.abs(diffInSeconds);
-    }
-
-    _log(threshold) {
-        console.log(`activity threshold: ${threshold}`);
     }
 
 }
