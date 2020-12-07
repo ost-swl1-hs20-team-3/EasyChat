@@ -120,6 +120,8 @@ io.on('connection', (socket) => {
 
         io.emit('message-broadcast', responseObj);
         logMessage(`${socket.id} - message-broadcast: `, responseObj)
+
+        sendOnlineUserBroadcast(io, socket);
     });
 
 
@@ -166,7 +168,16 @@ function sendReservedUsernamesBroadcast(io, socket) {
 
 function sendOnlineUserBroadcast(io, socket) {
     let responseObj = getBaseResponseObject(socket.id);
-    responseObj.responseData = markActiveUsers(usernameMapping);
+
+    let currentlyActiveUsers = {};
+
+    Object.entries(usernameMapping).forEach(([socketId, user]) => {
+        if (user.currentUsername != ''){
+            currentlyActiveUsers[socketId] = user;
+        }
+    })
+
+    responseObj.responseData = markActiveUsers(currentlyActiveUsers, messageStorage);
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)

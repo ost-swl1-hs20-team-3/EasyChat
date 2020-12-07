@@ -17,6 +17,10 @@ class MessageStorage {
         return Array.from(this._messageList);
     }
 
+    getAllMessages() {
+        return this.getAll().filter(msg => msg.type === 0);
+    }
+
 }
 
 module.exports = MessageStorage;
