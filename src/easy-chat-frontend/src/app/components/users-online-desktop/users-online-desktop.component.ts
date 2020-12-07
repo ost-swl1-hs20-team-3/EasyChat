@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from 'src/app/services/chat.service';
+import { SocketioService } from 'src/app/services/socketio.service';
 
 @Component({
   selector: 'ec-users-online-desktop',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersOnlineDesktopComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private socketioService: SocketioService,
+    private chatService: ChatService) { }
 
   ngOnInit(): void {
+  }
+  
+  public isConnected(): boolean {
+    return this.socketioService.isConnected();
+  }
+
+  public getNumberOfOnlineUsers(): number {
+    return this.chatService.onlineUserNames.length;
+  }
+
+  public getOnlineUsernames(): Array<string> {
+    return this.chatService.onlineUserNames;
   }
 
 }

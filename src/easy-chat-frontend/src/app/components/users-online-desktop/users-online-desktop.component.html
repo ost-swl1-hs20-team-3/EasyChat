@@ -1,1 +1,5 @@
-<p>users-online-desktop works!</p>
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item list-item-content" *ngFor="let user of getOnlineUsernames()">{{user}}</li>
+    </ul>
+</div>
