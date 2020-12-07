@@ -5,10 +5,10 @@ var MessageStorage = require('./messagestorage.js');
 
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
-    'http://easy-chat-frontend.herokuapp.com/',
-    'https://easy-chat-frontend.herokuapp.com/',
-    'http://easy-chat-frontend-test.herokuapp.com/',
-    'https://easy-chat-frontend-test.herokuapp.com/'
+    'http://easy-chat-frontend.herokuapp.com',
+    'https://easy-chat-frontend.herokuapp.com',
+    'http://easy-chat-frontend-test.herokuapp.com',
+    'https://easy-chat-frontend-test.herokuapp.com'
 ];
 
 if (PORT === 3000) {
