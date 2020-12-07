@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var MessageStorage = require('./messagestorage.js');
-var { markActiveUsers } = require('./userhandler.js');
+var ActivityHandler = require('./activityhandler.js');
 
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
@@ -20,6 +20,7 @@ if (true) {
 
 let usernameMapping = {};
 const messageStorage = new MessageStorage();
+const activityHandler = new ActivityHandler(messageStorage);
 
 // start http server
 http.listen(PORT, () => {
@@ -177,7 +178,7 @@ function sendOnlineUserBroadcast(io, socket) {
         }
     })
 
-    responseObj.responseData = markActiveUsers(currentlyActiveUsers, messageStorage);
+    responseObj.responseData = activityHandler.markActiveUsers(currentlyActiveUsers);
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)
