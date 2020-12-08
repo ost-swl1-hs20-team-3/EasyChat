@@ -1,11 +1,17 @@
-<button class="container-fluid btn btn-outline-primary border-0 btn-block" [ngbPopover]="popContent"
-  popoverTitle="Aktive Nutzer" placement="bottom" popoverClass="user-popover">
-  <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
-  <div>{{getNumberOfOnlineUsers()}} Online</div>
-</button>
+<div class="d-lg-none d-xl-none">
+  <button class="container-fluid btn btn-outline-primary border-0 btn-block" [ngbPopover]="popContent"
+    popoverTitle="Aktive Nutzer" placement="bottom" popoverClass="user-popover">
+    <div class="dot" [ngClass]="isConnected() ? 'connected' : 'disconnected'"></div>
+    <div>{{getNumberOfOnlineUsers()}} Online</div>
+  </button>
+</div>
 
 <ng-template #popContent>
-  <ul class="list-group">
-    <li class="list-group-item list-item-content" *ngFor="let user of getOnlineUsernames()">{{user}}</li>
-  </ul>
+  <p class="text-muted">Insgesamt {{getNumberOfOnlineUsers()}} User online</p>
+  <div class="border-bottom border-dark mt-2 mb-2" *ngFor="let user of getOnlineUsernames()">
+    <div>{{user}}</div>
+    <div>
+      <!-- ICON ONFIRE -->
+    </div>
+  </div>
 </ng-template>
