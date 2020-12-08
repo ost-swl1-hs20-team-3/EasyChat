@@ -23,11 +23,11 @@ export class UsersOnlineButtonComponent implements OnInit {
   }
 
   public getNumberOfOnlineUsers(): number {
-    return this.chatService.onlineUserNames.length;
+    return this.chatService.onlineUsersSorted.length;
   }
 
   public getOnlineUsernames(): Array<string> {
-    return this.chatService.onlineUserNames;
+    return this.chatService.onlineUsersSorted;
   }
 
 }

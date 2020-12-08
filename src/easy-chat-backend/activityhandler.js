@@ -18,6 +18,8 @@ class ActivityHandler {
             let activityScore = this._calculateActivityScore(userMessages, userMessages.length);
             if (activityScore > ON_FIRE_THRESHOLD) {
                 user.onFire = true;
+            } else {
+                user.onFire = false;
             }
         })
 

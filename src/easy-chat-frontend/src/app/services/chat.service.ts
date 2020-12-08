@@ -20,7 +20,10 @@ export class ChatService {
   private messageStorage: MessageStorage = new MessageStorage();
 
   public get messageList(): Array<Message> { return this.messageStorage.getAll(); }
-  public onlineUserNames: Array<string> = [];
+  private activeUsers: Array<any> = [];
+  public get onlineUsersSorted(): Array<any> {
+    return this.activeUsers.sort(compareUsers());
+  }
 
   constructor(
     private userService: UserService,
@@ -39,13 +42,13 @@ export class ChatService {
     });
 
     this.reservedUsernamesSubscription = this.socketioService.getOnlineUsers().subscribe((msg) => {
-      this.onlineUserNames = [];
+      this.activeUsers = [];
 
       const onlineUserMap = msg.getOnlineUsers();
 
       Object.keys(onlineUserMap).forEach((socketId: string) => {
-        const actUserName: string = onlineUserMap[socketId].currentUsername;
-        this.onlineUserNames.push(actUserName);
+        const user: any = onlineUserMap[socketId];
+        this.activeUsers.push({ username: user.currentUsername, onFire: user.onFire });
       });
     });
 
@@ -131,3 +134,20 @@ class MessageStorage {
   }
 
 }
+
+function compareUsers(): (a: any, b: any) => number {
+  return (a, b): number => {
+    if (b.onFire) {
+      return 1;
+    } else {
+      if (a.username < b.username) {
+        return -1;
+      } else if (a.username === b.username) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+  };
+}
+
