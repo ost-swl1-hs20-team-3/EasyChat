@@ -2,7 +2,13 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: 100vh;
+  height: 73vh;
+  min-height: 20px;
+}
+
+#chatBar {
+  height: 10vh;
+  min-height: 50px;
 }
 
 ::-webkit-scrollbar {
