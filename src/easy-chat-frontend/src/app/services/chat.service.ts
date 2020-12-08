@@ -137,12 +137,12 @@ class MessageStorage {
 
 function compareUsers(): (a: any, b: any) => number {
   return (a, b): number => {
-    if (b.onFire) {
-      return 1;
+    if (a.onFire) {
+      return -2;
     } else {
-      if (a.username < b.username) {
+      if (a.username.toLowerCase() < b.username.toLowerCase()) {
         return -1;
-      } else if (a.username === b.username) {
+      } else if (a.username.toLowerCase() === b.username.toLowerCase()) {
         return 0;
       } else {
         return 1;
