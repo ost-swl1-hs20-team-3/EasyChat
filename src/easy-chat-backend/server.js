@@ -2,7 +2,10 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var MessageStorage = require('./messagestorage.js');
-var ActivityHandler = require('./activityhandler.js');
+var {ZERO_TIME_BASE_IN_SECONDS, ActivityHandler} = require('./activityhandler.js');
+
+var interval;
+var stopPollingTime;
 
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
@@ -123,6 +126,7 @@ io.on('connection', (socket) => {
         logMessage(`${socket.id} - message-broadcast: `, responseObj)
 
         sendOnlineUserBroadcast(io, socket);
+        initOnlineUserBroadcastInterval(io, socket);
     });
 
 
@@ -173,7 +177,7 @@ function sendOnlineUserBroadcast(io, socket) {
     let currentlyActiveUsers = {};
 
     Object.entries(usernameMapping).forEach(([socketId, user]) => {
-        if (user.currentUsername != ''){
+        if (user.currentUsername != '') {
             currentlyActiveUsers[socketId] = user;
         }
     })
@@ -217,5 +221,20 @@ function logMessage(msg, param) {
         console.log(`${actDate.toISOString()}: ${msg}`, param);
     } else {
         console.log(`${actDate.toISOString()}: ${msg}`);
+    }
+}
+
+function initOnlineUserBroadcastInterval(io, socket) {
+    stopPollingTime = new Date();
+    stopPollingTime.setSeconds(stopPollingTime.getSeconds() + ZERO_TIME_BASE_IN_SECONDS);
+    if (interval === undefined) {
+        interval = setInterval(() => {
+            if (new Date() > stopPollingTime) {
+                clearInterval(interval);
+                interval = undefined;
+            } else {
+                sendOnlineUserBroadcast(io, socket);
+            }
+        }, 10000);        
     }
 }

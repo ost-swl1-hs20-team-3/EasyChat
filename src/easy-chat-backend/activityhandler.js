@@ -1,5 +1,5 @@
 const ZERO_TIME_BASE_IN_SECONDS = 240;
-const TIMELINESS_REWARD_FACTOR = 1.1;
+const ON_FIRE_THRESHOLD = 16;
 
 class ActivityHandler {
 
@@ -13,56 +13,31 @@ class ActivityHandler {
         this.zeroTime = new Date();
         this.zeroTime.setSeconds(this.zeroTime.getSeconds() - ZERO_TIME_BASE_IN_SECONDS);
 
-        let scores = [];
-
         Object.entries(activeUsers).forEach(([socketId, user]) => {
             let userMessages = onlyMessages.filter(message => message.senderSocket === socketId);
-            let activityScore = this._calculateActivityScore(userMessages);
-            if (activityScore > 0) {
-                scores.push({ socketId: socketId, activityScore: activityScore, noOfMessages: userMessages.length });
-            }
-        })
-
-        let standardDeviation = this._calculateStandardDeviaton(scores);
-        let mean = this._calculateMean(scores);
-        let threshold = mean + (standardDeviation / 2);
-
-        scores.forEach(entry => {
-            if (entry.noOfMessages > 3 && entry.activityScore > threshold) {
-                activeUsers[entry.socketId].onFire = true;
+            let activityScore = this._calculateActivityScore(userMessages, userMessages.length);
+            if (activityScore > ON_FIRE_THRESHOLD) {
+                user.onFire = true;
             }
         })
 
         return activeUsers;
     }
 
-    _calculateActivityScore(messages) {
-        let cumulativeAcitviyScore = 0;
+    _calculateActivityScore(messages, n) {
+        let activityScore = 0;
 
         messages.forEach(message => {
             let messageTime = new Date(Date.parse(message.timestamp));
-            let diff = this._diffSeconds(this.zeroTime, messageTime);
-            if (diff > 0) {
-                cumulativeAcitviyScore += diff ** TIMELINESS_REWARD_FACTOR;
+            let diffInSeconds = this._diffSeconds(this.zeroTime, messageTime);
+            if (diffInSeconds > 0) {
+                let relativeDiff = diffInSeconds / ZERO_TIME_BASE_IN_SECONDS;
+                let messageScore = ((relativeDiff + 1) ** 2) - 1;
+                activityScore += messageScore;
             }
         })
 
-        let relativeActivityScore = messages.length ? cumulativeAcitviyScore / messages.length : 0;
-
-        return relativeActivityScore;
-    }
-
-    _calculateStandardDeviaton(scores) {
-        const allScores = scores.map(rec => rec.activityScore);
-        const n = allScores.length;
-        const mean = allScores.reduce((a, b) => a + b, 0) / n;
-        return Math.sqrt(allScores.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / n);
-    }
-
-    _calculateMean(scores) {
-        const allScores = scores.map(rec => rec.activityScore);
-        const n = allScores.length;
-        return allScores.reduce((value1, value2) => value1 + value2, 0) / n;
+        return activityScore;
     }
 
     _diffSeconds(dt1, dt2) {
@@ -72,4 +47,4 @@ class ActivityHandler {
 
 }
 
-module.exports = ActivityHandler;
+module.exports = {ZERO_TIME_BASE_IN_SECONDS, ActivityHandler};
