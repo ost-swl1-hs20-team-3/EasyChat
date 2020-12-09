@@ -26,7 +26,7 @@ export class UsersOnlineButtonComponent implements OnInit {
     return this.chatService.onlineUsersSorted.length;
   }
 
-  public getOnlineUsernames(): Array<string> {
+  public getOnlineUsers(): Array<any> {
     return this.chatService.onlineUsersSorted;
   }
 

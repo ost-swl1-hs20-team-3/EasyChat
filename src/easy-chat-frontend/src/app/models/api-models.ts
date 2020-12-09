@@ -146,7 +146,7 @@ export class ReservedUsernamesChangedResponse implements SocketResponse {
 
 export class OnlineUserChangedResponse implements SocketResponse {
   private data: any;
-  private onlineUsers: Map<string, Array<string>>;
+  private onlineUsers: Map<string, any>;
 
   public timestamp: string;
 

@@ -8,7 +8,7 @@
 
 <ng-template #popContent>
   <p class="text-muted">Insgesamt {{getNumberOfOnlineUsers()}} User online</p>
-  <div class="d-flex border-bottom border-secondary mt-2 mb-2" *ngFor="let user of getOnlineUsernames()">
+  <div class="d-flex border-bottom border-secondary mt-2 mb-2" *ngFor="let user of getOnlineUsers()">
     <div class="userName">{{user.username}}</div>
     <span class="onFire pl-1 h-100" *ngIf="user.onFire">🔥</span>
   </div>
