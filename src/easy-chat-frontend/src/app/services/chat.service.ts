@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { ChatMessage, Message, MessageType, UserConnectedMessage, UsernameChangedMessage } from '../models/models';
 import { SocketioService } from './socketio.service';
 import { UserService } from './user.service';
-
+import { SoundService } from './sound.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,8 @@ export class ChatService {
 
   constructor(
     private userService: UserService,
-    private socketioService: SocketioService
+    private socketioService: SocketioService,
+    private soundService: SoundService
   ) {
     this.chatMessageEventsSubscription = this.socketioService.getMessageEvents().subscribe((msg) => {
       this.addNewChatMessage(msg);
@@ -56,13 +57,13 @@ export class ChatService {
       allMsgs.getAllMessages().forEach(msg => {
         switch (msg.type) {
           case MessageType.UserConnected:
-            this.addNewUserConnectedMessage(msg);
+            this.addNewUserConnectedMessage(msg, false);
             break;
           case MessageType.UserNameChanged:
-            this.addNewUsernameChangedMessage(msg);
+            this.addNewUsernameChangedMessage(msg, false);
             break;
           case MessageType.ChatMessage:
-            this.addNewChatMessage(msg);
+            this.addNewChatMessage(msg, false);
             break;
           default: throw new TypeError(`type '${msg.type}' not known`);
         }
@@ -72,23 +73,35 @@ export class ChatService {
     socketioService.emitGetAllMessages();
   }
 
-  private addNewUsernameChangedMessage(msg: any): void {
+  private addNewUsernameChangedMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new UsernameChangedMessage(msg.oldUsername, msg.newUsername);
     theMsg.timestamp = msg.timestamp;
 
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(msg.senderSocketId)) {
+      this.soundService.playUsernameChanged();
+    }
+
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewUserConnectedMessage(msg: any): void {
+  private addNewUserConnectedMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new UserConnectedMessage(msg.username);
     theMsg.timestamp = msg.timestamp;
 
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(msg.senderSocketId)) {
+      this.soundService.playUserLogin();
+    }
+
     this.addMessageToMessageList(theMsg);
   }
 
-  private addNewChatMessage(msg: any): void {
+  private addNewChatMessage(msg: any, isNewMessage: boolean = true): void {
     const theMsg = new ChatMessage(msg.senderSocketId, msg.senderUsername || msg.sender, msg.content);
     theMsg.timestamp = msg.timestamp;
+
+    if (isNewMessage && this.userService.isLoggedIn() && !this.userService.isMySocketId(theMsg.senderSocketId)) {
+      this.soundService.playNewMessage();
+    }
 
     this.addMessageToMessageList(theMsg);
   }
