@@ -1,21 +1,4 @@
-ec-header {
-  height: 66px;
-  min-height: 8vh;
-}
-
-.header{
-  height: 66px;
-}
-
-ec-chat {
-  overflow: hidden;
-}
-
-.content {
-  height: calc(100% - 91px);
-}
-
-ec-footer {
-  height: 25px;
-  margin-top: -15px !important;
+#maxHeight {
+  height: 100vh;
+  max-height: 100vh;
 }
