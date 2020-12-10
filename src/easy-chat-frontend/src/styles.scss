@@ -5,6 +5,13 @@
 body {
   overflow: hidden;
   background-image: url('./assets/images/sativa.webp');
+  height: 100vh;
+  max-height: 100vh;
+}
+
+ec-root {
+  height: 100vh;
+  max-height: 100vh;
 }
 
 ec-header {
