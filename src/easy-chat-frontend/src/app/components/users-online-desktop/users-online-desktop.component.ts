@@ -15,17 +15,17 @@ export class UsersOnlineDesktopComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
+
   public isConnected(): boolean {
     return this.socketioService.isConnected();
   }
 
   public getNumberOfOnlineUsers(): number {
-    return this.chatService.onlineUserNames.length;
+    return this.chatService.onlineUsersSorted.length;
   }
 
-  public getOnlineUsernames(): Array<string> {
-    return this.chatService.onlineUserNames;
+  public getOnlineUsers(): Array<any> {
+    return this.chatService.onlineUsersSorted;
   }
 
 }

@@ -5,4 +5,8 @@
     display: inline-block;
     text-overflow: ellipsis;
   }
+
+  .onFire {
+    vertical-align: top;
+  }
   

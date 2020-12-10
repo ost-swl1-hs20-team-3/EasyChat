@@ -2,6 +2,10 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var MessageStorage = require('./messagestorage.js');
+var {ZERO_TIME_BASE_IN_SECONDS, ActivityHandler} = require('./activityhandler.js');
+
+var interval;
+var stopPollingTime;
 
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
@@ -19,6 +23,7 @@ if (true) {
 
 let usernameMapping = {};
 const messageStorage = new MessageStorage();
+const activityHandler = new ActivityHandler(messageStorage);
 
 // start http server
 http.listen(PORT, () => {
@@ -46,7 +51,11 @@ io.on('connection', (socket) => {
     // ------------------------------------------------
     // OnConnect
     // ------------------------------------------------
-    usernameMapping[socket.id] = [];
+    usernameMapping[socket.id] = {
+        usernames: [],
+        currentUsername: '',
+        onFire: false
+    };
     sendReservedUsernamesBroadcast(io, socket);
     sendOnlineUserBroadcast(io, socket);
 
@@ -58,7 +67,7 @@ io.on('connection', (socket) => {
         const userName = theMessage.username;
         let type = theMessage.type;
 
-        mapUserNameToSocket(socket.id, userName);
+        mapUserToSocket(socket.id, userName);
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
@@ -82,7 +91,7 @@ io.on('connection', (socket) => {
         let oldUsername = theMessage.oldUsername;
         let newUsername = theMessage.newUsername;
 
-        mapUserNameToSocket(socket.id, newUsername);
+        mapUserToSocket(socket.id, newUsername);
 
         let responseObj = getBaseResponseObject(socket.id);
         responseObj.requestData = theMessage;
@@ -115,6 +124,9 @@ io.on('connection', (socket) => {
 
         io.emit('message-broadcast', responseObj);
         logMessage(`${socket.id} - message-broadcast: `, responseObj)
+
+        sendOnlineUserBroadcast(io, socket);
+        initOnlineUserBroadcastInterval(io, socket);
     });
 
 
@@ -147,7 +159,10 @@ io.on('connection', (socket) => {
 // ------------------------------------------------
 function sendReservedUsernamesBroadcast(io, socket) {
     let reservedUsernames = [];
-    Object.entries(usernameMapping).forEach(([key, value]) => { reservedUsernames.push(...value); })
+
+    Object.entries(usernameMapping).forEach(([socketId, user]) => {
+        reservedUsernames.push(...user.usernames);
+    })
 
     let responseObj = getBaseResponseObject(socket.id);
     responseObj.responseData = { reservedUsernames: reservedUsernames };
@@ -158,7 +173,16 @@ function sendReservedUsernamesBroadcast(io, socket) {
 
 function sendOnlineUserBroadcast(io, socket) {
     let responseObj = getBaseResponseObject(socket.id);
-    responseObj.responseData = usernameMapping;
+
+    let currentlyActiveUsers = {};
+
+    Object.entries(usernameMapping).forEach(([socketId, user]) => {
+        if (user.currentUsername != '') {
+            currentlyActiveUsers[socketId] = user;
+        }
+    })
+
+    responseObj.responseData = activityHandler.markActiveUsers(currentlyActiveUsers);
 
     io.emit('online-user-changed', responseObj);
     logMessage(`${socket.id} - online-user-changed: `, responseObj)
@@ -167,16 +191,16 @@ function sendOnlineUserBroadcast(io, socket) {
 // ------------------------------------------------
 // Helper functions
 // ------------------------------------------------
-function mapUserNameToSocket(socket, username) {
-    let socketUsernames = usernameMapping[socket];
+function mapUserToSocket(socket, username) {
+    let socketUser = usernameMapping[socket];
 
-    socketUsernames = socketUsernames.filter((val) => {
+    socketUser.usernames = socketUser.usernames.filter((val) => {
         return val !== username;
     });
+    socketUser.usernames.push(username);
+    socketUser.currentUsername = username;
 
-    socketUsernames.push(username);
-
-    usernameMapping[socket] = socketUsernames;
+    usernameMapping[socket] = socketUser;
 }
 
 function getBaseResponseObject(socketId) {
@@ -197,5 +221,20 @@ function logMessage(msg, param) {
         console.log(`${actDate.toISOString()}: ${msg}`, param);
     } else {
         console.log(`${actDate.toISOString()}: ${msg}`);
+    }
+}
+
+function initOnlineUserBroadcastInterval(io, socket) {
+    stopPollingTime = new Date();
+    stopPollingTime.setSeconds(stopPollingTime.getSeconds() + ZERO_TIME_BASE_IN_SECONDS);
+    if (interval === undefined) {
+        interval = setInterval(() => {
+            if (new Date() > stopPollingTime) {
+                clearInterval(interval);
+                interval = undefined;
+            } else {
+                sendOnlineUserBroadcast(io, socket);
+            }
+        }, 10000);        
     }
 }

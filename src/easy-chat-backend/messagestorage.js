@@ -1,4 +1,4 @@
-const MESSAGE_LIMIT = 15;
+const MESSAGE_LIMIT = 50;
 
 class MessageStorage {
 
@@ -15,6 +15,10 @@ class MessageStorage {
 
     getAll() {
         return Array.from(this._messageList);
+    }
+
+    getAllMessages() {
+        return this.getAll().filter(msg => msg.type === 0);
     }
 
 }

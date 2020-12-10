@@ -20,7 +20,10 @@ export class ChatService {
   private messageStorage: MessageStorage = new MessageStorage();
 
   public get messageList(): Array<Message> { return this.messageStorage.getAll(); }
-  public onlineUserNames: Array<string> = [];
+  private activeUsers: Array<any> = [];
+  public get onlineUsersSorted(): Array<any> {
+    return this.activeUsers.sort(compareUsers());
+  }
 
   constructor(
     private userService: UserService,
@@ -40,16 +43,13 @@ export class ChatService {
     });
 
     this.reservedUsernamesSubscription = this.socketioService.getOnlineUsers().subscribe((msg) => {
-      this.onlineUserNames = [];
+      this.activeUsers = [];
 
       const onlineUserMap = msg.getOnlineUsers();
 
       Object.keys(onlineUserMap).forEach((socketId: string) => {
-        const actUserName: string = onlineUserMap[socketId].pop();
-
-        if (typeof actUserName !== 'undefined') {
-          this.onlineUserNames.push(actUserName);
-        }
+        const user: any = onlineUserMap[socketId];
+        this.activeUsers.push({ username: user.currentUsername, onFire: user.onFire });
       });
     });
 
@@ -147,3 +147,20 @@ class MessageStorage {
   }
 
 }
+
+function compareUsers(): (a: any, b: any) => number {
+  return (a, b): number => {
+    if (a.onFire) {
+      return -2;
+    } else {
+      if (a.username.toLowerCase() < b.username.toLowerCase()) {
+        return -1;
+      } else if (a.username.toLowerCase() === b.username.toLowerCase()) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+  };
+}
+
