@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row scroll-container">
-    <div #scrollable id="scrollable" class="col-12">
+    <div #scrollable id="scrollable" [scrollTop]="scrollable.scrollHeight" class="col-12">
       <ec-chat-history></ec-chat-history>
     </div>
   </div>

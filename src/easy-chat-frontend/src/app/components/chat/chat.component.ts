@@ -7,7 +7,7 @@ import { EventService } from 'src/app/services/event.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy {
 
   private setBlurSubscription: Subscription;
   public blurToggle = true;
@@ -23,19 +23,8 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   public ngOnInit(): void {
   }
 
-  public ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
-
   public ngOnDestroy(): void {
     this.setBlurSubscription.unsubscribe();
-  }
-
-  private scrollToBottom(): void {
-    this.scrollContainerRef.nativeElement.scroll({
-      top: this.scrollContainerRef.nativeElement.scrollHeight,
-      behavior: 'smooth'
-    });
   }
 
   private changeBlur(isBlur: boolean): void {
