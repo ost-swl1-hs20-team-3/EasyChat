@@ -47,7 +47,7 @@ export class SoundService {
 
   constructor() {
     // Add CreditsComment to JSConsole
-    console.log('OS CREDIT: Sound effects thankfully taken from http://www.freesfx.co.uk');
+    console.log('Open Source Credit: Sound effects thankfully taken from http://www.freesfx.co.uk');
 
     this.newMessageSound = this.getRandomSound(SoundType.NewMessage);
     this.newUserLoginSound = this.getRandomSound(SoundType.UserLogin);
