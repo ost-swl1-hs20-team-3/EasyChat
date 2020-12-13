@@ -7,12 +7,12 @@ describe('ChatService', () => {
 
   const mockActiveUsers = [
     { username: "Hallo", onFire: false },
+    { username: "Erwin", onFire: false },
+    { username: "Zelda", onFire: true },
     { username: "Hello", onFire: true },
     { username: "Aaron", onFire: false },
     { username: "Egon", onFire: false },
-    { username: "Erwin", onFire: false },
-    { username: "Ewald", onFire: true },
-    { username: "Zelda", onFire: true }
+    { username: "Ewald", onFire: true }
   ];
 
   const mockActiveUsersSorted = [
@@ -36,7 +36,7 @@ describe('ChatService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should sort the users correctly', () => {
+  it('should sort the users correctly (onFire, than Name ASC))', () => {
     service["activeUsers"] = mockActiveUsers;
 
     expect(service.onlineUsersSorted).toEqual(mockActiveUsersSorted);
