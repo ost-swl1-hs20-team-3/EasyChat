@@ -22,7 +22,7 @@ export class ChatService {
   public get messageList(): Array<Message> { return this.messageStorage.getAll(); }
   private activeUsers: Array<any> = [];
   public get onlineUsersSorted(): Array<any> {
-    return this.activeUsers.sort(compareUsers());
+    return this.activeUsers.sort(this.compareUsers());
   }
 
   constructor(
@@ -129,6 +129,22 @@ export class ChatService {
     this.socketioService.emitUsernameChange(oldUserName, newUsername);
   }
 
+  private compareUsers(): (a: any, b: any) => number {
+    return (a, b): number => {
+      if (a.onFire) {
+        return -2;
+      } else {
+        if (a.username.toLowerCase() < b.username.toLowerCase()) {
+          return -1;
+        } else if (a.username.toLowerCase() === b.username.toLowerCase()) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    };
+  }
+
 }
 
 class MessageStorage {
@@ -146,21 +162,5 @@ class MessageStorage {
     return Array.from(this.messageList);
   }
 
-}
-
-function compareUsers(): (a: any, b: any) => number {
-  return (a, b): number => {
-    if (a.onFire) {
-      return -2;
-    } else {
-      if (a.username.toLowerCase() < b.username.toLowerCase()) {
-        return -1;
-      } else if (a.username.toLowerCase() === b.username.toLowerCase()) {
-        return 0;
-      } else {
-        return 1;
-      }
-    }
-  };
 }
 
